@@ -185,8 +185,9 @@
   };
   const lobbyMusic = $('#lobby-music');
   lobbyMusic.volume = .35;
-  let audioOn = false;
+  let audioOn = true;
   let audioAttempt = 0;
+  let audioPending = false;
   const soundButton = $('.sound-button');
   const updateSound = () => {
     soundButton.setAttribute('aria-pressed', String(audioOn));
@@ -194,23 +195,33 @@
     soundButton.title = `${audioOn ? '关闭' : '开启'}大厅音乐 · 庄园`;
     $('.sound-label').textContent = audioOn ? '声音开' : '声音关';
   };
-  const startMusic = async () => {
+  const startMusic = async (silent = false) => {
+    if (!audioOn || audioPending || !lobbyMusic.paused) return;
+    audioPending = true;
     const attempt = ++audioAttempt;
     soundButton.setAttribute('aria-busy', 'true');
     try {
       await lobbyMusic.play();
-    } catch (_) {
+    } catch (error) {
       if (attempt === audioAttempt && audioOn) {
-        audioOn = false;
-        updateSound();
-        notify('音乐暂未播放，请再次点击声音开关。');
+        // Autoplay policy postpones playback until the first visitor gesture;
+        // it does not turn the visitor's music preference off.
+        if (error.name !== 'NotAllowedError' && error.name !== 'AbortError') {
+          audioOn = false;
+          updateSound();
+          if (!silent) notify('音乐暂未播放，请再次点击声音开关。');
+        }
       }
     } finally {
-      if (attempt === audioAttempt) soundButton.setAttribute('aria-busy', 'false');
+      if (attempt === audioAttempt) {
+        audioPending = false;
+        soundButton.setAttribute('aria-busy', 'false');
+      }
     }
   };
   const pauseMusic = () => {
     audioAttempt += 1;
+    audioPending = false;
     lobbyMusic.pause();
     soundButton.setAttribute('aria-busy', 'false');
   };
@@ -224,6 +235,15 @@
     if (document.hidden) pauseMusic();
     else if (audioOn) startMusic();
   });
+  const beginOnGesture = (event) => {
+    if (event.target.closest('.sound-button') || document.hidden) return;
+    if (event.type === 'keydown' && (event.ctrlKey || event.metaKey || event.altKey)) return;
+    if (audioOn && lobbyMusic.paused) startMusic(true);
+  };
+  document.addEventListener('click', beginOnGesture);
+  document.addEventListener('keydown', beginOnGesture);
+  updateSound();
+  startMusic(true);
 
   const revealLobby = () => {
     if (!window.gsap || reducedMotion) return;
