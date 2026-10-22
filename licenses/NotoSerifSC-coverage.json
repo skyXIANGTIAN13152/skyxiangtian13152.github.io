@@ -1,0 +1,25 @@
+{
+  "files": [
+    "app.js",
+    "details.css",
+    "index.html",
+    "loader.css",
+    "loader.js",
+    "lobby.css",
+    "scenes.css",
+    "style.css",
+    "toys.css",
+    "toys.js"
+  ],
+  "required_characters": 180,
+  "covered_characters": 180,
+  "missing_characters": [],
+  "font_bytes": 70800,
+  "weight_axes": [
+    {
+      "tag": "wght",
+      "min": 200.0,
+      "max": 900.0
+    }
+  ]
+}

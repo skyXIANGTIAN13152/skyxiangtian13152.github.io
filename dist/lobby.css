@@ -1,0 +1,69 @@
+/* Original old-lobby room; web entrances replace the game's navigation. */
+.visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip-path:inset(50%)!important;white-space:nowrap!important;border:0!important}
+.game-stage .lobby-section{background:#171717}
+.lobby-room{position:absolute;inset:0;transform-origin:50% 50%;will-change:transform;transition:transform .65s cubic-bezier(.2,.65,.25,1)}
+.lobby-section.is-entering .lobby-room{transform:scale(1.07)}
+.lobby-section.is-entering .lobby-entrances{opacity:.3;transition:opacity .4s}
+.lobby-room-image{position:absolute;inset:0;background:url('assets/original/lobby-cleaned.png') center/cover no-repeat}
+.lobby-room-shade{position:absolute;inset:0;background:linear-gradient(0deg,#090c12c4 0%,transparent 23%,transparent 78%,#0b0e12b5 100%),radial-gradient(ellipse at 50% 50%,transparent 30%,#090c114d 100%)}
+.lobby-content.container{position:absolute;inset:0;width:1280px;height:720px;margin:0;max-width:none}
+.lobby-candle{position:absolute;left:560px;top:190px;width:78px;height:92px;background:radial-gradient(ellipse,#ecb56926,transparent 65%);mix-blend-mode:screen;pointer-events:none}
+.lobby-prop-light{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .4s}
+.lobby-section[data-highlight] .lobby-prop-light{opacity:1}
+.lobby-section[data-highlight=about] .lobby-prop-light{background:radial-gradient(ellipse 190px 150px at 420px 180px,#edc5861c,transparent)}
+.lobby-section[data-highlight=work] .lobby-prop-light{background:radial-gradient(ellipse 160px 280px at 1100px 360px,#e4c18c26,transparent)}
+.lobby-section[data-highlight=study] .lobby-prop-light{background:radial-gradient(ellipse 120px 170px at 825px 335px,#e5c58e29,transparent)}
+.lobby-section[data-highlight=interests] .lobby-prop-light{background:radial-gradient(ellipse 180px 200px at 370px 500px,#e5c58e24,transparent)}
+.lobby-entrances{position:absolute;inset:0;z-index:5;pointer-events:none}
+.lobby-hotspot{position:absolute;width:242px;min-height:110px;padding:20px 28px;text-align:center;color:#ecddc5;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:auto;isolation:isolate;filter:drop-shadow(0 3px 3px #241c18);transition:color .3s,filter .3s,transform .4s}
+.lobby-hotspot:before{content:'';position:absolute;inset:7px -5px;z-index:-1;background:radial-gradient(ellipse,#e5bc7230,transparent 69%);opacity:.55;transition:opacity .35s}
+.lobby-hotspot:hover,.lobby-hotspot:focus-visible{color:#fff1d7;transform:translateY(-3px);filter:drop-shadow(0 0 10px #e9bd735c)}
+.lobby-hotspot:hover:before,.lobby-hotspot:focus-visible:before{opacity:1}
+.hotspot-title{font:400 33px/1.32 var(--serif);letter-spacing:.09em;text-shadow:0 0 9px #c99b6a7a,0 2px 2px #20150c}
+.hotspot-subtitle{font:13px/1.5 var(--serif);margin-top:4px;letter-spacing:.08em;color:#cbbda5;text-shadow:0 1px 4px #000}
+.hotspot-work .hotspot-subtitle,.hotspot-interests .hotspot-subtitle{font:20px/1 var(--display);letter-spacing:.015em;margin-top:8px}
+.laurel{position:absolute;top:17px;width:30px;height:76px;color:#b1ab91;opacity:.57;transition:opacity .3s}
+.laurel.left{left:7px;transform:rotate(-12deg)}.laurel.right{right:7px;transform:scaleX(-1) rotate(-12deg)}
+.lobby-hotspot:hover .laurel,.lobby-hotspot:focus-visible .laurel{opacity:1}
+.hotspot-glint{position:absolute;left:calc(50% - 2px);bottom:6px;width:4px;height:4px;background:#e9d8af;transform:rotate(45deg);opacity:0;transition:opacity .3s}
+.lobby-hotspot:hover .hotspot-glint,.lobby-hotspot:focus-visible .hotspot-glint{opacity:1}
+.hotspot-about{left:290px;top:87px}
+.hotspot-study{left:694px;top:223px}
+.hotspot-work{left:992px;top:231px}
+.hotspot-interests{left:249px;top:450px}
+.lobby-tagline{position:absolute;left:54px;bottom:45px;margin:0;font:22px/1.3 var(--display);color:#d3cbbd;text-shadow:0 1px 5px #000}
+.lobby-tagline span{font-size:20px;color:#a5aba9}
+.lobby-content>.replay{position:absolute;right:64px;bottom:23px;font-size:10px;z-index:58}
+.game-stage .desktop-nav{gap:28px;margin-left:0}
+.game-stage .desktop-nav a{font-size:13px;letter-spacing:.1em}
+.game-stage[data-scene=lobby] .desktop-nav{visibility:hidden;pointer-events:none}
+.game-stage[data-scene=lobby] .site-header{background:linear-gradient(#080b10aa,transparent);padding-inline:48px}
+.game-stage[data-scene=lobby] .brand{font-size:34px;text-shadow:0 2px 6px #000}
+.game-stage[data-scene=lobby] .scene-progress{display:none}
+.game-stage[data-scene=lobby] .site-footer{left:495px;right:183px;gap:30px;pointer-events:none}
+.game-stage[data-scene=lobby] .scene-caption{font:11px var(--serif);color:#c0b9a7;letter-spacing:.1em;text-shadow:0 1px 4px #000}
+.game-stage[data-scene=lobby] .footer-actions{margin:0;pointer-events:auto}
+.game-stage[data-scene=lobby] .motion-toggle{font-size:10px}
+.game-stage .scene-progress{gap:6px}.game-stage .scene-progress i{width:22px}.game-stage .scene-progress a{width:27px}
+.game-stage .site-footer>.scene-caption{white-space:nowrap}
+.game-stage .about-section:before{background-image:url('assets/original/lobby-cleaned.png');opacity:.4}
+.game-stage .work-section{background-image:linear-gradient(90deg,#0c141aea,#0c151bde),url('assets/original/lobby-cleaned.png')}
+.game-stage .study-section:before,.game-stage .interests-section:before{background-image:url('assets/original/lobby-cleaned.png')}
+
+/* The original personal cover is the front door; the room is the next scene. */
+.game-stage[data-scene=home] .desktop-nav{visibility:hidden;pointer-events:none}
+.game-stage[data-scene=home] .scene-progress{display:none}
+.game-stage[data-scene=home] .site-footer{left:64px;right:64px;justify-content:flex-end}
+.game-stage[data-scene=home] .scene-caption{position:absolute;left:50%;transform:translateX(-50%);font:12px var(--display)}
+.game-stage[data-scene=home] .footer-actions{margin:0}
+.game-stage .enter-game{min-width:210px;justify-content:space-between}
+.cover-diary{pointer-events:none}
+.game-stage[data-scene=lobby] .back-top{display:none}
+.game-stage[data-scene=home] .lobby-room{display:none}
+
+/* An explicit exit belongs to the top toolbar and is only shown in the lobby. */
+.game-stage .lobby-exit{display:none}
+.game-stage[data-scene=lobby] .lobby-exit{display:inline-flex;position:relative;z-index:1;align-items:center;gap:9px;min-height:38px;padding:7px 14px;border:1px solid #b7aa8c77;background:linear-gradient(100deg,#192027b8,#1d252a80);color:#e1d5bc;font-size:12px;letter-spacing:.1em;white-space:nowrap;pointer-events:auto;transition:background .2s,border-color .2s,color .2s}
+.game-stage[data-scene=lobby] .lobby-exit svg{width:16px;height:16px;transform:rotate(180deg);color:#bcae91}
+.game-stage[data-scene=lobby] .lobby-exit:hover{background:#343a37b8;border-color:#d1c3a3;color:#fff1d7}
+.game-stage[data-scene=lobby] .lobby-exit:focus-visible{outline:2px solid #e1d0ae;outline-offset:4px}

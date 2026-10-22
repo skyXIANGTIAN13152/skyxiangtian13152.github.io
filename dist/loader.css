@@ -1,0 +1,149 @@
+.sky-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  overflow: hidden;
+  isolation: isolate;
+  color: #d7dedc;
+  background: transparent;
+  touch-action: none;
+  perspective: 1100px;
+  font-family: ArchiveSong, "Songti SC", SimSun, serif;
+}
+.sky-intro *, .sky-intro *::before, .sky-intro *::after { box-sizing: border-box; }
+.sky-intro__veil {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 48% 35%, #394957 0, #1c2a34 34%, #0b151c 64%, #060d12 100%);
+  transition: opacity 180ms ease;
+}
+.sky-intro__veil::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: .23;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.73' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' opacity='.6' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: soft-light;
+}
+.sky-intro__still, .sky-intro__shard {
+  position: absolute;
+  inset: 0;
+  background-image: url("assets/muse-reference.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.sky-intro__still {
+  opacity: 0;
+  filter: blur(5px);
+  transition: opacity 1s ease;
+}
+.sky-intro.is-developing .sky-intro__still { opacity: .22; }
+.sky-intro__seal, .sky-intro__cracks {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.sky-intro__ink { opacity: 0; transition: opacity 800ms ease; }
+.sky-intro.is-developing .sky-intro__ink { opacity: .76; }
+.sky-intro__line {
+  fill: none;
+  stroke: #adb8b8;
+  stroke-width: 2.35;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: .7;
+  transition: stroke-dashoffset 950ms cubic-bezier(.3, 0, .4, 1);
+}
+.sky-intro__line--echo { stroke: #75868c; stroke-width: .8; opacity: .9; }
+.sky-intro.is-developing .sky-intro__line { stroke-dashoffset: 0; }
+.sky-intro__fracture {
+  fill: none;
+  stroke: #dae4e3;
+  stroke-width: 1.15;
+  stroke-linecap: round;
+  stroke-linejoin: miter;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: .8;
+  transition: stroke-dashoffset 240ms cubic-bezier(.12, .7, .25, 1);
+}
+.sky-intro__fracture--fine { stroke-width: .6; opacity: .45; }
+.sky-intro.is-cracked .sky-intro__fracture { stroke-dashoffset: 0; }
+.sky-intro__shard {
+  opacity: 0;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+  transform: translate3d(0, 0, 0);
+  transition: opacity 140ms ease;
+}
+.sky-intro.is-cracked .sky-intro__shard { opacity: 1; }
+.sky-intro__shard::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 20%, rgba(187, 218, 223, .12) 47%, transparent 65%);
+  opacity: 0;
+}
+.sky-intro.is-breaking .sky-intro__shard {
+  animation: sky-mirror-break 1000ms cubic-bezier(.34, .03, .74, .42) var(--lag) both;
+}
+.sky-intro.is-breaking .sky-intro__shard::after { opacity: 1; }
+.sky-intro.is-breaking .sky-intro__veil,
+.sky-intro.is-breaking .sky-intro__still,
+.sky-intro.is-breaking .sky-intro__seal,
+.sky-intro.is-breaking .sky-intro__cracks,
+.sky-intro.is-breaking .sky-intro__caption { opacity: 0; }
+.sky-intro__caption {
+  position: absolute;
+  z-index: 2;
+  bottom: max(11%, 90px);
+  left: 24px;
+  right: 24px;
+  margin: 0;
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: .27em;
+  color: #c5cece;
+  opacity: 0;
+  transition: opacity 450ms ease;
+}
+.sky-intro.is-developing .sky-intro__caption { opacity: .8; }
+.sky-intro.is-breaking .sky-intro__caption { opacity: 0; }
+.sky-intro__skip {
+  position: absolute;
+  z-index: 3;
+  right: max(24px, env(safe-area-inset-right));
+  bottom: max(24px, env(safe-area-inset-bottom));
+  min-width: 82px;
+  min-height: 44px;
+  padding: 10px 15px;
+  border: 1px solid rgba(197, 210, 210, .34);
+  border-radius: 0;
+  background: rgba(6, 13, 18, .3);
+  font: inherit;
+  font-size: 12px;
+  letter-spacing: .18em;
+  color: #cbd4d3;
+  cursor: pointer;
+  transition: color 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+.sky-intro__skip:hover { color: #fff; border-color: #bdcccd; background: rgba(6, 13, 18, .7); }
+.sky-intro__skip:focus-visible { outline: 2px solid #e1e9e8; outline-offset: 5px; }
+.sky-intro.is-breaking .sky-intro__skip { opacity: 0; pointer-events: none; }
+@keyframes sky-mirror-break {
+  0% { transform: translate3d(0,0,0) rotateX(0) rotateY(0) rotateZ(0); opacity: 1; }
+  14% { opacity: 1; }
+  65% { opacity: .9; }
+  100% { transform: translate3d(var(--dx), var(--dy), var(--dz)) rotateX(var(--rx)) rotateY(var(--ry)) rotateZ(var(--rz)); opacity: 0; }
+}
+@media (max-width: 600px) {
+  .sky-intro__caption { bottom: 18%; font-size: 11px; }
+  .sky-intro__skip { right: 20px; bottom: max(20px, env(safe-area-inset-bottom)); }
+}
+html.reduced-motion .sky-intro { display: none !important; }

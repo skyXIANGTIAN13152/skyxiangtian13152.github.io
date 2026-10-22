@@ -1,0 +1,100 @@
+/* A fixed 16:9 game stage. Scene navigation replaces document scrolling. */
+html,body{width:100%;height:100%;overflow:hidden;scroll-behavior:auto;background:#070b10}
+.game-stage{position:absolute;width:1280px;height:720px;left:50%;top:50%;transform:translate(-50%,-50%) scale(var(--stage-scale,1));transform-origin:center;overflow:hidden;background:#10191f;isolation:isolate;--edge:86px}
+.game-stage .container{width:1108px;max-width:none;margin-inline:auto}
+.game-stage .site-header{position:absolute;inset:0 0 auto;height:88px;padding:0 64px;background:linear-gradient(#090e18a6,transparent);border-bottom:0}
+.game-stage .brand{font-size:33px;gap:12px}.game-stage .brand svg{width:43px;height:43px}.game-stage .brand-cn{font-size:22px}
+.game-stage .desktop-nav{display:flex;gap:52px;margin-left:62px}.game-stage .desktop-nav a{font-size:15px;letter-spacing:.16em;padding:18px 2px}
+.game-stage .header-tools{gap:20px;align-items:center}.game-stage .sound-button{width:auto;min-height:44px;gap:9px}.game-stage .sound-label{display:inline;font-size:11px}.game-stage .sound-slash{left:5px}.game-stage .menu-toggle,.game-stage .mobile-nav{display:none!important}
+.fullscreen-button{display:flex;align-items:center;justify-content:center;width:35px;height:44px;color:#b8c1c1}.fullscreen-button svg{width:19px;height:19px}
+.scene-stage{position:absolute;inset:0}
+.game-stage .scene{position:absolute;inset:0;width:1280px;height:720px;min-height:0;max-height:none;overflow:hidden;visibility:hidden;opacity:0;pointer-events:none;transition:opacity .5s ease,visibility 0s .5s}
+.game-stage .scene.is-active{visibility:visible;opacity:1;pointer-events:auto;transition:opacity .6s ease,visibility 0s}
+.game-stage .hero{background:#121b29}
+.game-stage .hero-scene{left:0;right:-30%;background-position:50% 48%;transform:none}
+.game-stage .hero-vignette{background:linear-gradient(90deg,#080e1ad9 0%,#0c15219c 32%,#11192705 68%,#07101b20 100%),linear-gradient(0deg,#10191fd9 0%,#10191f00 20%,#070b1830 75%,#070b186e 100%)}
+.game-stage .hero-content{height:720px;min-height:0;align-items:center;padding-top:0}
+.game-stage .hero-copy{margin:0 0 4px;max-width:620px}
+.game-stage .chapter-mark{width:184px;gap:15px;margin-bottom:11px}.game-stage .chapter-mark svg{width:37px;height:37px}.game-stage .hero-kicker{font-size:12px;margin:0 0 12px 34px}
+.game-stage .hero h1{gap:28px;margin:0 0 24px;line-height:1.05}.game-stage .sky-name{font-size:145px}.game-stage .tian-name{font-size:94px;margin-top:21px}.game-stage .name-separator{height:72px;margin:24px 0 0 14px}
+.game-stage .hero-focus{font-size:28px;line-height:1.45;max-width:520px}.game-stage .hero-actions{gap:34px;margin-top:34px}.game-stage .ornate-button{min-height:54px;padding:14px 28px;font-size:14px;gap:26px}.game-stage .quiet-link{font-size:13px;gap:20px;min-height:48px}
+.game-stage .diary-hotspot{width:220px;right:7%;bottom:110px;opacity:1}.game-stage .diary-hotspot .diary-art{height:160px}.game-stage .diary-art img{width:220px;height:242px}.game-stage .diary-hotspot span{font-size:12px}
+.game-stage .hero-bottom{bottom:37px;display:block}.game-stage .hero-bottom>p{display:none}.game-stage .hero-bottom .scroll-cue{display:none}.game-stage .hero-bottom .replay{position:absolute;right:0;bottom:0;font-size:11px;z-index:60}
+.game-stage .site-footer{position:absolute;z-index:55;left:64px;right:64px;bottom:24px;width:auto;min-height:0;height:44px;padding:0;display:flex;align-items:center;justify-content:space-between;border:0;gap:24px}
+.game-stage .site-footer p{font:12px var(--display);letter-spacing:.045em;max-width:none;margin:0}.game-stage .footer-actions{display:flex;gap:26px;align-items:center}.game-stage .small-control{font-size:11px;min-height:44px}.game-stage .back-top{font-size:12px;gap:10px;min-height:44px}.game-stage[data-scene=home] .back-top{display:none}.game-stage[data-scene=home] .footer-actions{margin-right:124px}
+.scene-progress{display:flex;align-items:center;gap:12px}.scene-progress a{padding:12px;display:flex;align-items:center;justify-content:center;width:32px;height:40px}.scene-progress a span{width:7px;height:7px;border:1px solid #acb6ad9c;transform:rotate(45deg)}.scene-progress a.current span{background:#d2c8ac;box-shadow:0 0 10px #d2c8ac44}.scene-progress i{width:35px;height:1px;background:#778a8c3d}
+.game-stage .about-section{padding:105px 0 90px;isolation:isolate;background:#111a22}
+.game-stage .about-section:before{content:'';position:absolute;inset:-20px;z-index:-3;background:url('assets/original/room.jpg') center/cover;opacity:.35;filter:blur(3px)}
+.game-stage .about-section:after{content:'';position:absolute;inset:0;z-index:-2;background:linear-gradient(90deg,#0c131ab0,#0c151c44)}
+.game-stage .about-layout{display:block;position:relative;height:100%}
+.game-stage .about-layout>.section-heading{position:absolute;left:0;top:4px;width:100%;display:flex;align-items:baseline;gap:20px}
+.game-stage .about-layout>.section-heading .ink-flourish{display:none}.game-stage .about-layout .section-heading h2{font-size:25px;margin:0;letter-spacing:.15em}.game-stage .about-layout .heading-english{font-size:20px}.game-stage .heading-rule,.game-stage .heading-seal{display:none}
+.game-stage .dossier-wrap{position:absolute;left:50%;top:75px;width:950px;height:414px;max-width:none;margin:0;transform:translateX(-50%);perspective:1000px}
+.game-stage .paper-back{inset:-6px -12px -8px;background:#554a3a;border:4px solid #352f27;transform:rotate(.6deg);box-shadow:0 25px 55px #0009}
+.game-stage .dossier{height:414px;padding:20px 34px 23px;transform:rotate(-.3deg);clip-path:polygon(0 .4%,26% 0,52% .5%,79% 0,100% .4%,99.7% 28%,100% 53%,99.6% 76%,100% 100%,72% 99.6%,54% 100%,26% 99.6%,.4% 100%,0 71%,.5% 44%);background:linear-gradient(90deg,#c5b898 0%,#d4c8a9 40%,#a4997e 45.4%,#8f856e 46%,#c9bea0 47%,#d8ccb0 52%,#c9bda0 100%);box-shadow:inset 0 0 44px #72613d38}
+.game-stage .dossier:after{content:'';pointer-events:none;position:absolute;inset:0;opacity:.1;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='a'%3E%3CfeTurbulence baseFrequency='.45' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath filter='url(%23a)' d='M0 0h180v180H0z'/%3E%3C/svg%3E")}
+.game-stage .dossier-top{padding:0 8px 15px;font-size:10px;height:40px}.game-stage .paper-stamp{font-size:22px;padding:0 10px}
+.game-stage .dossier-spread{display:grid;grid-template-columns:40% 1fr;gap:12%;height:320px}
+.game-stage .dossier-identity{position:relative;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-top:0}
+.game-stage .dossier-emblem{width:65px;height:65px;color:#655f4d;opacity:.8;margin-bottom:14px}
+.game-stage .dossier h3{font:57px var(--display);letter-spacing:.025em;margin:0 0 14px}.game-stage .dossier h3 span{font:35px var(--serif);margin-left:10px}
+.game-stage .dossier-identity>p{font:20px/1.35 var(--display);margin:0;color:#626251}
+.game-stage .signature{font-size:30px;margin:18px 0 0;gap:7px;justify-content:center}.game-stage .signature span{font-size:16px}.game-stage .signature i{right:-4px;width:70px}
+.dossier-writing h4{font-size:23px;letter-spacing:.12em;font-weight:500;margin:14px 0 15px}
+.game-stage .bio{font-size:13px;line-height:2.05;margin:0}.game-stage .bio br{display:none}
+.game-stage .dossier-rule{margin:20px 0 18px}.game-stage .dossier-details{gap:14px}.game-stage .dossier-details>div{display:grid;grid-template-columns:72px 1fr;gap:10px}.game-stage .dossier-details dt{font-size:10px;margin:0}.game-stage .dossier-details dd{font-size:17px}.game-stage .course-list{gap:14px}.game-stage .paper-clip{right:55px;top:-14px;width:13px;height:46px}
+.next-scene{display:flex;justify-content:flex-end;align-items:center;gap:17px;color:#5f4338;font-size:12px;margin-top:27px;min-height:40px}.next-scene:hover{color:#171d1b}.next-scene svg{width:25px}
+.game-stage .work-section{padding:122px 0 105px;isolation:isolate;background:linear-gradient(90deg,#0c141ae8,#0c151be6),url('assets/original/room.jpg') center/cover}
+.game-stage .work-heading{margin-bottom:35px;gap:45px}.game-stage .work-heading h2{font-size:30px;letter-spacing:.15em;margin:0 0 7px}.game-stage .work-heading .heading-english{font-size:22px}.game-stage .work-heading .work-seal{width:48px;height:48px}
+.game-stage .project{display:grid;grid-template-columns:1.6fr 1fr;gap:8%;align-items:center}
+.game-stage .project-visual{padding:25px 30px 16px}.game-stage .demo-top{font-size:18px}.game-stage .demo-label{font-size:10px}.game-stage .monitor-scene{padding:43px 7px 47px;gap:19px;min-height:225px}.game-stage .monitor-bezel{border-radius:5px;padding:6px 6px 12px}.game-stage .monitor-neck{height:20px;width:21px}.game-stage .monitor-foot{height:5px;width:65px}.game-stage .monitor-light{bottom:4px;width:3px;height:3px}.game-stage .connection-wire{bottom:22px;height:25px}.game-stage .demo-controls{padding-top:13px}.game-stage .demo-state{font-size:10px;gap:8px}.game-stage .connection-toggle{font-size:11px;gap:15px;min-height:44px}
+.game-stage .project-copy{padding:0}.game-stage .project-tag{font-size:11px}.game-stage .project-copy h3{font-size:45px;margin:24px 0 22px}.game-stage .project-copy>p{font-size:16px;line-height:1.95}.game-stage .project-copy>p br{display:block}.game-stage .project-line{margin:29px 0}.game-stage .project-link{font-size:12px;min-height:48px;padding:11px 20px;gap:18px}
+.game-stage [tabindex='-1']:focus{outline:none}
+.orientation-note{display:none;position:fixed;left:20px;right:20px;bottom:12%;text-align:center;font-size:12px;letter-spacing:.15em;color:#92a0a6}
+@media(orientation:portrait) and (max-width:760px){.orientation-note{display:block}}
+@media(prefers-reduced-motion:reduce){html:not(.full-motion) .game-stage .scene{transition:none}}
+/* Keep every scene inside the game viewport, including keyboard focus. */
+.game-stage .scene{overflow:clip}
+.game-stage .work-section{padding:116px 0 85px}
+.game-stage .work-heading{margin-bottom:26px}
+.game-stage .monitor-scene{padding:20px 7px 22px}
+.game-stage .connection-wire{bottom:6px;height:15px}
+/* Two upright pages: the open journal follows a real notebook proportion. */
+.game-stage .dossier-wrap{width:810px;height:468px;top:57px}
+.game-stage .dossier{height:468px;padding:24px 33px 26px;background:linear-gradient(90deg,#c5b898 0%,#d4c8a9 45%,#a4997e 49.1%,#8f856e 49.7%,#c9bea0 50.7%,#d8ccb0 55%,#c9bda0 100%)}
+.game-stage .dossier-spread{grid-template-columns:1fr 1fr;gap:54px;height:366px}
+.game-stage .dossier-identity{padding-bottom:16px}
+.game-stage .dossier-writing{padding-top:14px}
+.game-stage .dossier-writing h4{margin-top:7px;margin-bottom:20px}
+.game-stage .dossier-details>div{grid-template-columns:66px 1fr;gap:8px}
+.game-stage .dossier-details dd{font-size:16px}
+.game-stage .course-list{gap:7px 12px;flex-wrap:wrap}
+.game-stage .dossier-rule{margin:24px 0 22px}
+.game-stage .next-scene{margin-top:31px}
+.game-stage .paper-back{inset:-6px -10px -7px;transform:rotate(.5deg)}
+/* Annie's original artwork lives in the room, beside the personal introduction. */
+.merchant-display{position:absolute;inset:0;pointer-events:none}
+.merchant-halo{position:absolute;left:650px;top:87px;width:380px;height:560px;background:radial-gradient(ellipse at 50% 43%,#b8b5a11a,transparent 66%);filter:blur(8px)}
+.merchant-figure{position:absolute;left:704px;top:84px;width:175px;height:563px;background:url('assets/toy-merchant/annie-fullbody.png') -375.18px -87.32px/1420.8px 799.2px no-repeat;filter:drop-shadow(9px 14px 13px #03070b99);transform:rotate(-1deg);transform-origin:center bottom}
+.merchant-caption{position:absolute;right:16px;top:184px;width:170px;text-align:center;color:#d1c7af}
+.merchant-eyebrow{font-size:10px;letter-spacing:.25em;color:#b5b4a6}
+.merchant-caption h2{font:36px/1.4 var(--serif);letter-spacing:.16em;margin:14px -6px 2px 0;font-weight:400;text-shadow:0 2px 14px #03070b}
+.merchant-caption>p{font:italic 23px var(--display);margin:0;color:#c7bba3}
+.merchant-rule{display:block;width:58px;height:1px;background:linear-gradient(90deg,transparent,#a49475,transparent);margin:15px auto}
+.merchant-caption p.merchant-name{font:10px var(--serif);letter-spacing:.18em;color:#a2a8a5}
+.merchant-trinkets{position:absolute;right:2px;top:358px;display:flex;gap:13px;align-items:flex-start;pointer-events:auto}
+.toybox-emblem,.glider-trigger{width:87px;padding:3px 0 8px;display:flex;align-items:center;flex-direction:column;gap:9px;color:#b3b5aa;font:10px var(--serif);letter-spacing:.04em}
+.merchant-trinkets img{width:46px;height:46px;object-fit:contain;opacity:.73;filter:sepia(.35);transition:filter .25s,opacity .25s,transform .4s}
+.toybox-emblem{opacity:.72}
+.glider-trigger:hover img,.glider-trigger:focus-visible img{opacity:1;transform:translateY(-5px) rotate(-7deg);filter:sepia(.4) drop-shadow(0 0 8px #dacba84d)}
+.glider-trigger span:after{content:'↗';padding-left:5px;color:#a59a7b}
+.game-stage .diary-hotspot{width:155px;right:9px;bottom:95px;transform:rotate(5deg)}
+.game-stage .diary-hotspot .diary-art{height:113px}.game-stage .diary-art img{width:155px;height:170.5px}
+.game-stage .diary-hotspot>span:last-child{font-size:10px}
+.character-keepsake{position:absolute;left:-109px;top:223px;width:145px;padding:10px 10px 12px;z-index:4;background:#b7aa88;color:#443c30;box-shadow:3px 8px 16px #0005;transform:rotate(-9deg);text-align:center;border:1px solid #d9c5a333}
+.keepsake-photo{height:116px;background:radial-gradient(ellipse at 50% 30%,#7c7d71,#2c3535);border:1px solid #695e49;overflow:hidden}
+.keepsake-photo img{width:116px;height:116px;margin:0 auto;filter:sepia(.2) saturate(.65)}
+.keepsake-label{display:block;margin:10px 0 5px;font-size:9px;letter-spacing:.15em;opacity:.7}
+.character-keepsake strong{font-size:17px;font-weight:400;letter-spacing:.12em}
+.keepsake-signature{display:block;font:italic 17px var(--display);margin-top:3px;color:#615039}
+.keepsake-tape{position:absolute;left:42px;top:-12px;width:60px;height:25px;transform:rotate(6deg);background:#c7b88e8c;box-shadow:inset 0 0 3px #ac9b757d;clip-path:polygon(0 4%,98% 0,96% 28%,100% 50%,96% 76%,99% 98%,0 100%,4% 68%,0 40%,4% 26%)}

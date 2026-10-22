@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10191f">
+  <meta name="description" content="Sky 天的个人主页。UNSW Quantum Engineering & Computer Science。关于我、正在学习的课程，以及作品 SyncWallpaper。">
+  <meta property="og:title" content="Sky 天 · 个人档案">
+  <meta property="og:description" content="UNSW Quantum Engineering & Computer Science · SyncWallpaper">
+  <meta property="og:type" content="website">
+  <title>Sky 天 · 个人档案</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/cormorant-garamond-regular-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="loader.css">
+  <link rel="stylesheet" href="scenes.css">
+  <link rel="stylesheet" href="toys.css">
+  <link rel="stylesheet" href="details.css">
+  <link rel="stylesheet" href="lobby.css">
+  <script src="vendor/gsap.min.js" defer></script>
+  <script src="loader.js" defer></script>
+  <script src="app.js" defer></script>
+  <script src="toys.js" defer></script>
+</head>
+<body>
+  <div class="game-stage" data-scene="home">
+  <a class="skip-link" href="#about">跳至主要内容</a>
+  <svg class="svg-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
+    <symbol id="muse" viewBox="0 0 100 100"><g fill="none" stroke="currentColor" stroke-width="1.4"><path id="curl" d="M50 50C57 43 67 37 65 24C63 11 47 8 44 18C41 29 53 30 55 23M50 50C58 35 59 29 56 22"/><use href="#curl" transform="rotate(45 50 50)"/><use href="#curl" transform="rotate(90 50 50)"/><use href="#curl" transform="rotate(135 50 50)"/><use href="#curl" transform="rotate(180 50 50)"/><use href="#curl" transform="rotate(225 50 50)"/><use href="#curl" transform="rotate(270 50 50)"/><use href="#curl" transform="rotate(315 50 50)"/><circle cx="50" cy="50" r="3"/></g></symbol>
+    <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.4"/></symbol>
+    <symbol id="external" viewBox="0 0 24 24"><path d="M13 5h6v6m0-6-9 9m-1-9H5v14h14v-4" fill="none" stroke="currentColor" stroke-width="1.4"/></symbol>
+    <symbol id="sound" viewBox="0 0 24 24"><path d="M4 10v4h4l5 4V6l-5 4H4m13-2a7 7 0 0 1 0 8m3-11a11 11 0 0 1 0 14" fill="none" stroke="currentColor" stroke-width="1.3"/></symbol>
+
+    <symbol id="laurel" viewBox="0 0 40 100"><path d="M32 94C10 71 9 35 30 6" stroke="currentColor" stroke-width="1" fill="none"/><g fill="currentColor"><path d="M29 13Q14 13 17 30Q25 24 29 13M21 31Q8 28 9 44Q17 43 21 31M17 50Q3 45 5 62Q16 62 17 50M20 69Q5 62 10 80Q20 81 20 69M27 85Q13 77 18 92L33 98ZM21 26Q38 24 32 39Q23 39 21 26M17 44Q33 39 29 56Q20 58 17 44M18 64Q35 55 34 73Q26 76 18 64M24 81Q37 72 39 87Q33 91 24 81Z"/></g></symbol>
+    <symbol id="profile-icon" viewBox="0 0 40 40"><path d="M15 7h10v5l3 6-4 5v5l7 6H9l7-6v-5l-4-5 3-6Z" fill="currentColor" opacity=".8"/><path d="M5 3h30v34H5Z" fill="none" stroke="currentColor"/></symbol>
+  </defs></svg>
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="Sky 天，返回封面"><svg aria-hidden="true"><use href="#muse"/></svg><span>Sky <span class="brand-cn">天</span></span></a>
+    <nav class="desktop-nav" aria-label="页面导航"><a class="active" href="#lobby">大厅</a><a href="#about">关于我</a><a href="#work">作品集</a><a href="#study">专业学习</a><a href="#interests">兴趣爱好</a></nav>
+    <div class="header-tools"><a class="lobby-exit" href="#home"><svg aria-hidden="true"><use href="#arrow"/></svg><span>离开大厅</span></a><button class="fullscreen-button" type="button" aria-label="进入全屏" title="进入全屏"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H4v5m11-5h5v5M4 15v5h5m11-5v5h-5" fill="none" stroke="currentColor" stroke-width="1.3"/></svg></button><button class="sound-button" type="button" aria-label="开启大厅音乐" aria-pressed="false" title="开启大厅音乐 · 庄园"><svg aria-hidden="true"><use href="#sound"/></svg><span class="sound-label">声音关</span><span class="sound-slash" aria-hidden="true"></span></button><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav"><span>目录</span><span class="menu-lines" aria-hidden="true"></span></button></div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="手机页面导航" hidden><a href="#lobby">大厅</a><a href="#about">关于我</a><a href="#work">作品集</a><a href="#study">专业学习</a><a href="#interests">兴趣爱好</a></nav>
+  </header>
+  <main class="scene-stage">
+    <section class="hero scene is-active" id="home" aria-labelledby="hero-title">
+      <div class="hero-scene" aria-hidden="true"></div><div class="hero-vignette" aria-hidden="true"></div><div class="grain" aria-hidden="true"></div>
+      <div class="hero-content container">
+        <div class="hero-copy">
+          <div class="chapter-mark"><span></span><svg aria-hidden="true"><use href="#muse"/></svg><span></span></div>
+          <p class="hero-kicker">个 人 档 案</p>
+          <h1 id="hero-title" tabindex="-1"><span class="sky-name">Sky</span><span class="name-separator" aria-hidden="true"></span><span class="tian-name">天</span></h1>
+          <p class="hero-focus">UNSW Quantum Engineering<br><span>&amp; Computer Science</span></p>
+          <div class="hero-actions"><a class="ornate-button enter-game" href="#lobby"><span>点击进入游戏</span><svg aria-hidden="true"><use href="#arrow"/></svg></a></div>
+        </div>
+        <div class="merchant-display">
+          <div class="merchant-halo" aria-hidden="true"></div>
+          <div class="merchant-figure" role="img" aria-label="第五人格角色玩具商的原版立绘"></div>
+          <div class="merchant-caption"><span class="merchant-eyebrow">我喜欢的角色</span><h2>玩具商</h2><p>Annie Lester</p><span class="merchant-rule" aria-hidden="true"></span><p class="merchant-name">安妮 · 莱斯特</p></div>
+          <div class="merchant-trinkets"><div class="toybox-emblem"><img src="assets/toy-merchant/toybox-skill.png" width="52" height="52" alt=""><span>精巧玩具</span></div><button class="glider-trigger" type="button"><img src="assets/toy-merchant/glider-skill.png" width="52" height="52" alt=""><span>放飞木制飞翼</span></button></div>
+        </div>
+        <div class="diary-hotspot cover-diary" aria-hidden="true"><span class="diary-art"><img src="assets/original/menu-story.png" alt="" width="200" height="220"></span><span>个人大厅</span></div>
+      </div>
+    </section>
+    <section class="lobby-section scene" id="lobby" aria-labelledby="lobby-title">
+      <div class="lobby-room" aria-hidden="true"><div class="lobby-room-image"></div><div class="lobby-room-shade"></div><div class="lobby-candle"></div></div>
+      <div class="lobby-prop-light" aria-hidden="true"></div>
+      <div class="container lobby-content">
+        <h1 id="lobby-title" class="visually-hidden" tabindex="-1">Sky 天的个人大厅</h1>
+        <nav class="lobby-entrances" aria-label="大厅中的个人网页入口">
+          <a class="lobby-hotspot hotspot-about" href="#about" data-prop="about" data-camera="28% 33%"><svg class="laurel left" aria-hidden="true"><use href="#laurel"/></svg><span class="hotspot-title">关于我</span><span class="hotspot-subtitle">Sky 天 · 个人档案</span><svg class="laurel right" aria-hidden="true"><use href="#laurel"/></svg><span class="hotspot-glint" aria-hidden="true"></span></a>
+          <a class="lobby-hotspot hotspot-work" href="#work" data-prop="work" data-camera="86% 44%"><svg class="laurel left" aria-hidden="true"><use href="#laurel"/></svg><span class="hotspot-title">作品集</span><span class="hotspot-subtitle">SyncWallpaper</span><svg class="laurel right" aria-hidden="true"><use href="#laurel"/></svg><span class="hotspot-glint" aria-hidden="true"></span></a>
+          <a class="lobby-hotspot hotspot-study" href="#study" data-prop="study" data-camera="65% 44%"><svg class="laurel left" aria-hidden="true"><use href="#laurel"/></svg><span class="hotspot-title">专业学习</span><span class="hotspot-subtitle">UNSW · 正在学习</span><svg class="laurel right" aria-hidden="true"><use href="#laurel"/></svg><span class="hotspot-glint" aria-hidden="true"></span></a>
+          <a class="lobby-hotspot hotspot-interests" href="#interests" data-prop="interests" data-camera="30% 72%"><svg class="laurel left" aria-hidden="true"><use href="#laurel"/></svg><span class="hotspot-title">兴趣爱好</span><span class="hotspot-subtitle">playing codex</span><svg class="laurel right" aria-hidden="true"><use href="#laurel"/></svg><span class="hotspot-glint" aria-hidden="true"></span></a>
+        </nav>
+        <p class="lobby-tagline">UNSW Quantum Engineering<br><span>&amp; Computer Science</span></p>
+        <button class="replay small-control" type="button"><span aria-hidden="true">↻</span> 重播过场</button>
+      </div>
+    </section>
+    <section class="about-section scene" id="about" aria-labelledby="about-title">
+      <div class="section-grain" aria-hidden="true"></div>
+      <div class="container about-layout">
+        <div class="section-heading"><span class="ink-flourish" aria-hidden="true">✦</span><h2 id="about-title" tabindex="-1">个人档案</h2><span class="heading-english" aria-hidden="true">Sky’s journal</span><div class="heading-rule" aria-hidden="true"></div><svg class="heading-seal" aria-hidden="true"><use href="#muse"/></svg></div>
+        <div class="dossier-wrap"><div class="paper-back" aria-hidden="true"></div><article class="dossier">
+          <div class="dossier-top"><span>个人手记</span><span class="paper-stamp" aria-hidden="true">Sky</span></div>
+          <div class="dossier-spread"><div class="dossier-identity"><svg class="dossier-emblem" aria-hidden="true"><use href="#muse"/></svg><h3>Sky <span>天</span></h3><p>UNSW<br>Quantum Engineering<br>&amp; Computer Science</p><div class="signature">Sky <span>天</span><i aria-hidden="true"></i></div></div><div class="dossier-writing"><h4>关于我</h4>
+          <p class="bio">我在 UNSW 的 builder space 制作了这个个人网站。<br class="desktop-break">目前正在学习 ELEC2134、COMP2521 和 MATH2069。</p>
+          <div class="dossier-rule" aria-hidden="true"></div>
+          <dl class="dossier-details"><div><dt>正在学习</dt><dd class="course-list"><span>ELEC2134</span><span>COMP2521</span><span>MATH2069</span></dd></div><div><dt>兴趣</dt><dd>playing codex</dd></div></dl>
+          <a class="next-scene" href="#work"><span>继续查看作品</span><svg aria-hidden="true"><use href="#arrow"/></svg></a></div></div>
+        </article><span class="paper-clip" aria-hidden="true"></span><aside class="character-keepsake" aria-label="喜欢的角色：玩具商"><span class="keepsake-tape" aria-hidden="true"></span><div class="keepsake-photo"><img src="assets/toy-merchant/annie-portrait.png" alt="玩具商安妮的头像" width="120" height="120"></div><span class="keepsake-label">喜欢的角色</span><strong>玩具商</strong><span class="keepsake-signature">Annie Lester</span></aside></div>
+      </div>
+    </section>
+    <section class="work-section scene" id="work" aria-labelledby="work-title">
+      <div class="container">
+        <div class="work-heading"><div class="section-heading"><span class="ink-flourish" aria-hidden="true">✦</span><h2 id="work-title" tabindex="-1">作品集</h2><span class="heading-english" aria-hidden="true">Selected work</span></div><span class="work-heading-line" aria-hidden="true"></span><svg class="work-seal" aria-hidden="true"><use href="#muse"/></svg></div>
+        <article class="project">
+          <div class="project-visual">
+            <div class="visual-corners" aria-hidden="true"></div><div class="demo-top"><span>SyncWallpaper</span><span class="demo-label">交互示意</span></div>
+            <div class="monitor-scene" aria-hidden="true"><div class="monitor monitor-main"><div class="monitor-bezel"><div class="monitor-picture"></div><span class="monitor-light"></span></div><div class="monitor-neck"></div><div class="monitor-foot"></div></div><div class="monitor monitor-secondary"><div class="monitor-bezel"><div class="monitor-picture"></div><span class="monitor-light"></span></div><div class="monitor-neck"></div><div class="monitor-foot"></div></div><div class="connection-wire"><span></span><i></i><span></span></div></div>
+            <div class="demo-controls"><p class="demo-state" role="status"><span class="status-dot" aria-hidden="true"></span><span id="screen-status">双屏已连接</span></p><button class="connection-toggle" type="button" aria-pressed="true">断开副屏<svg aria-hidden="true"><use href="#arrow"/></svg></button></div>
+          </div>
+          <div class="project-copy"><span class="project-tag">桌面工具</span><h3>SyncWallpaper</h3><p>热插拔检测屏幕，<br>自动切换壁纸。</p><div class="project-line" aria-hidden="true"></div><a class="ornate-button project-link" href="https://github.com/skyXIANGTIAN13152/SyncWallpaper" target="_blank" rel="noopener noreferrer"><span>查看 GitHub 源码</span><svg aria-hidden="true"><use href="#external"/></svg></a></div>
+        </article>
+      </div>
+    </section>
+<section class="study-section scene" id="study" aria-labelledby="study-title">
+  <div class="container detail-container">
+    <header class="detail-heading">
+      <h2 id="study-title" tabindex="-1">专业学习</h2>
+      <span class="detail-heading-rule" aria-hidden="true"></span>
+    </header>
+    <article class="study-sheet">
+      <div class="study-sheet-edge" aria-hidden="true"></div>
+      <div class="study-major">
+        <p class="study-university">UNSW</p>
+        <h3>Quantum Engineering<br>&amp; Computer Science</h3>
+        <svg class="study-drawing" viewBox="0 0 390 116" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+          <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 60h164M29 98V15M12 72C32 72 35 29 53 29S76 91 95 91s23-62 42-62 22 43 37 43" stroke-width="1.2"/>
+            <path d="m25 22 4-7 4 7m132 34 7 4-7 4M29 34h144M29 88h144" stroke-width=".65" opacity=".55"/>
+            <path d="M212 35h34v26h22v26h26V61h29V35h40M212 87h18V61h15M294 87h69M343 35v52" stroke-width="1.1"/>
+            <circle cx="212" cy="35" r="4"/><circle cx="212" cy="87" r="4"/><circle cx="363" cy="35" r="4"/><circle cx="363" cy="87" r="4"/>
+            <circle cx="294" cy="61" r="2.5"/><path d="M337 50h12m-12 5h12m-12 5h12M258 57v8m5-8v8" stroke-width="1.3"/>
+          </g>
+        </svg>
+      </div>
+      <div class="study-courses">
+        <h3>当前课程</h3>
+        <ul class="study-course-list">
+          <li><span>ELEC2134</span><i aria-hidden="true"></i></li>
+          <li><span>COMP2521</span><i aria-hidden="true"></i></li>
+          <li><span>MATH2069</span><i aria-hidden="true"></i></li>
+        </ul>
+      </div>
+      <span class="study-fastener" aria-hidden="true"></span>
+    </article>
+    <nav class="detail-bottom" aria-label="专业学习页面导航">
+      <a href="#lobby"><span aria-hidden="true">↶</span>返回大厅</a>
+      <a href="#interests">兴趣爱好<svg aria-hidden="true"><use href="#arrow"/></svg></a>
+    </nav>
+  </div>
+</section>
+
+<section class="interests-section scene" id="interests" aria-labelledby="interests-title">
+  <div class="container detail-container">
+    <header class="detail-heading">
+      <h2 id="interests-title" tabindex="-1">兴趣爱好</h2>
+      <span class="detail-heading-rule" aria-hidden="true"></span>
+    </header>
+    <div class="interest-writing-desk">
+      <div class="interest-carriage" aria-hidden="true"><i></i><i></i></div>
+      <article class="interest-note">
+        <div class="interest-paper-fold" aria-hidden="true"></div>
+        <p class="interest-typewritten">playing codex<span class="interest-type-caret" aria-hidden="true"></span></p>
+        <p class="interest-description">爱玩 Codex。</p>
+        <p class="interest-signature">Sky <span>天</span></p>
+      </article>
+      <div class="interest-typewriter" aria-hidden="true">
+        <div class="interest-ribbon"><i></i><span></span><i></i></div>
+        <div class="interest-keys"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="interest-keys interest-keys-second"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="interest-spacebar"></div>
+      </div>
+    </div>
+    <nav class="detail-bottom" aria-label="兴趣爱好页面导航">
+      <a href="#lobby"><span aria-hidden="true">↶</span>返回大厅</a>
+      <a href="#study">专业学习<svg aria-hidden="true"><use href="#arrow"/></svg></a>
+    </nav>
+  </div>
+</section>
+
+  </main>
+  <div class="glider-flight" aria-hidden="true"></div>
+  <footer class="site-footer container"><div class="scene-progress" aria-label="场景导航"><a href="#lobby" aria-label="大厅" class="current"><span></span></a><i></i><a href="#about" aria-label="关于我"><span></span></a><i></i><a href="#work" aria-label="作品集"><span></span></a><i></i><a href="#study" aria-label="专业学习"><span></span></a><i></i><a href="#interests" aria-label="兴趣爱好"><span></span></a></div><p class="scene-caption">在 UNSW builder space 制作</p><div class="footer-actions"><button class="motion-toggle small-control" type="button" aria-pressed="false">减少动效</button><a class="back-top" href="#lobby"><span aria-hidden="true">↶</span>返回大厅</a></div></footer>
+  </div>
+  <audio id="lobby-music" src="assets/audio/identity-v-manor.mp3" preload="none" loop hidden></audio>
+  <p class="orientation-note">横屏浏览，进入完整庄园</p>
+  <div class="notification" role="status" aria-live="polite"></div>
+</body>
+</html>
+

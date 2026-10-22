@@ -1,0 +1,14 @@
+{
+  "name": "sky-personal-homepage",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sky 天的中文个人主页",
+  "type": "module",
+  "scripts": {
+    "start": "node scripts/serve.mjs",
+    "check": "node scripts/check.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
