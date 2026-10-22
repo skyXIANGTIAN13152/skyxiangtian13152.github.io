@@ -67,3 +67,10 @@
 .game-stage[data-scene=lobby] .lobby-exit svg{width:16px;height:16px;transform:rotate(180deg);color:#bcae91}
 .game-stage[data-scene=lobby] .lobby-exit:hover{background:#343a37b8;border-color:#d1c3a3;color:#fff1d7}
 .game-stage[data-scene=lobby] .lobby-exit:focus-visible{outline:2px solid #e1d0ae;outline-offset:4px}
+
+/* An optional entrance choice when the visitor has requested less motion. */
+.game-stage .entrance-motion-note{display:flex;align-items:center;flex-wrap:wrap;gap:4px 16px;max-width:520px;margin:13px 0 0;color:#a8b2b5;font-size:11px;line-height:1.8;letter-spacing:.04em}
+.game-stage .entrance-motion-note[hidden]{display:none!important}
+.game-stage .restore-entrance{min-height:34px;padding:4px 0;border-bottom:1px solid #ad9d784d;color:#d6c8a9;font-size:11px;line-height:1.8;letter-spacing:.06em;white-space:nowrap;transition:color .2s,border-color .2s}
+.game-stage .restore-entrance:hover{color:#fff0ce;border-bottom-color:#c9b68b}
+.game-stage .restore-entrance:focus-visible{outline:2px solid #e1d0ae;outline-offset:5px}

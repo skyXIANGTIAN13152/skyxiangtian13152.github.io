@@ -11,6 +11,7 @@
     document.documentElement.classList.toggle('full-motion', !reducedMotion);
     motionButton.setAttribute('aria-pressed', String(reducedMotion));
     motionButton.textContent = reducedMotion ? '恢复动效' : '减少动效';
+    $('.entrance-motion-note').hidden = !reducedMotion;
     if (reducedMotion) window.SkyIntro?.skip();
   };
   applyMotion();
@@ -131,6 +132,13 @@
     const id = link.getAttribute('href').slice(1);
     if (!Object.hasOwn(titles, id)) return;
     link.addEventListener('click', event => { event.preventDefault(); transitionTo(id); });
+  });
+  $('.restore-entrance').addEventListener('click', () => {
+    reducedMotion = false;
+    storedMotion = 'full';
+    try { localStorage.setItem('sky-motion', 'full'); } catch (_) {}
+    applyMotion();
+    transitionTo('lobby');
   });
   window.addEventListener('popstate', () => transitionTo(location.hash.slice(1) || 'home', false));
   document.addEventListener('keydown', event => {

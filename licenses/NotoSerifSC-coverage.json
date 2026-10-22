@@ -11,10 +11,10 @@
     "toys.css",
     "toys.js"
   ],
-  "required_characters": 180,
-  "covered_characters": 180,
+  "required_characters": 183,
+  "covered_characters": 183,
   "missing_characters": [],
-  "font_bytes": 70800,
+  "font_bytes": 70676,
   "weight_axes": [
     {
       "tag": "wght",
