@@ -78,7 +78,8 @@ npm start
 | `dist/assets/diary-original/` | 2022 年旧版入口的原烟雾、纹饰与入退场关键帧，含来源记录 |
 | `dist/toys.css`、`dist/toys.js` | 木制飞翼点击彩蛋 |
 | `dist/assets` | 本地图片、字体等资源 |
-| `dist/assets/audio/identity-v-manor.mp3` | 《第五人格》原版大厅音乐《庄园》 |
+| `dist/assets/audio/identity-v-login.mp3` | 原版登录音乐《第五人格》 |
+| `dist/assets/audio/identity-v-apartment.mp3` | 从安装版提取的公寓大厅原版音乐 |
 | `dist/vendor/gsap.min.js` | 固定版本的 GSAP 3.13.0 |
 | `.github/workflows/pages.yml` | GitHub Pages 自动发布流程 |
 | `scripts/serve.mjs` | 仅监听本机的零依赖预览服务 |

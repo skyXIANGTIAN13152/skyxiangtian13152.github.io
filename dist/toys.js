@@ -13,6 +13,7 @@
       text: trigger.querySelector('span')?.textContent, disabled: trigger.disabled }));
     let runtime = null;
     let loading = null;
+    let moduleRetries = 0;
     let generation = 0;
     let running = false;
     const status = document.createElement('span');
@@ -20,6 +21,34 @@
     status.setAttribute('role', 'status');
     status.setAttribute('aria-live', 'polite');
     figure.parentElement.appendChild(status);
+    async function loadStageModule() {
+      let failure;
+      for (let attempt = 0; attempt < 2; attempt += 1) {
+        // Chromium remembers a rejected import by URL for the whole page.
+        // A fresh request is essential after a temporary download failure.
+        const moduleUrl = './toy-merchant-stage.js?v=20261023-22'
+          + (moduleRetries ? `&retry=${moduleRetries}` : '');
+        try { return await import(moduleUrl); }
+        catch (error) { failure = error; moduleRetries += 1; }
+      }
+      const error = new Error('Toy Merchant module download failed.', { cause: failure });
+      error.code = 'TOY_MODULE_LOAD';
+      throw error;
+    }
+    function failureMessage(error) {
+      const english = window.SkyLanguage?.language === 'en';
+      if (error.code === 'TOY_GRAPHICS_UNAVAILABLE') return english
+        ? 'The browser could not start the 3D animation. Reload or check hardware acceleration.'
+        : '浏览器暂时无法启动 3D 动画，请刷新页面或检查硬件加速。';
+      if (error.code === 'TOY_MODULE_LOAD' || error.code === 'TOY_ASSET_LOAD') return english
+        ? 'The toy animation could not download. Check your connection and try again.'
+        : '玩具动作下载失败，请检查网络后重试。';
+      if (error.code === 'TOY_ASSET_DECODE') return english
+        ? 'The toy assets could not be read. Please reload and try again.'
+        : '玩具素材未能读取，请刷新页面后重试。';
+      return english ? 'The toy animation could not play. Please reload and try again.'
+        : '玩具动作未能播放，请刷新页面后重试。';
+    }
     function restore() {
       generation += 1;
       runtime?.stop();
@@ -39,13 +68,14 @@
       running = true;
       const token = ++generation;
       status.textContent = '';
+      delete status.dataset.errorCode;
       controls.forEach(({ trigger, label }) => {
         trigger.disabled = true;
         trigger.setAttribute('aria-busy', 'true');
         if (trigger === event.currentTarget && label) label.textContent = runtime ? '安妮准备出发' : '安妮正在准备';
       });
       try {
-        if (!loading) loading = import('./toy-merchant-stage.js?v=20261023-15')
+        if (!loading) loading = loadStageModule()
           .then(module => module.createToyMerchantStage(mount))
           .then(value => { runtime = value; return value; })
           .catch(error => { loading = null; throw error; });
@@ -62,10 +92,11 @@
           height: rect.height * 720 / bounds.height });
         if (token === generation) restore();
       } catch (error) {
-        console.warn('Toy Merchant assets could not be loaded.', error);
+        console.warn('Toy Merchant action failed.', error.code || 'TOY_ANIMATION_FAILED', error);
         if (token !== generation) return;
         restore();
-        status.textContent = '玩具还没准备好，请再点一次。';
+        status.dataset.errorCode = error.code || 'TOY_ANIMATION_FAILED';
+        status.textContent = failureMessage(error);
       }
     }
     triggers.forEach(trigger => trigger.addEventListener('click', run));

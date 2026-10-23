@@ -1,16 +1,52 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
+function assetError(code, message, cause) {
+  return Object.assign(new Error(message, { cause }), { code });
+}
+
+// Retry transport failures only. Invalid files are not fixed by downloading
+// them repeatedly, and an unavailable WebGL context is a separate failure.
+export async function loadOriginalToyAsset(loader, url, {
+  fetchImpl = fetch, wait = milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds)),
+} = {}) {
+  let bytes;
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    try {
+      const response = await fetchImpl(url, { cache: attempt ? 'reload' : 'default' });
+      if (!response.ok) {
+        const error = new Error(`Toy asset HTTP ${response.status}: ${url}`);
+        if (response.status < 500 && ![408, 425, 429].includes(response.status)) {
+          throw assetError('TOY_ASSET_LOAD', error.message, error);
+        }
+        throw error;
+      }
+      bytes = await response.arrayBuffer();
+      break;
+    } catch (error) {
+      if (error.code === 'TOY_ASSET_LOAD' || attempt === 2) {
+        throw assetError('TOY_ASSET_LOAD', `Toy asset download failed: ${url}`, error);
+      }
+      await wait(250 * (attempt + 1));
+    }
+  }
+  try { return await loader.parseAsync(bytes, new URL('.', url).href); }
+  catch (error) { throw assetError('TOY_ASSET_DECODE', `Toy asset decode failed: ${url}`, error); }
+}
+
 // Only the screen-space flight path is authored here. Every joint key, character,
 // wing, springboard and diffuse map is converted original Identity V game data.
 export async function createToyMerchantStage(mount) {
   const loader = new GLTFLoader();
   const names = ['annie', 'plane', 'tiaoban'];
-  const loaded = await Promise.all(names.map(name => loader.loadAsync(
+  const loaded = await Promise.all(names.map(name => loadOriginalToyAsset(loader,
     new URL(`./assets/toy-merchant/original/${name}.glb`, import.meta.url).href)));
   let renderer;
   try { renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'low-power' }); }
-  catch (error) { disposeModels(); throw error; }
+  catch (error) {
+    disposeModels();
+    throw assetError('TOY_GRAPHICS_UNAVAILABLE', 'Toy animation WebGL context could not start.', error);
+  }
   renderer.setClearColor(0x000000, 0);
   renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.5));
   renderer.setSize(1280, 720);

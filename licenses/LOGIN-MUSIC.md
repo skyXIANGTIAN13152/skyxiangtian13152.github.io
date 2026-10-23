@@ -3,7 +3,7 @@
 - Website asset: `public/assets/audio/identity-v-login.mp3`
 - Original title: **第五人格** (Identity V)
 - Composer: **王景飞** (Wang Jingfei)
-- Use: classic game login/title screen, before entering the manor lobby. The lobby uses the separate original track **庄园**.
+- Use: game login/title screen, before entering the lobby. The website now switches to the installed client's apartment music inside the lobby; see [APARTMENT-MUSIC.md](APARTMENT-MUSIC.md).
 - Source publisher: NetEase / Identity V.
 
 ## Official source
@@ -20,6 +20,8 @@ The file was downloaded byte-for-byte from the [official NetEase MP3](https://ni
 - The separate [庄园 scene page](https://wiki.biligame.com/dwrg/%E9%9F%B3%E4%B9%90_%E5%BA%84%E5%9B%AD) identifies the existing lobby music as the default scene after login.
 
 ## File verification
+
+On 2026-10-23 the current installed client at `E:/FeverApps/dwrg2` was also checked: the patched login interface selects BGM ID 17, `P_music_main_character_options`, Wwise media 343281774. Decoded audio comparison confirms the same recording as this official MP3, despite the game's lower-bitrate Vorbis encoding. The official MP3 is retained rather than recompressing that lower-quality copy.
 
 - Format: MPEG Layer III (MP3), 320 kbps, stereo, 44,100 Hz.
 - Duration reported by vgmstream: 5,553,792 samples / 125.936 seconds.

@@ -1,0 +1,93 @@
+{
+  "label": "当前公寓大厅原版音乐",
+  "officialTrackTitle": null,
+  "gameInstallation": "E:/FeverApps/dwrg2",
+  "extractionDate": "2026-10-23",
+  "sourceUnmodified": true,
+  "scene": {
+    "id": 10048,
+    "resource": "scene/scene_battle/story_livingroom_l/story_livingroom_l.scn",
+    "bgmResource": "music/space/deluos_scenes/deluos_apartment",
+    "evidence": "Actual client log_old_2.txt line37391 identifies WorldCityHall init_scene scene_id10048; current patched city_scene_config.py maps ID10048 default_scene_bgm and happy_scene_bgm to this BGM."
+  },
+  "wwise": {
+    "event": "P_music_space_deluos_scenes_deluos_apartment",
+    "eventID": 3648411599,
+    "actionID": 1038058449,
+    "soundObjectID": 335487873,
+    "mediaID": 644481603,
+    "bank": {
+      "resource": "wwise/music.bnk",
+      "source": "E:\\FeverApps\\dwrg2\\Documents\\res\\wwise\\8ce3c2d005e4e6fc5a8457ba3a560768",
+      "index": "E:\\FeverApps\\dwrg2\\Documents\\res\\wwise.idx",
+      "md5": "8ce3c2d005e4e6fc5a8457ba3a560768",
+      "sha256": "aaac4bbe548075a7bd887e7222d0eb2d853dc8d524dd9fa1a569f356b965d1a4",
+      "size": 12977162,
+      "layers": [
+        "ENON"
+      ],
+      "offset": 0,
+      "header": 48,
+      "payload": 12977174,
+      "file": "D:\\Codex\\2026-10-22\\frontend-design-d-codexdata-home-skills-3\\work\\login-audio\\package\\music.bnk"
+    },
+    "gainDB": -10,
+    "gainLinear": 0.31622776601683794,
+    "loop": {
+      "WwiseLoopProperty": 0,
+      "meaning": "Infinite repeat of whole source; no embedded WEM loop points reported by vgmstream."
+    },
+    "sharedParentFilters": {
+      "LPF": 10,
+      "HPF": 10,
+      "note": "Wwise unit values; not translated to arbitrary browser cutoff frequencies."
+    }
+  },
+  "source": {
+    "resource": "wwise/644481603.wem",
+    "source": "E:\\FeverApps\\dwrg2\\res\\wwise3.wpk",
+    "index": "E:\\FeverApps\\dwrg2\\res\\wwise.idx",
+    "md5": "ec52c50be7b37cede517ba5624ac5a20",
+    "sha256": "d451bed0a72b130317acaf4a48d7012a400405731f9242f04652cb40e95967a8",
+    "size": 1078437,
+    "layers": [
+      "ENON"
+    ],
+    "offset": 310077712,
+    "header": 48,
+    "payload": 1078449,
+    "file": "D:\\Codex\\2026-10-22\\frontend-design-d-codexdata-home-skills-3\\work\\login-audio\\package\\644481603.wem"
+  },
+  "nativeAudio": {
+    "codec": "Wwise custom Vorbis",
+    "sampleRate": 44100,
+    "channels": 2,
+    "samples": 5495601,
+    "duration": 124.61680272108843,
+    "reportedBitrateKbps": 69
+  },
+  "decodedPCM": {
+    "file": "apartment-original.wav",
+    "bytes": 21982448,
+    "sha256": "602ec576bc6fb9cdfedac504864589617bdc3a9fd5e8cd34953f450222b9ab06"
+  },
+  "losslessWebArchive": {
+    "file": "apartment-original.flac",
+    "bytes": 8690222,
+    "sha256": "0d50663efd9e9bef7cf54b269c969f2880b3eb29961d0344db638d0c97562d98"
+  },
+  "webAudio": {
+    "file": "identity-v-apartment.mp3",
+    "bytes": 4987342,
+    "sha256": "9145efa663f92b17e2eb61ad081851cf9267ff296ea730af704990ca1cf24fd5"
+  },
+  "conversion": {
+    "decoder": "vgmstream-cli r2117 -i -o apartment-original.wav 644481603.wem",
+    "encoder": "Official installed ffmpeg -i apartment-original.wav -c:a libmp3lame -b:a 320k -ar 44100 -ac 2 -map_metadata -1 identity-v-apartment.mp3",
+    "processing": "No trimming, mixing, gain baking, resampling, synthesis, or reinterpretation. MP3 is a compatibility transcode of the original installed recording; the 320kbps output does not restore detail already removed by the source Vorbis encoder. Event gain is separate from file samples."
+  },
+  "comparisonToCurrentWebsite": {
+    "login": "The actual installed pre-login default is P_music_main_character_options, media343281774. Extracted recording duration125.901655s and aligned PCM correlation0.8583 against website official320kbps《第五人格》MP3 establish the same recording despite encoding differences. Keep the higher quality official recording.",
+    "lobby": "This currently played apartment recording differs from the website classic old-study《庄园》recording:124.616803s versus120.032653s, aligned PCM correlation0.032."
+  }
+}

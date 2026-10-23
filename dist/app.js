@@ -268,7 +268,7 @@
     soundButton.setAttribute('aria-busy', 'false');
   };
   const switchSceneMusic = (scene) => {
-    const track = scene === 'home' ? 'login' : 'manor';
+    const track = scene === 'home' ? 'login' : 'apartment';
     const source = `assets/audio/identity-v-${track}.mp3`;
     if (lobbyMusic.getAttribute('src') !== source) {
       // Reuse the media element unlocked by the visitor's first gesture. Abort
