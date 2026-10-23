@@ -1,7 +1,8 @@
 import * as THREE from './vendor/three.module.js';
 import {moveCircle, cameraRelativeInput} from './room-movement.js';
-import {originalRoomMovement} from './room-collision.js';
+import {originalRoomMovement} from './room-collision.js?v=20261023-13';
 import {createOriginalLobbyPostprocess} from './room-postprocess.js';
+import {createRoomResolution} from './room-resolution.js';
 
 const stage = document.querySelector('.game-stage');
 const lobby = document.querySelector('#lobby');
@@ -31,6 +32,7 @@ const cameraPosition = new THREE.Vector3();
 const raycaster = new THREE.Raycaster();
 const rayDirection = new THREE.Vector3();
 const color = new THREE.Color();
+const resolution = createRoomResolution();
 let blockers = [];
 const reduced = () => document.documentElement.classList.contains('reduced-motion');
 const intro = () => document.documentElement.classList.contains('sky-intro-active');
@@ -54,14 +56,14 @@ function setActive(value) {
   if (active && ready) layoutRenderer();
   if (active && ready && !contextLost && !document.hidden) start(); else stop();
 }
-function stop() { cancelAnimationFrame(frame); frame = 0; last = 0; stopFootsteps(); }
+function stop() { cancelAnimationFrame(frame); frame = 0; last = 0; resolution.reset(); stopFootsteps(); }
 function start() { if (!frame) { last = 0; frame = requestAnimationFrame(render); } }
 function activateNearest() { if (canMove() && nearest) anchors.find(a => a.dataset.prop === nearest.id)?.click(); }
 function layoutRenderer() {
   if (!renderer) return;
   // The cover keeps the room hidden during preload; the stage retains its size.
   const rect = stage.getBoundingClientRect();
-  renderer.setPixelRatio(Math.min(2, Math.max(.55, rect.width / 1280 * devicePixelRatio)));
+  renderer.setPixelRatio(resolution.configure(Math.min(2, Math.max(.55, rect.width / 1280 * devicePixelRatio))));
   renderer.setSize(1280,720,false);
   postprocess?.resize();
 }
@@ -85,11 +87,15 @@ function updateLabels() {
       rayDirection.copy(hotspot.position).sub(cameraPosition);
       const length = rayDirection.length();
       raycaster.set(cameraPosition,rayDirection.normalize());
+      raycaster.near = .08;
       raycaster.far = Math.max(0,length - .45);
-      occluded = raycaster.intersectObjects(blockers,false).length > 0;
+      occluded = room.move?.raycast
+        ? room.move.raycast(raycaster.ray,raycaster.near,raycaster.far) !== false
+        : raycaster.intersectObjects(blockers,false).length > 0;
     }
     const near = distance < 2.15;
-    a.style.left = `${x}px`; a.style.top = `${y}px`;
+    // Move the composited label without laying out its text every frame.
+    a.style.transform = `translate3d(${x.toFixed(2)}px,${y.toFixed(2)}px,0) translate(-50%,-50%)`;
     a.classList.toggle('is-occluded',!visible || occluded);
     a.classList.toggle('is-distant',!near);
     a.classList.toggle('is-near',near);
@@ -115,6 +121,11 @@ function updateLabels() {
 function render(now) {
   frame = 0;
   if (!active || !ready || document.hidden || contextLost) return;
+  const nextRatio = last && !pausedForTransition && !intro() ? resolution.sample(now - last) : null;
+  if (nextRatio !== null) {
+    renderer.setPixelRatio(nextRatio);
+    postprocess.resize();
+  }
   const dt = last ? Math.min((now - last) / 1000,.05) : 0;
   last = now; elapsed += dt;
   let input = {x:0,z:0};
@@ -161,8 +172,10 @@ function render(now) {
   raycaster.set(focus,rayDirection.normalize());
   raycaster.near = .08;
   raycaster.far = cameraDistance;
-  const cameraHit = raycaster.intersectObjects(blockers,false)[0];
-  if (cameraHit) desiredCamera.copy(focus).addScaledVector(rayDirection,Math.max(.65,cameraHit.distance - .18));
+  const cameraDistanceHit = room.move?.raycast
+    ? room.move.raycast(raycaster.ray,raycaster.near,raycaster.far)
+    : (raycaster.intersectObjects(blockers,false)[0]?.distance ?? false);
+  if (cameraDistanceHit !== false) desiredCamera.copy(focus).addScaledVector(rayDirection,Math.max(.65,cameraDistanceHit - .18));
   camera.position.lerp(desiredCamera,reduced() ? 1 : 1 - Math.exp(-dt * 6));
   camera.lookAt(focus);
   detective.lantern.getWorldPosition(lightPosition);
@@ -182,7 +195,7 @@ function makeContactShadow() {
 }
 async function initialize() {
   try {
-    const [{createRoom},{createDetective}] = await Promise.all([import('./room-environment.js'),import('./room-detective.js?v=20261023-11')]);
+    const [{createRoom},{createDetective}] = await Promise.all([import('./room-environment.js?v=20261023-13'),import('./room-detective.js?v=20261023-11')]);
     scene = new THREE.Scene(); scene.background = new THREE.Color('#11181d');
     scene.fog = new THREE.FogExp2('#10151b',.007);
     camera = new THREE.PerspectiveCamera(45,1280/720,.05,80);
@@ -207,7 +220,8 @@ async function initialize() {
     const moon = new THREE.DirectionalLight('#c1d4ee',.7); moon.position.set(-5,7,3); scene.add(moon);
     const fill = new THREE.DirectionalLight('#d9bda0',.38); fill.position.set(4,3,-2); scene.add(fill);
     lamp = new THREE.PointLight('#ffc478',.35,4,2);
-    lamp.castShadow = true; lamp.shadow.mapSize.set(512,512);lamp.shadow.bias = -.0015;lamp.shadow.normalBias = .035;lamp.shadow.camera.near = .12;lamp.shadow.camera.far = 7;
+    // Beyond the light's falloff distance no shadow can affect a lit surface.
+    lamp.castShadow = true; lamp.shadow.mapSize.set(512,512);lamp.shadow.bias = -.0015;lamp.shadow.normalBias = .035;lamp.shadow.camera.near = .12;lamp.shadow.camera.far = lamp.distance;
     scene.add(lamp);
 
     shadow = makeContactShadow();scene.add(shadow);

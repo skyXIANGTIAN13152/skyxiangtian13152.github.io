@@ -1,4 +1,4 @@
-import { Vector3, Triangle } from 'three';
+import { Vector3, Triangle, Ray } from 'three';
 import { Octree } from 'three/addons/math/Octree.js';
 import { Capsule } from 'three/addons/math/Capsule.js';
 
@@ -23,6 +23,7 @@ export function originalRoomMovement(meshes, bounds, floorY = 0, groundAt) {
   const capsule = new Capsule();
   const correction = new Vector3();
   const candidates = [];
+  const visibilityRay = new Ray();
   const clamp = (v,a,b) => Math.max(a,Math.min(b,v));
   const contacts = () => {
     candidates.length = 0;
@@ -33,7 +34,7 @@ export function originalRoomMovement(meshes, bounds, floorY = 0, groundAt) {
     const hit = tree.triangleCapsuleIntersect(capsule, triangle);
     return hit && hit.depth > 1e-5;
   });
-  return (position,dx,dz,radius=.24) => {
+  const move = (position,dx,dz,radius=.24) => {
     let x=position.x,z=position.z;
     const steps=Math.max(1,Math.ceil(Math.hypot(dx,dz)/Math.min(.07,radius*.25)));
     for(let step=0;step<steps;step++) {
@@ -78,4 +79,17 @@ export function originalRoomMovement(meshes, bounds, floorY = 0, groundAt) {
     }
     return {x,z};
   };
+  // Camera clearance and label visibility use these same original triangles.
+  // Shift the origin to the near plane: an earlier surface must not hide a
+  // later valid hit, which would happen if only the nearest hit were filtered.
+  move.raycast = (ray, near = 0, far = Infinity) => {
+    if (far < near) return false;
+    visibilityRay.origin.copy(ray.origin).addScaledVector(ray.direction, near);
+    visibilityRay.direction.copy(ray.direction);
+    const hit = tree.rayIntersect(visibilityRay);
+    if (!hit) return false;
+    const distance = hit.distance + near;
+    return distance <= far ? distance : false;
+  };
+  return move;
 }

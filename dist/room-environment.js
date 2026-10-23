@@ -1,7 +1,8 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { Reflector } from 'three/addons/objects/Reflector.js';
-import { createOriginalSceneLighting, configureOriginalLightmap } from './original-scene-lighting.js';
+import { createOriginalSceneLighting, configureOriginalLightmap } from './original-scene-lighting.js?v=20261023-13';
+import { computeRoomBounds } from './room-bounds.js';
 
 // Browser adapter for original dm65_main data. No replacement geometry is made.
 const UNIT = 0.1;
@@ -21,6 +22,7 @@ function originalMirror(mesh, data, mask) {
   const normal = new THREE.Vector3().fromBufferAttribute(geometry.getAttribute('normal'), index.getX(0)).normalize();
   const alignment = new THREE.Quaternion().setFromUnitVectors(normal, new THREE.Vector3(0, 0, 1));
   geometry.translate(-center.x, -center.y, -center.z).applyQuaternion(alignment);
+  computeRoomBounds(geometry);
   const resolution = typeof innerWidth !== 'undefined' && innerWidth < 768 ? 512 : 1024;
   const mirror = new Reflector(geometry, {
     textureWidth: resolution, textureHeight: resolution, multisample: 0,
@@ -103,6 +105,18 @@ export async function createRoom(options = {}) {
     o.matrix.decompose(o.position, o.quaternion, o.scale);
   });
   group.updateMatrixWorld(true);
+  const sourceBounds = new Map();
+  gltf.scene.traverse(o => {
+    if (!o.isMesh || o.isSkinnedMesh) return;
+    if (!sourceBounds.has(o.geometry)) {
+      if (!o.geometry.boundingBox) o.geometry.computeBoundingBox();
+      sourceBounds.set(o.geometry, o.geometry.boundingBox.clone());
+      computeRoomBounds(o.geometry);
+    }
+    // Keep the established light selection identical; these new bounds are
+    // only for culling/rays, not a change to the original room's illumination.
+    o.userData.originalLightingBounds = sourceBounds.get(o.geometry);
+  });
   const lighting = createOriginalSceneLighting(source, group);
   const collisionGroup = new THREE.Group();
   collisionGroup.name = 'Original_dm65_main_collision';
@@ -231,6 +245,7 @@ export async function createRoom(options = {}) {
     if (/dm65_main_ground001/.test(path)) floorMeshes.push(o);
     if (!exactCollision.test(path) && !(solidGeometry.test(path) && !instance.userData.hiddenFlag)) return;
     const geometry = o.geometry.clone().applyMatrix4(o.matrixWorld);
+    computeRoomBounds(geometry);
     if (o.matrixWorld.determinant() < 0) {
       const index = geometry.index;
       for (let i = 0; i < index.count; i += 3) {

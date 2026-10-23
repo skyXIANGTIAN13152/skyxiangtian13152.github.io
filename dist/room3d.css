@@ -6,7 +6,7 @@
 .lobby-content.container{pointer-events:none}
 .lobby-content a,.lobby-content button{pointer-events:auto}
 .room-ready .lobby-prop-light,.room-ready .lobby-tagline{display:none}
-.room-ready .lobby-hotspot{width:200px;min-height:84px;padding:13px 23px;transform:translate(-50%,-50%);transition:color .2s,opacity .25s,filter .2s}
+.room-ready .lobby-hotspot{left:0;top:0;width:200px;min-height:84px;padding:13px 23px;transform:translate(-50%,-50%);will-change:transform;transition:color .2s,opacity .25s,filter .2s}
 .room-ready .lobby-hotspot:hover,.room-ready .lobby-hotspot:focus-visible{transform:translate(-50%,-50%)}
 .room-ready .hotspot-title{font-size:26px;letter-spacing:.1em}
 .room-ready .hotspot-subtitle{font-size:12px}

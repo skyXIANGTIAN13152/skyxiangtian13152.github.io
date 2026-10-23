@@ -57,7 +57,7 @@ export function createOriginalSceneLighting(source, root) {
   function select(mesh) {
     mesh.updateWorldMatrix(true, false);
     if (!mesh.geometry.boundingBox) mesh.geometry.computeBoundingBox();
-    const box = new Box3().copy(mesh.geometry.boundingBox).applyMatrix4(mesh.matrixWorld);
+    const box = new Box3().copy(mesh.userData.originalLightingBounds || mesh.geometry.boundingBox).applyMatrix4(mesh.matrixWorld);
     const candidates = lights.map(light => {
       const distance = box.distanceToPoint(light.position);
       const falloff = Math.pow(clamp(1 - (distance / Math.max(light.range, .0001)) ** 2), light.exponent);
