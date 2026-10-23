@@ -13,6 +13,16 @@
   };
   // Original Wwise event gains, applied during playback without modifying the PCM.
   const decibels = { click: -3, shatter: -5, diaryOpen: -6, diaryClose: -5, pageTurn: -6, pageBack: -6, loadingStart: -3 };
+  // Exact default branch of the original detective footstep event. Ten equally
+  // weighted samples, original -17 dB gain, and one-sample repeat avoidance.
+  const footstepKeys = Array.from({ length: 10 }, (_, index) => {
+    const number = String(index + 1).padStart(2, '0');
+    const key = `footstep${number}`;
+    files[key] = `footsteps/sourceDefault-${number}.wav`;
+    decibels[key] = -17;
+    return key;
+  });
+  let previousFootstep = -1;
   const bytes = new Map(), buffers = new Map(), decoding = new Map();
   const voices = new Set(), lastPlayed = new Map();
   let context, master, unlocking = null, enabled = true, generation = 0;
@@ -123,6 +133,14 @@
     else prepare([key]).then(afterUnlock, () => voice.stop());
     return voice;
   }
+  function playFootstep() {
+    if (!enabled || document.hidden) return null;
+    const choices = footstepKeys.map((_, index) => index).filter(index => index !== previousFootstep);
+    previousFootstep = choices[Math.floor(Math.random() * choices.length)];
+    // Original Audio3D notifiers disallow overlap. Also cancels undecoded voices.
+    stopAll('footsteps');
+    return play(footstepKeys[previousFootstep], { group: 'footsteps', maxDelay: 80 });
+  }
   // A hidden tab suspends active samples with the animation; muted voices are discarded.
   document.addEventListener('visibilitychange', () => {
     if (!context) return;
@@ -133,7 +151,7 @@
   document.addEventListener('keydown', event => {
     if (!event.ctrlKey && !event.metaKey && !event.altKey) unlock();
   }, true);
-  window.SkyAudio = { prepare, unlock, play, stopAll, setEnabled,
+  window.SkyAudio = { prepare, unlock, play, playFootstep, stopAll, setEnabled,
     get enabled() { return enabled; },
     isReady: key => buffers.has(key),
     duration: key => buffers.get(key)?.duration || 0

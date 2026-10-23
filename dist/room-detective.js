@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { crossedFootsteps } from './detective-footsteps.js';
 
 /** Original game mesh, textures, skeleton and original lantern locomotion clips. */
 export async function createDetective({
@@ -7,6 +8,7 @@ export async function createDetective({
   nominalWalkSpeed = 1.1,
   fireTextureUrl = new URL('./assets/detective/fire_001.png', import.meta.url).href,
   glowTextureUrl = new URL('./assets/detective/glow_109.png', import.meta.url).href,
+  onFootstep = () => {},
 } = {}) {
   const [gltf, fireTexture, glowTexture] = await Promise.all([
     new GLTFLoader().loadAsync(url),
@@ -76,7 +78,7 @@ export async function createDetective({
   });
   let previousTime;
   let active = idle;
-  function update(time, speed = 0, reducedMotion = false) {
+  function update(time, speed = 0, reducedMotion = false, footstepsAllowed = false) {
     const delta = previousTime === undefined ? 0 : Math.min(0.1, Math.max(0, time - previousTime));
     previousTime = time;
     const moving = Math.abs(speed) > 0.025;
@@ -88,7 +90,15 @@ export async function createDetective({
     }
     walk.setEffectiveTimeScale(Math.max(0.3, Math.min(2, Math.abs(speed) / nominalWalkSpeed)));
     idle.setEffectiveTimeScale(reducedMotion && !moving ? 0 : 1);
+    const previousWalkTime = walk.time;
     mixer.update(delta);
+    // Follow the actual animation phase, including slow joystick movement and
+    // looping. Collision/input permission is separate from the visual fade speed.
+    if (active === walk && moving && footstepsAllowed && delta > 0) {
+      for (const eventTime of crossedFootsteps(previousWalkTime, walk.time, walkClip.duration)) {
+        onFootstep({ eventTime, phase: walk.time });
+      }
+    }
     const frame = reducedMotion ? 0 : Math.floor(time * 32) % 32;
     fireTexture.offset.set((frame % 8) / 8, (3 - Math.floor(frame / 8)) / 4);
     group.updateMatrixWorld(true);

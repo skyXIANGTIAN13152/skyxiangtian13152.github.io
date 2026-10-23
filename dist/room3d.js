@@ -21,6 +21,7 @@ let active = false, ready = false, frame = 0, last = 0, elapsed = 0;
 let pointerId = null, stickInput = {x:0,z:0}, drag = null, nearest = null;
 let yaw = 0, pitch = .42, currentSpeed = 0, lastInteraction = '';
 let pausedForTransition = false, contextLost = false;
+let footstepsMoving = false;
 const player = new THREE.Vector3();
 const focus = new THREE.Vector3();
 const desiredCamera = new THREE.Vector3();
@@ -39,7 +40,9 @@ function resetInput() {
   keys.clear(); stickInput = {x:0,z:0}; pointerId = null; drag = null;
   knob.style.transform = '';
   currentSpeed = 0;
+  stopFootsteps();
 }
+function stopFootsteps() { footstepsMoving = false; window.SkyAudio?.stopAll('footsteps'); }
 function updateTouchVisibility() { touch.hidden = !(active && ready && !intro() && !pausedForTransition); }
 function setActive(value) {
   active = value;
@@ -51,7 +54,7 @@ function setActive(value) {
   if (active && ready) layoutRenderer();
   if (active && ready && !contextLost && !document.hidden) start(); else stop();
 }
-function stop() { cancelAnimationFrame(frame); frame = 0; last = 0; }
+function stop() { cancelAnimationFrame(frame); frame = 0; last = 0; stopFootsteps(); }
 function start() { if (!frame) { last = 0; frame = requestAnimationFrame(render); } }
 function activateNearest() { if (canMove() && nearest) anchors.find(a => a.dataset.prop === nearest.id)?.click(); }
 function layoutRenderer() {
@@ -137,7 +140,10 @@ function render(now) {
     const diff = Math.atan2(Math.sin(angle - detective.group.rotation.y),Math.cos(angle - detective.group.rotation.y));
     detective.group.rotation.y += diff * Math.min(1,dt * 10);
   }
-  detective.update(elapsed,currentSpeed,reduced());
+  const walking = canMove() && speed > .025;
+  if (footstepsMoving && !walking) stopFootsteps();
+  footstepsMoving = walking;
+  detective.update(elapsed,currentSpeed,reduced(),walking);
   room.update?.(elapsed,reduced());
   shadow.position.set(player.x,player.y + .018,player.z);
   focus.set(player.x,player.y + 1.35,player.z - .15);
@@ -175,7 +181,7 @@ function makeContactShadow() {
 }
 async function initialize() {
   try {
-    const [{createRoom},{createDetective}] = await Promise.all([import('./room-environment.js'),import('./room-detective.js')]);
+    const [{createRoom},{createDetective}] = await Promise.all([import('./room-environment.js'),import('./room-detective.js?v=20261023-11')]);
     scene = new THREE.Scene(); scene.background = new THREE.Color('#11181d');
     scene.fog = new THREE.FogExp2('#10151b',.007);
     camera = new THREE.PerspectiveCamera(45,1280/720,.05,80);
@@ -191,7 +197,7 @@ async function initialize() {
     room = await createRoom(); scene.add(room.group);
     room.bounds = {minX:-6.5,maxX:6.5,minZ:-5.2,maxZ:5.2,...room.bounds};
     if (room.collisionMeshes?.length) room.move = originalRoomMovement(room.collisionMeshes,room.bounds,room.spawn.y || 0,room.floorHeight);
-    detective = await createDetective(); scene.add(detective.group);
+    detective = await createDetective({ onFootstep: () => window.SkyAudio?.playFootstep?.() }); scene.add(detective.group);
     player.set(room.spawn.x,room.spawn.y || 0,room.spawn.z);
     yaw = room.cameraYaw ?? Math.atan2(room.cameraPosition.x-room.cameraTarget.x,room.cameraPosition.z-room.cameraTarget.z);
     pitch = room.cameraPitch ?? .32;

@@ -1,0 +1,2405 @@
+{
+  "source": {
+    "bankPath": "wwise/survivor.bnk",
+    "bankMD5": "df95be69529703f5cdaa39628fb02448",
+    "bankBytes": 8678510,
+    "modelEvidence": "chr/player/detective/detective.gim",
+    "modelAudioObjectID": "c5bf298a492319c1",
+    "modelAudioURI": "wwise/survivor.bnk:survivor/Event|P_survivor_survivor_1p_foot_detective"
+  },
+  "event": {
+    "name": "P_survivor_survivor_1p_foot_detective",
+    "eventID": 4241919490,
+    "actions": [
+      {
+        "playActionID": 434931204,
+        "targetSwitchContainer": 546169848
+      },
+      {
+        "playActionID": 517499211,
+        "targetRandomContainer": 425722862
+      }
+    ],
+    "switchGroup": "footstep_material",
+    "switchGroupID": 684570577,
+    "defaultSwitchID": 687380132
+  },
+  "animation": {
+    "name": "hall_walk_2",
+    "metadataDuration": 3.599900007247925,
+    "deployedGLBClipDuration": 3.5999999046325684,
+    "times": [
+      0.4049000144004822,
+      1.0219999551773071,
+      1.63510000705719,
+      2.2430999279022217,
+      2.8208999633789062,
+      3.4198999404907227
+    ],
+    "notifiers": [
+      "sound_0",
+      "sound1_0",
+      "sound2_0",
+      "sound3_0",
+      "sound4_0",
+      "sound5_0"
+    ],
+    "socket": "sound",
+    "loopTrigger": true,
+    "stopWhenAnimSwitchOut": true,
+    "stopWhenAnimChange": true,
+    "supportOverlap": false,
+    "leftRight": "No separate left/right labels or audio objects are present; all six notifiers address the same object."
+  },
+  "groups": {
+    "sourceDefault": {
+      "containerID": 212059915,
+      "switchID": 687380132,
+      "randomMode": "normal",
+      "avoidRepeat": 1,
+      "continuous": false,
+      "loopCount": 1,
+      "weighted": false,
+      "globalRandomHistory": true,
+      "baseGainDB": -17.0,
+      "baseGainLinear": 0.14125375446227545,
+      "gainBankByteOffset": 8590655,
+      "pitchRandomization": null,
+      "volumeRandomization": null,
+      "samples": [
+        {
+          "file": "sourceDefault-01.wav",
+          "soundID": 1020071299,
+          "mediaID": 699895471,
+          "sourcePath": "wwise/699895471.wem",
+          "sourceMD5": "74f919bb9c46addc2237afd555b464c1",
+          "sourceBytes": 3542,
+          "wavSHA256": "5221b37d4f4cde88a07df337bbb2fd9c26094eec804434d7a22dc8ed2340a10a",
+          "wavBytes": 25644,
+          "channels": 1,
+          "sampleRate": 32000,
+          "sampleWidth": 2,
+          "samples": 12800,
+          "duration": 0.4,
+          "weight": 1000,
+          "gainDB": -17.0,
+          "gainLinear": 0.14125375446227545,
+          "gainChain": [
+            {
+              "objectID": 1020071299,
+              "type": "CAkSound",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 212059915,
+              "type": "CAkRanSeqCntr",
+              "gainDB": -17.0,
+              "bankByteOffset": 8590655,
+              "properties": [
+                {
+                  "property": "0x00 [Volume]",
+                  "fields": [
+                    {
+                      "offset": "8590652",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "0",
+                      "valuefmt": "0x00 [Volume]"
+                    },
+                    {
+                      "offset": "8590655",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-17.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x07 [Priority]",
+                  "fields": [
+                    {
+                      "offset": "8590653",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "7",
+                      "valuefmt": "0x07 [Priority]"
+                    },
+                    {
+                      "offset": "8590659",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "70.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x08 [PriorityDistanceOffset]",
+                  "fields": [
+                    {
+                      "offset": "8590654",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "8",
+                      "valuefmt": "0x08 [PriorityDistanceOffset]"
+                    },
+                    {
+                      "offset": "8590663",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-15.0"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "objectID": 546169848,
+              "type": "CAkSwitchCntr",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": [
+                {
+                  "property": "0x07 [Priority]",
+                  "fields": [
+                    {
+                      "offset": "8594892",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "7",
+                      "valuefmt": "0x07 [Priority]"
+                    },
+                    {
+                      "offset": "8594895",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "70.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x08 [PriorityDistanceOffset]",
+                  "fields": [
+                    {
+                      "offset": "8594893",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "8",
+                      "valuefmt": "0x08 [PriorityDistanceOffset]"
+                    },
+                    {
+                      "offset": "8594899",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-15.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x46 [AttenuationID]",
+                  "fields": [
+                    {
+                      "offset": "8594894",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "70",
+                      "valuefmt": "0x46 [AttenuationID]"
+                    },
+                    {
+                      "offset": "8594903",
+                      "type": "tid",
+                      "name": "pValue",
+                      "value": "638930742"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "objectID": 1038667371,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 939312057,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": [
+                {
+                  "property": "0x07 [Priority]",
+                  "fields": [
+                    {
+                      "offset": "8615377",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "7",
+                      "valuefmt": "0x07 [Priority]"
+                    },
+                    {
+                      "offset": "8615379",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "70.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x08 [PriorityDistanceOffset]",
+                  "fields": [
+                    {
+                      "offset": "8615378",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "8",
+                      "valuefmt": "0x08 [PriorityDistanceOffset]"
+                    },
+                    {
+                      "offset": "8615383",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-15.0"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "objectID": 615838859,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 769340132,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 589290714,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            }
+          ],
+          "embeddedLocation": {
+            "bankDataOffset": 5616288,
+            "sourceBytes": 3542,
+            "didxOffset": 9812
+          }
+        },
+        {
+          "file": "sourceDefault-02.wav",
+          "soundID": 84641129,
+          "mediaID": 557048801,
+          "sourcePath": "wwise/557048801.wem",
+          "sourceMD5": "bd6f0f2ba7b6841ed17e43056358083b",
+          "sourceBytes": 3591,
+          "wavSHA256": "03e28e84403f0b01fe1f4c7cfe03ab63d04c6e98047aa3618574d05b30a5e576",
+          "wavBytes": 35324,
+          "channels": 1,
+          "sampleRate": 44100,
+          "sampleWidth": 2,
+          "samples": 17640,
+          "duration": 0.4,
+          "weight": 1000,
+          "gainDB": -17.0,
+          "gainLinear": 0.14125375446227545,
+          "gainChain": [
+            {
+              "objectID": 84641129,
+              "type": "CAkSound",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 212059915,
+              "type": "CAkRanSeqCntr",
+              "gainDB": -17.0,
+              "bankByteOffset": 8590655,
+              "properties": [
+                {
+                  "property": "0x00 [Volume]",
+                  "fields": [
+                    {
+                      "offset": "8590652",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "0",
+                      "valuefmt": "0x00 [Volume]"
+                    },
+                    {
+                      "offset": "8590655",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-17.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x07 [Priority]",
+                  "fields": [
+                    {
+                      "offset": "8590653",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "7",
+                      "valuefmt": "0x07 [Priority]"
+                    },
+                    {
+                      "offset": "8590659",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "70.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x08 [PriorityDistanceOffset]",
+                  "fields": [
+                    {
+                      "offset": "8590654",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "8",
+                      "valuefmt": "0x08 [PriorityDistanceOffset]"
+                    },
+                    {
+                      "offset": "8590663",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-15.0"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "objectID": 546169848,
+              "type": "CAkSwitchCntr",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": [
+                {
+                  "property": "0x07 [Priority]",
+                  "fields": [
+                    {
+                      "offset": "8594892",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "7",
+                      "valuefmt": "0x07 [Priority]"
+                    },
+                    {
+                      "offset": "8594895",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "70.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x08 [PriorityDistanceOffset]",
+                  "fields": [
+                    {
+                      "offset": "8594893",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "8",
+                      "valuefmt": "0x08 [PriorityDistanceOffset]"
+                    },
+                    {
+                      "offset": "8594899",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-15.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x46 [AttenuationID]",
+                  "fields": [
+                    {
+                      "offset": "8594894",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "70",
+                      "valuefmt": "0x46 [AttenuationID]"
+                    },
+                    {
+                      "offset": "8594903",
+                      "type": "tid",
+                      "name": "pValue",
+                      "value": "638930742"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "objectID": 1038667371,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 939312057,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": [
+                {
+                  "property": "0x07 [Priority]",
+                  "fields": [
+                    {
+                      "offset": "8615377",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "7",
+                      "valuefmt": "0x07 [Priority]"
+                    },
+                    {
+                      "offset": "8615379",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "70.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x08 [PriorityDistanceOffset]",
+                  "fields": [
+                    {
+                      "offset": "8615378",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "8",
+                      "valuefmt": "0x08 [PriorityDistanceOffset]"
+                    },
+                    {
+                      "offset": "8615383",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-15.0"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "objectID": 615838859,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 769340132,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 589290714,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            }
+          ],
+          "embeddedLocation": {
+            "bankDataOffset": 4595712,
+            "sourceBytes": 3591,
+            "didxOffset": 7820
+          }
+        },
+        {
+          "file": "sourceDefault-03.wav",
+          "soundID": 871858956,
+          "mediaID": 588630105,
+          "sourcePath": "wwise/588630105.wem",
+          "sourceMD5": "f5b6b13baaf993446cc2712822d8acd7",
+          "sourceBytes": 3722,
+          "wavSHA256": "16cf14b9b52713919d1f28567febabd6eee1e5f60e31543b58d96fa575dea3ab",
+          "wavBytes": 35324,
+          "channels": 1,
+          "sampleRate": 44100,
+          "sampleWidth": 2,
+          "samples": 17640,
+          "duration": 0.4,
+          "weight": 1000,
+          "gainDB": -17.0,
+          "gainLinear": 0.14125375446227545,
+          "gainChain": [
+            {
+              "objectID": 871858956,
+              "type": "CAkSound",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 212059915,
+              "type": "CAkRanSeqCntr",
+              "gainDB": -17.0,
+              "bankByteOffset": 8590655,
+              "properties": [
+                {
+                  "property": "0x00 [Volume]",
+                  "fields": [
+                    {
+                      "offset": "8590652",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "0",
+                      "valuefmt": "0x00 [Volume]"
+                    },
+                    {
+                      "offset": "8590655",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-17.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x07 [Priority]",
+                  "fields": [
+                    {
+                      "offset": "8590653",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "7",
+                      "valuefmt": "0x07 [Priority]"
+                    },
+                    {
+                      "offset": "8590659",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "70.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x08 [PriorityDistanceOffset]",
+                  "fields": [
+                    {
+                      "offset": "8590654",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "8",
+                      "valuefmt": "0x08 [PriorityDistanceOffset]"
+                    },
+                    {
+                      "offset": "8590663",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-15.0"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "objectID": 546169848,
+              "type": "CAkSwitchCntr",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": [
+                {
+                  "property": "0x07 [Priority]",
+                  "fields": [
+                    {
+                      "offset": "8594892",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "7",
+                      "valuefmt": "0x07 [Priority]"
+                    },
+                    {
+                      "offset": "8594895",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "70.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x08 [PriorityDistanceOffset]",
+                  "fields": [
+                    {
+                      "offset": "8594893",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "8",
+                      "valuefmt": "0x08 [PriorityDistanceOffset]"
+                    },
+                    {
+                      "offset": "8594899",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-15.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x46 [AttenuationID]",
+                  "fields": [
+                    {
+                      "offset": "8594894",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "70",
+                      "valuefmt": "0x46 [AttenuationID]"
+                    },
+                    {
+                      "offset": "8594903",
+                      "type": "tid",
+                      "name": "pValue",
+                      "value": "638930742"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "objectID": 1038667371,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 939312057,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": [
+                {
+                  "property": "0x07 [Priority]",
+                  "fields": [
+                    {
+                      "offset": "8615377",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "7",
+                      "valuefmt": "0x07 [Priority]"
+                    },
+                    {
+                      "offset": "8615379",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "70.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x08 [PriorityDistanceOffset]",
+                  "fields": [
+                    {
+                      "offset": "8615378",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "8",
+                      "valuefmt": "0x08 [PriorityDistanceOffset]"
+                    },
+                    {
+                      "offset": "8615383",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-15.0"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "objectID": 615838859,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 769340132,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 589290714,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            }
+          ],
+          "embeddedLocation": {
+            "bankDataOffset": 4838768,
+            "sourceBytes": 3722,
+            "didxOffset": 8240
+          }
+        },
+        {
+          "file": "sourceDefault-04.wav",
+          "soundID": 403318887,
+          "mediaID": 1017798893,
+          "sourcePath": "wwise/1017798893.wem",
+          "sourceMD5": "bd8813c9a5a0a87a4f6739e147826163",
+          "sourceBytes": 3704,
+          "wavSHA256": "d916724a6b48c17c0d96737b10e05c98ad9e544c994c9032827b841b54261414",
+          "wavBytes": 22442,
+          "channels": 1,
+          "sampleRate": 28000,
+          "sampleWidth": 2,
+          "samples": 11199,
+          "duration": 0.3999642857142857,
+          "weight": 1000,
+          "gainDB": -17.0,
+          "gainLinear": 0.14125375446227545,
+          "gainChain": [
+            {
+              "objectID": 403318887,
+              "type": "CAkSound",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 212059915,
+              "type": "CAkRanSeqCntr",
+              "gainDB": -17.0,
+              "bankByteOffset": 8590655,
+              "properties": [
+                {
+                  "property": "0x00 [Volume]",
+                  "fields": [
+                    {
+                      "offset": "8590652",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "0",
+                      "valuefmt": "0x00 [Volume]"
+                    },
+                    {
+                      "offset": "8590655",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-17.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x07 [Priority]",
+                  "fields": [
+                    {
+                      "offset": "8590653",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "7",
+                      "valuefmt": "0x07 [Priority]"
+                    },
+                    {
+                      "offset": "8590659",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "70.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x08 [PriorityDistanceOffset]",
+                  "fields": [
+                    {
+                      "offset": "8590654",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "8",
+                      "valuefmt": "0x08 [PriorityDistanceOffset]"
+                    },
+                    {
+                      "offset": "8590663",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-15.0"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "objectID": 546169848,
+              "type": "CAkSwitchCntr",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": [
+                {
+                  "property": "0x07 [Priority]",
+                  "fields": [
+                    {
+                      "offset": "8594892",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "7",
+                      "valuefmt": "0x07 [Priority]"
+                    },
+                    {
+                      "offset": "8594895",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "70.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x08 [PriorityDistanceOffset]",
+                  "fields": [
+                    {
+                      "offset": "8594893",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "8",
+                      "valuefmt": "0x08 [PriorityDistanceOffset]"
+                    },
+                    {
+                      "offset": "8594899",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-15.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x46 [AttenuationID]",
+                  "fields": [
+                    {
+                      "offset": "8594894",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "70",
+                      "valuefmt": "0x46 [AttenuationID]"
+                    },
+                    {
+                      "offset": "8594903",
+                      "type": "tid",
+                      "name": "pValue",
+                      "value": "638930742"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "objectID": 1038667371,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 939312057,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": [
+                {
+                  "property": "0x07 [Priority]",
+                  "fields": [
+                    {
+                      "offset": "8615377",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "7",
+                      "valuefmt": "0x07 [Priority]"
+                    },
+                    {
+                      "offset": "8615379",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "70.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x08 [PriorityDistanceOffset]",
+                  "fields": [
+                    {
+                      "offset": "8615378",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "8",
+                      "valuefmt": "0x08 [PriorityDistanceOffset]"
+                    },
+                    {
+                      "offset": "8615383",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-15.0"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "objectID": 615838859,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 769340132,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 589290714,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            }
+          ],
+          "embeddedLocation": {
+            "bankDataOffset": 8021488,
+            "sourceBytes": 3704,
+            "didxOffset": 13940
+          }
+        },
+        {
+          "file": "sourceDefault-05.wav",
+          "soundID": 843614611,
+          "mediaID": 443703866,
+          "sourcePath": "wwise/443703866.wem",
+          "sourceMD5": "346a3509c1b2ea7d9c1088110ec4c9c7",
+          "sourceBytes": 3999,
+          "wavSHA256": "7dc80972ec4ef54248d76a67b274ea71c485c8b2801422f67846135a016443d2",
+          "wavBytes": 35324,
+          "channels": 1,
+          "sampleRate": 44100,
+          "sampleWidth": 2,
+          "samples": 17640,
+          "duration": 0.4,
+          "weight": 1000,
+          "gainDB": -17.0,
+          "gainLinear": 0.14125375446227545,
+          "gainChain": [
+            {
+              "objectID": 843614611,
+              "type": "CAkSound",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 212059915,
+              "type": "CAkRanSeqCntr",
+              "gainDB": -17.0,
+              "bankByteOffset": 8590655,
+              "properties": [
+                {
+                  "property": "0x00 [Volume]",
+                  "fields": [
+                    {
+                      "offset": "8590652",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "0",
+                      "valuefmt": "0x00 [Volume]"
+                    },
+                    {
+                      "offset": "8590655",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-17.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x07 [Priority]",
+                  "fields": [
+                    {
+                      "offset": "8590653",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "7",
+                      "valuefmt": "0x07 [Priority]"
+                    },
+                    {
+                      "offset": "8590659",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "70.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x08 [PriorityDistanceOffset]",
+                  "fields": [
+                    {
+                      "offset": "8590654",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "8",
+                      "valuefmt": "0x08 [PriorityDistanceOffset]"
+                    },
+                    {
+                      "offset": "8590663",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-15.0"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "objectID": 546169848,
+              "type": "CAkSwitchCntr",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": [
+                {
+                  "property": "0x07 [Priority]",
+                  "fields": [
+                    {
+                      "offset": "8594892",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "7",
+                      "valuefmt": "0x07 [Priority]"
+                    },
+                    {
+                      "offset": "8594895",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "70.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x08 [PriorityDistanceOffset]",
+                  "fields": [
+                    {
+                      "offset": "8594893",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "8",
+                      "valuefmt": "0x08 [PriorityDistanceOffset]"
+                    },
+                    {
+                      "offset": "8594899",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-15.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x46 [AttenuationID]",
+                  "fields": [
+                    {
+                      "offset": "8594894",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "70",
+                      "valuefmt": "0x46 [AttenuationID]"
+                    },
+                    {
+                      "offset": "8594903",
+                      "type": "tid",
+                      "name": "pValue",
+                      "value": "638930742"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "objectID": 1038667371,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 939312057,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": [
+                {
+                  "property": "0x07 [Priority]",
+                  "fields": [
+                    {
+                      "offset": "8615377",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "7",
+                      "valuefmt": "0x07 [Priority]"
+                    },
+                    {
+                      "offset": "8615379",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "70.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x08 [PriorityDistanceOffset]",
+                  "fields": [
+                    {
+                      "offset": "8615378",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "8",
+                      "valuefmt": "0x08 [PriorityDistanceOffset]"
+                    },
+                    {
+                      "offset": "8615383",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-15.0"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "objectID": 615838859,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 769340132,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 589290714,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            }
+          ],
+          "embeddedLocation": {
+            "bankDataOffset": 3811008,
+            "sourceBytes": 3999,
+            "didxOffset": 6392
+          }
+        },
+        {
+          "file": "sourceDefault-06.wav",
+          "soundID": 115096129,
+          "mediaID": 597934491,
+          "sourcePath": "wwise/597934491.wem",
+          "sourceMD5": "9c6d363c1c6371f7a5a13857eaf1908b",
+          "sourceBytes": 3582,
+          "wavSHA256": "906d9bb5359d91225a7be919f1ad6ab7165c292ef951ef5ba4e8faca0ac850cb",
+          "wavBytes": 25644,
+          "channels": 1,
+          "sampleRate": 32000,
+          "sampleWidth": 2,
+          "samples": 12800,
+          "duration": 0.4,
+          "weight": 1000,
+          "gainDB": -17.0,
+          "gainLinear": 0.14125375446227545,
+          "gainChain": [
+            {
+              "objectID": 115096129,
+              "type": "CAkSound",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 212059915,
+              "type": "CAkRanSeqCntr",
+              "gainDB": -17.0,
+              "bankByteOffset": 8590655,
+              "properties": [
+                {
+                  "property": "0x00 [Volume]",
+                  "fields": [
+                    {
+                      "offset": "8590652",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "0",
+                      "valuefmt": "0x00 [Volume]"
+                    },
+                    {
+                      "offset": "8590655",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-17.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x07 [Priority]",
+                  "fields": [
+                    {
+                      "offset": "8590653",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "7",
+                      "valuefmt": "0x07 [Priority]"
+                    },
+                    {
+                      "offset": "8590659",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "70.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x08 [PriorityDistanceOffset]",
+                  "fields": [
+                    {
+                      "offset": "8590654",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "8",
+                      "valuefmt": "0x08 [PriorityDistanceOffset]"
+                    },
+                    {
+                      "offset": "8590663",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-15.0"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "objectID": 546169848,
+              "type": "CAkSwitchCntr",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": [
+                {
+                  "property": "0x07 [Priority]",
+                  "fields": [
+                    {
+                      "offset": "8594892",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "7",
+                      "valuefmt": "0x07 [Priority]"
+                    },
+                    {
+                      "offset": "8594895",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "70.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x08 [PriorityDistanceOffset]",
+                  "fields": [
+                    {
+                      "offset": "8594893",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "8",
+                      "valuefmt": "0x08 [PriorityDistanceOffset]"
+                    },
+                    {
+                      "offset": "8594899",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-15.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x46 [AttenuationID]",
+                  "fields": [
+                    {
+                      "offset": "8594894",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "70",
+                      "valuefmt": "0x46 [AttenuationID]"
+                    },
+                    {
+                      "offset": "8594903",
+                      "type": "tid",
+                      "name": "pValue",
+                      "value": "638930742"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "objectID": 1038667371,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 939312057,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": [
+                {
+                  "property": "0x07 [Priority]",
+                  "fields": [
+                    {
+                      "offset": "8615377",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "7",
+                      "valuefmt": "0x07 [Priority]"
+                    },
+                    {
+                      "offset": "8615379",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "70.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x08 [PriorityDistanceOffset]",
+                  "fields": [
+                    {
+                      "offset": "8615378",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "8",
+                      "valuefmt": "0x08 [PriorityDistanceOffset]"
+                    },
+                    {
+                      "offset": "8615383",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-15.0"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "objectID": 615838859,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 769340132,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 589290714,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            }
+          ],
+          "embeddedLocation": {
+            "bankDataOffset": 4937344,
+            "sourceBytes": 3582,
+            "didxOffset": 8408
+          }
+        },
+        {
+          "file": "sourceDefault-07.wav",
+          "soundID": 127818528,
+          "mediaID": 893734360,
+          "sourcePath": "wwise/893734360.wem",
+          "sourceMD5": "34033ac082dbfae5c3f0dc5716f14db1",
+          "sourceBytes": 3445,
+          "wavSHA256": "8b83dc6b44bb3311c7e7182dbf773e03e90665b35411fca81a74c48af05c0a0c",
+          "wavBytes": 22442,
+          "channels": 1,
+          "sampleRate": 28000,
+          "sampleWidth": 2,
+          "samples": 11199,
+          "duration": 0.3999642857142857,
+          "weight": 1000,
+          "gainDB": -17.0,
+          "gainLinear": 0.14125375446227545,
+          "gainChain": [
+            {
+              "objectID": 127818528,
+              "type": "CAkSound",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 212059915,
+              "type": "CAkRanSeqCntr",
+              "gainDB": -17.0,
+              "bankByteOffset": 8590655,
+              "properties": [
+                {
+                  "property": "0x00 [Volume]",
+                  "fields": [
+                    {
+                      "offset": "8590652",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "0",
+                      "valuefmt": "0x00 [Volume]"
+                    },
+                    {
+                      "offset": "8590655",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-17.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x07 [Priority]",
+                  "fields": [
+                    {
+                      "offset": "8590653",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "7",
+                      "valuefmt": "0x07 [Priority]"
+                    },
+                    {
+                      "offset": "8590659",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "70.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x08 [PriorityDistanceOffset]",
+                  "fields": [
+                    {
+                      "offset": "8590654",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "8",
+                      "valuefmt": "0x08 [PriorityDistanceOffset]"
+                    },
+                    {
+                      "offset": "8590663",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-15.0"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "objectID": 546169848,
+              "type": "CAkSwitchCntr",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": [
+                {
+                  "property": "0x07 [Priority]",
+                  "fields": [
+                    {
+                      "offset": "8594892",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "7",
+                      "valuefmt": "0x07 [Priority]"
+                    },
+                    {
+                      "offset": "8594895",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "70.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x08 [PriorityDistanceOffset]",
+                  "fields": [
+                    {
+                      "offset": "8594893",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "8",
+                      "valuefmt": "0x08 [PriorityDistanceOffset]"
+                    },
+                    {
+                      "offset": "8594899",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-15.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x46 [AttenuationID]",
+                  "fields": [
+                    {
+                      "offset": "8594894",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "70",
+                      "valuefmt": "0x46 [AttenuationID]"
+                    },
+                    {
+                      "offset": "8594903",
+                      "type": "tid",
+                      "name": "pValue",
+                      "value": "638930742"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "objectID": 1038667371,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 939312057,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": [
+                {
+                  "property": "0x07 [Priority]",
+                  "fields": [
+                    {
+                      "offset": "8615377",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "7",
+                      "valuefmt": "0x07 [Priority]"
+                    },
+                    {
+                      "offset": "8615379",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "70.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x08 [PriorityDistanceOffset]",
+                  "fields": [
+                    {
+                      "offset": "8615378",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "8",
+                      "valuefmt": "0x08 [PriorityDistanceOffset]"
+                    },
+                    {
+                      "offset": "8615383",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-15.0"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "objectID": 615838859,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 769340132,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 589290714,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            }
+          ],
+          "embeddedLocation": {
+            "bankDataOffset": 7212256,
+            "sourceBytes": 3445,
+            "didxOffset": 12476
+          }
+        },
+        {
+          "file": "sourceDefault-08.wav",
+          "soundID": 1056405463,
+          "mediaID": 365244079,
+          "sourcePath": "wwise/365244079.wem",
+          "sourceMD5": "ebd140d372a63b6afcde4e85ba22f8cf",
+          "sourceBytes": 3684,
+          "wavSHA256": "82828dcff224c8cec52531732f20ddfceba9557e661a2c12a674b2ad9f58f1ba",
+          "wavBytes": 35324,
+          "channels": 1,
+          "sampleRate": 44100,
+          "sampleWidth": 2,
+          "samples": 17640,
+          "duration": 0.4,
+          "weight": 1000,
+          "gainDB": -17.0,
+          "gainLinear": 0.14125375446227545,
+          "gainChain": [
+            {
+              "objectID": 1056405463,
+              "type": "CAkSound",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 212059915,
+              "type": "CAkRanSeqCntr",
+              "gainDB": -17.0,
+              "bankByteOffset": 8590655,
+              "properties": [
+                {
+                  "property": "0x00 [Volume]",
+                  "fields": [
+                    {
+                      "offset": "8590652",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "0",
+                      "valuefmt": "0x00 [Volume]"
+                    },
+                    {
+                      "offset": "8590655",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-17.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x07 [Priority]",
+                  "fields": [
+                    {
+                      "offset": "8590653",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "7",
+                      "valuefmt": "0x07 [Priority]"
+                    },
+                    {
+                      "offset": "8590659",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "70.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x08 [PriorityDistanceOffset]",
+                  "fields": [
+                    {
+                      "offset": "8590654",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "8",
+                      "valuefmt": "0x08 [PriorityDistanceOffset]"
+                    },
+                    {
+                      "offset": "8590663",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-15.0"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "objectID": 546169848,
+              "type": "CAkSwitchCntr",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": [
+                {
+                  "property": "0x07 [Priority]",
+                  "fields": [
+                    {
+                      "offset": "8594892",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "7",
+                      "valuefmt": "0x07 [Priority]"
+                    },
+                    {
+                      "offset": "8594895",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "70.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x08 [PriorityDistanceOffset]",
+                  "fields": [
+                    {
+                      "offset": "8594893",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "8",
+                      "valuefmt": "0x08 [PriorityDistanceOffset]"
+                    },
+                    {
+                      "offset": "8594899",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-15.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x46 [AttenuationID]",
+                  "fields": [
+                    {
+                      "offset": "8594894",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "70",
+                      "valuefmt": "0x46 [AttenuationID]"
+                    },
+                    {
+                      "offset": "8594903",
+                      "type": "tid",
+                      "name": "pValue",
+                      "value": "638930742"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "objectID": 1038667371,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 939312057,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": [
+                {
+                  "property": "0x07 [Priority]",
+                  "fields": [
+                    {
+                      "offset": "8615377",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "7",
+                      "valuefmt": "0x07 [Priority]"
+                    },
+                    {
+                      "offset": "8615379",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "70.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x08 [PriorityDistanceOffset]",
+                  "fields": [
+                    {
+                      "offset": "8615378",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "8",
+                      "valuefmt": "0x08 [PriorityDistanceOffset]"
+                    },
+                    {
+                      "offset": "8615383",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-15.0"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "objectID": 615838859,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 769340132,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 589290714,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            }
+          ],
+          "embeddedLocation": {
+            "bankDataOffset": 3131024,
+            "sourceBytes": 3684,
+            "didxOffset": 5312
+          }
+        },
+        {
+          "file": "sourceDefault-09.wav",
+          "soundID": 61532791,
+          "mediaID": 249317040,
+          "sourcePath": "wwise/249317040.wem",
+          "sourceMD5": "ed25f2780a4b0744f919ae1d5c273455",
+          "sourceBytes": 3337,
+          "wavSHA256": "00f296f53de4aee754fc445787c490b26932a2e2fbe7c0b409553da8dc22e7fc",
+          "wavBytes": 22442,
+          "channels": 1,
+          "sampleRate": 28000,
+          "sampleWidth": 2,
+          "samples": 11199,
+          "duration": 0.3999642857142857,
+          "weight": 1000,
+          "gainDB": -17.0,
+          "gainLinear": 0.14125375446227545,
+          "gainChain": [
+            {
+              "objectID": 61532791,
+              "type": "CAkSound",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 212059915,
+              "type": "CAkRanSeqCntr",
+              "gainDB": -17.0,
+              "bankByteOffset": 8590655,
+              "properties": [
+                {
+                  "property": "0x00 [Volume]",
+                  "fields": [
+                    {
+                      "offset": "8590652",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "0",
+                      "valuefmt": "0x00 [Volume]"
+                    },
+                    {
+                      "offset": "8590655",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-17.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x07 [Priority]",
+                  "fields": [
+                    {
+                      "offset": "8590653",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "7",
+                      "valuefmt": "0x07 [Priority]"
+                    },
+                    {
+                      "offset": "8590659",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "70.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x08 [PriorityDistanceOffset]",
+                  "fields": [
+                    {
+                      "offset": "8590654",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "8",
+                      "valuefmt": "0x08 [PriorityDistanceOffset]"
+                    },
+                    {
+                      "offset": "8590663",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-15.0"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "objectID": 546169848,
+              "type": "CAkSwitchCntr",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": [
+                {
+                  "property": "0x07 [Priority]",
+                  "fields": [
+                    {
+                      "offset": "8594892",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "7",
+                      "valuefmt": "0x07 [Priority]"
+                    },
+                    {
+                      "offset": "8594895",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "70.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x08 [PriorityDistanceOffset]",
+                  "fields": [
+                    {
+                      "offset": "8594893",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "8",
+                      "valuefmt": "0x08 [PriorityDistanceOffset]"
+                    },
+                    {
+                      "offset": "8594899",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-15.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x46 [AttenuationID]",
+                  "fields": [
+                    {
+                      "offset": "8594894",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "70",
+                      "valuefmt": "0x46 [AttenuationID]"
+                    },
+                    {
+                      "offset": "8594903",
+                      "type": "tid",
+                      "name": "pValue",
+                      "value": "638930742"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "objectID": 1038667371,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 939312057,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": [
+                {
+                  "property": "0x07 [Priority]",
+                  "fields": [
+                    {
+                      "offset": "8615377",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "7",
+                      "valuefmt": "0x07 [Priority]"
+                    },
+                    {
+                      "offset": "8615379",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "70.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x08 [PriorityDistanceOffset]",
+                  "fields": [
+                    {
+                      "offset": "8615378",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "8",
+                      "valuefmt": "0x08 [PriorityDistanceOffset]"
+                    },
+                    {
+                      "offset": "8615383",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-15.0"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "objectID": 615838859,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 769340132,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 589290714,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            }
+          ],
+          "embeddedLocation": {
+            "bankDataOffset": 2181616,
+            "sourceBytes": 3337,
+            "didxOffset": 3668
+          }
+        },
+        {
+          "file": "sourceDefault-10.wav",
+          "soundID": 898455073,
+          "mediaID": 1038709455,
+          "sourcePath": "wwise/1038709455.wem",
+          "sourceMD5": "26604ee73c2e9336924b0c6975630d92",
+          "sourceBytes": 3460,
+          "wavSHA256": "3fb1ef150f060761d3e8510af961568ae644f202b358e019720d15b7b0e7de4e",
+          "wavBytes": 22442,
+          "channels": 1,
+          "sampleRate": 28000,
+          "sampleWidth": 2,
+          "samples": 11199,
+          "duration": 0.3999642857142857,
+          "weight": 1000,
+          "gainDB": -17.0,
+          "gainLinear": 0.14125375446227545,
+          "gainChain": [
+            {
+              "objectID": 898455073,
+              "type": "CAkSound",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 212059915,
+              "type": "CAkRanSeqCntr",
+              "gainDB": -17.0,
+              "bankByteOffset": 8590655,
+              "properties": [
+                {
+                  "property": "0x00 [Volume]",
+                  "fields": [
+                    {
+                      "offset": "8590652",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "0",
+                      "valuefmt": "0x00 [Volume]"
+                    },
+                    {
+                      "offset": "8590655",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-17.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x07 [Priority]",
+                  "fields": [
+                    {
+                      "offset": "8590653",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "7",
+                      "valuefmt": "0x07 [Priority]"
+                    },
+                    {
+                      "offset": "8590659",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "70.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x08 [PriorityDistanceOffset]",
+                  "fields": [
+                    {
+                      "offset": "8590654",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "8",
+                      "valuefmt": "0x08 [PriorityDistanceOffset]"
+                    },
+                    {
+                      "offset": "8590663",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-15.0"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "objectID": 546169848,
+              "type": "CAkSwitchCntr",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": [
+                {
+                  "property": "0x07 [Priority]",
+                  "fields": [
+                    {
+                      "offset": "8594892",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "7",
+                      "valuefmt": "0x07 [Priority]"
+                    },
+                    {
+                      "offset": "8594895",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "70.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x08 [PriorityDistanceOffset]",
+                  "fields": [
+                    {
+                      "offset": "8594893",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "8",
+                      "valuefmt": "0x08 [PriorityDistanceOffset]"
+                    },
+                    {
+                      "offset": "8594899",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-15.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x46 [AttenuationID]",
+                  "fields": [
+                    {
+                      "offset": "8594894",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "70",
+                      "valuefmt": "0x46 [AttenuationID]"
+                    },
+                    {
+                      "offset": "8594903",
+                      "type": "tid",
+                      "name": "pValue",
+                      "value": "638930742"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "objectID": 1038667371,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 939312057,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": [
+                {
+                  "property": "0x07 [Priority]",
+                  "fields": [
+                    {
+                      "offset": "8615377",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "7",
+                      "valuefmt": "0x07 [Priority]"
+                    },
+                    {
+                      "offset": "8615379",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "70.0"
+                    }
+                  ]
+                },
+                {
+                  "property": "0x08 [PriorityDistanceOffset]",
+                  "fields": [
+                    {
+                      "offset": "8615378",
+                      "type": "u8",
+                      "name": "pID",
+                      "value": "8",
+                      "valuefmt": "0x08 [PriorityDistanceOffset]"
+                    },
+                    {
+                      "offset": "8615383",
+                      "type": "uni",
+                      "name": "pValue",
+                      "value": "-15.0"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "objectID": 615838859,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 769340132,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            },
+            {
+              "objectID": 589290714,
+              "type": "CAkActorMixer",
+              "gainDB": 0,
+              "bankByteOffset": null,
+              "properties": []
+            }
+          ],
+          "embeddedLocation": {
+            "bankDataOffset": 8216336,
+            "sourceBytes": 3460,
+            "didxOffset": 14276
+          }
+        }
+      ],
+      "note": "Exact original Wwise default branch; lowercase FNV1 soil=687380132. Ten samples, no immediate repeat, original-17dB. Source OutputBusLPF parameter40 is preserved in provenance; frequency/DSP equivalence is not asserted or baked into WAV.",
+      "originalFilter": {
+        "parameter": "OutputBusLPF",
+        "value": 40,
+        "unit": "Wwise normalized 0..100, not Hz",
+        "rtpcID": 976091830,
+        "curve": [
+          [
+            0,
+            40
+          ],
+          [
+            1,
+            40
+          ]
+        ],
+        "browserFilterEquivalent": null,
+        "evidence": "survivor-bank.xml CAkRanSeqCntr212059915 InitialRTPC; points To40 at byte8590702 and8590714"
+      }
+    }
+  },
+  "surfaceSelection": {
+    "status": "original event fallback selected; original room terrain-to-audio material mapping not verified",
+    "selectedGroup": "sourceDefault",
+    "switchID": 687380132,
+    "switchNameHashMatch": "soil",
+    "nameEvidence": "Wwise FNV1 lowercase(\"soil\") == 687380132. This recovers the default switch name; it is not evidence that the room visual floor is soil.",
+    "roomAudit": "Original dm65_main Scene Collision records are empty; ground001/ground002 GIM/MTG have visual textures/shaders only. active=carpet denotes an interaction and is not an audio-material binding.",
+    "browserAdaptation": "Use the original event fallback rather than inferring wood/stone from appearance. Per-floor material switching is not transplanted."
+  },
+  "conversion": {
+    "method": "vgmstream r2117 -i -o output.wav input.wem",
+    "archiveSHA256": "6c4a8a3813864fefed081bbd337dbc0ad93bf88e0b92f5db98d7ab258b22dc6c",
+    "processing": "No synthesis, trimming, resampling, baked gain, or pitch modification. Original encoded samples decoded to native-rate PCM16 WAV. Bank gain remains a playback parameter."
+  },
+  "browserBoundary": "Original sound assets, event mapping and notifier times are preserved. Runtime room-state attenuation, acoustic buses and material selection require explicit integration; they are not baked into WAV files.",
+  "validation": {
+    "sampleCount": 10,
+    "passed": [
+      "Original embedded WEM range and RIFF header",
+      "Native PCM16 format/sample count and nonzero signal",
+      "WAV SHA256 matches",
+      "Original bank gain float byte offsets",
+      "Equal original playlist weights",
+      "No pitch parameter on selected sounds or ancestors"
+    ]
+  },
+  "browserPlayback": {
+    "masterGain": 0.75,
+    "selection": "Original default switch branch; uniform choice excluding immediately previous sample.",
+    "overlap": false,
+    "maxDelayedStartMs": 80,
+    "unported": "Original OutputBusLPF40, acoustic buses, room attenuation and position-dependent surface switches are not emulated."
+  }
+}
