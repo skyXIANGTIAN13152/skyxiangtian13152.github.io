@@ -34,7 +34,6 @@ const rayDirection = new THREE.Vector3();
 const color = new THREE.Color();
 const resolution = createRoomResolution();
 let blockers = [];
-const reduced = () => document.documentElement.classList.contains('reduced-motion');
 const intro = () => document.documentElement.classList.contains('sky-intro-active');
 const canMove = () => active && ready && !contextLost && !pausedForTransition && !intro() && !document.hidden && directory.hidden;
 
@@ -155,8 +154,8 @@ function render(now) {
   footstepsMoving = walking;
   // Fade to idle as soon as the character actually stops, including a wall
   // collision. A damped speed used to keep the feet walking in place for 0.32s.
-  detective.update(elapsed,speed,reduced(),walking);
-  room.update?.(elapsed,reduced());
+  detective.update(elapsed,speed,walking);
+  room.update?.(elapsed);
   shadow.position.set(player.x,player.y + .018,player.z);
   focus.set(player.x,player.y + 1.35,player.z - .15);
   desiredCamera.set(
@@ -176,11 +175,11 @@ function render(now) {
     ? room.move.raycast(raycaster.ray,raycaster.near,raycaster.far)
     : (raycaster.intersectObjects(blockers,false)[0]?.distance ?? false);
   if (cameraDistanceHit !== false) desiredCamera.copy(focus).addScaledVector(rayDirection,Math.max(.65,cameraDistanceHit - .18));
-  camera.position.lerp(desiredCamera,reduced() ? 1 : 1 - Math.exp(-dt * 6));
+  camera.position.lerp(desiredCamera,1 - Math.exp(-dt * 6));
   camera.lookAt(focus);
   detective.lantern.getWorldPosition(lightPosition);
   lamp.position.copy(lightPosition);
-  lamp.intensity = reduced() ? .35 : .35 + Math.sin(elapsed * 8.1) * .008 + Math.sin(elapsed * 12.3) * .004;
+  lamp.intensity = .35 + Math.sin(elapsed * 8.1) * .008 + Math.sin(elapsed * 12.3) * .004;
   postprocess.render(scene,camera);
   updateLabels();
   frame = requestAnimationFrame(render);
@@ -195,7 +194,7 @@ function makeContactShadow() {
 }
 async function initialize() {
   try {
-    const [{createRoom},{createDetective}] = await Promise.all([import('./room-environment.js?v=20261023-13'),import('./room-detective.js?v=20261023-14')]);
+    const [{createRoom},{createDetective}] = await Promise.all([import('./room-environment.js?v=20261023-16'),import('./room-detective.js?v=20261023-16')]);
     scene = new THREE.Scene(); scene.background = new THREE.Color('#11181d');
     scene.fog = new THREE.FogExp2('#10151b',.007);
     camera = new THREE.PerspectiveCamera(45,1280/720,.05,80);
@@ -233,7 +232,7 @@ async function initialize() {
       player.y + 1.35 + Math.sin(pitch) * 5.8,
       THREE.MathUtils.clamp(player.z + Math.cos(yaw) * 5.8,room.bounds.minZ + .42,room.bounds.maxZ - .42)
     );camera.lookAt(player.x,player.y + 1.35,player.z - .15);
-    detective.update(0,0,reduced());postprocess.render(scene,camera);
+    detective.update(0,0);postprocess.render(scene,camera);
     ready = true;lobby.classList.add('room-ready');
     bindCanvas(canvas);setActive(stage.dataset.scene === 'lobby');
     canvas.addEventListener('webglcontextlost',event => {event.preventDefault();contextLost = true;stop();resetInput();lobby.classList.remove('room-ready');loading.textContent = '画面已暂停，正在恢复大厅…';restoreFallback();});

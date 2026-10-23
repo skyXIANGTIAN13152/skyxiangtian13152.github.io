@@ -12,11 +12,11 @@ export function createDetectiveLocomotion(mixer, idleClip, walkClip, {
   let walkWeight = 0;
   let cadence = 1;
 
-  function update(delta, speed = 0, reducedMotion = false, footstepsAllowed = false) {
+  function update(delta, speed = 0, footstepsAllowed = false) {
     const dt = Number.isFinite(delta) ? Math.min(0.1, Math.max(0, delta)) : 0;
     const moving = Number.isFinite(speed) && Math.abs(speed) > 0.025;
     const target = moving ? 1 : 0;
-    const step = dt / (reducedMotion ? 0.12 : 0.24);
+    const step = dt / 0.24;
     // crossFadeFrom starts fresh 0/1 fades; reversing it part way through jumps
     // to a different pose. Continue from the current weight and keep the sum 1.
     walkWeight += Math.max(-step, Math.min(step, target - walkWeight));
@@ -26,7 +26,9 @@ export function createDetectiveLocomotion(mixer, idleClip, walkClip, {
     // slow-motion extra step and no phase reset when movement resumes mid-fade.
     walk.setEffectiveTimeScale(walkWeight > 0 ? cadence : 0);
     idle.setEffectiveWeight(1 - walkWeight);
-    idle.setEffectiveTimeScale(reducedMotion && !moving ? 0 : 1);
+    // hall_idle_2 is the original breathing/lantern idle, not a frozen pose.
+    // Keep its clock running during both standing and locomotion blends.
+    idle.setEffectiveTimeScale(1);
     const previousWalkTime = walk.time;
     mixer.update(dt);
     if (moving && footstepsAllowed && dt > 0) {

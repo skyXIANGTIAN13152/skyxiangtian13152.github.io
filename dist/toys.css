@@ -1,31 +1,19 @@
-/* The flying toy is an overlay inside the fixed 1280 × 720 stage. */
 .glider-flight {
-  position: absolute;
-  inset: 0;
-  z-index: 70;
-  overflow: hidden;
-  pointer-events: none;
-  user-select: none;
-  contain: layout paint;
+  position:absolute; inset:0; z-index:45; overflow:hidden; pointer-events:none;
+  user-select:none; contain:layout paint; visibility:hidden;
 }
-.glider-flight__craft {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 218px;
-  height: 146px;
-  opacity: 0;
-  visibility: hidden;
-  transform: translate(-50%, -50%);
-  transform-origin: 50% 50%;
-  filter: drop-shadow(0 10px 8px #0005);
+.glider-flight.is-playing { visibility:visible; }
+.merchant-action-canvas { display:block; width:1280px; height:720px; }
+.merchant-figure.is-performing { opacity:0; }
+.toybox-trigger,.glider-trigger { border:0; background:none; cursor:pointer; }
+.toybox-trigger { opacity:1; }
+.toybox-trigger:hover img,.toybox-trigger:focus-visible img {
+  opacity:1; transform:translateY(-4px); filter:sepia(.4) drop-shadow(0 0 8px #dacba84d);
 }
-.glider-flight.is-playing .glider-flight__craft {
-  visibility: visible;
-  will-change: transform, opacity;
-}
-.glider-flight__craft svg { display: block; width: 100%; height: 100%; overflow: visible; }
-.glider-trigger:disabled { cursor: default; }
-.glider-trigger.is-flying > img { opacity: .58; }
-.glider-trigger.is-flying > span { color: #d5c6a9; }
-.game-stage:not([data-scene='home']):not([data-scene='lobby']) > .glider-flight { visibility: hidden; }
+.toybox-trigger:focus-visible,.glider-trigger:focus-visible { outline:1px solid #ddcfac; outline-offset:5px; }
+.toybox-trigger:disabled,.glider-trigger:disabled { cursor:default; }
+.toybox-trigger.is-flying > img,.glider-trigger.is-flying > img { opacity:.5; }
+.toybox-trigger.is-flying > span,.glider-trigger.is-flying > span { color:#d5c6a9; }
+.toy-action-status { position:absolute; right:0; top:452px; width:200px;
+  font:11px/1.8 var(--serif); color:#d2c5a7; text-align:center; }
+.game-stage:not([data-scene='home']) > .glider-flight { visibility:hidden; }

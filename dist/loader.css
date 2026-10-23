@@ -49,4 +49,3 @@
 @media (max-width: 600px) {
   .sky-intro__skip { right: 20px; bottom: max(20px, env(safe-area-inset-bottom)); }
 }
-html.reduced-motion .sky-intro { display: none !important; }

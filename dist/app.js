@@ -1,7 +1,7 @@
 (() => {
   'use strict';
   const $ = (selector) => document.querySelector(selector);
-  const diaryReady = import('./assets/diary-original/diary-transition.js').then(api => {
+  const diaryReady = import('./assets/diary-original/diary-transition.js?v=20261023-18').then(api => {
     window.SkyDiary = api;
     api.preload();
     return api;
@@ -12,29 +12,11 @@
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', loaded, { once: true });
     else loaded();
   });
-  const systemMotion = matchMedia('(prefers-reduced-motion: reduce)');
-  let storedMotion = null;
-  try { storedMotion = localStorage.getItem('sky-motion'); } catch (_) {}
-  let reducedMotion = storedMotion === null ? systemMotion.matches : storedMotion === 'reduced';
-  const motionButton = $('.motion-toggle');
-  const applyMotion = () => {
-    document.documentElement.classList.toggle('reduced-motion', reducedMotion);
-    document.documentElement.classList.toggle('full-motion', !reducedMotion);
-    motionButton.setAttribute('aria-pressed', String(reducedMotion));
-    motionButton.textContent = reducedMotion ? '恢复动效' : '减少动效';
-    $('.entrance-motion-note').hidden = !reducedMotion;
-    if (reducedMotion) { window.SkyIntro?.skip(); window.SkyDiary?.cancel(); }
-  };
-  applyMotion();
-  motionButton.addEventListener('click', () => {
-    reducedMotion = !reducedMotion;
-    storedMotion = reducedMotion ? 'reduced' : 'full';
-    try { localStorage.setItem('sky-motion', reducedMotion ? 'reduced' : 'full'); } catch (_) {}
-    applyMotion();
-  });
-  systemMotion.addEventListener('change', (event) => {
-    if (storedMotion === null) { reducedMotion = event.matches; applyMotion(); }
-  });
+  // The manor always plays its game animations, including after an older visit
+  // saved a reduced-motion choice. Background-tab suspension remains independent.
+  document.documentElement.classList.remove('reduced-motion');
+  document.documentElement.classList.add('full-motion');
+  try { localStorage.removeItem('sky-motion'); } catch (_) {}
 
   const menu = $('.menu-toggle');
   const mobileNav = $('.mobile-nav');
@@ -59,7 +41,7 @@
   window.addEventListener('resize', fitStage, { passive: true });
   const sections = [...document.querySelectorAll('main > section')];
   const navLinks = [...document.querySelectorAll('.desktop-nav a, .scene-progress a')];
-  const titles = { home: '序章', lobby: '个人大厅', about: '关于我', work: '作品集', study: '专业学习', interests: '兴趣爱好' };
+  const titles = { home: '序章', lobby: '个人大厅', about: '关于我', work: '作品集', study: '专业学习', interests: '兴趣爱好', people: '名人墙', pets: '宠物小屋' };
   const lobby = $('#lobby');
   const hotspots = [...document.querySelectorAll('.lobby-hotspot')];
   hotspots.forEach(link => {
@@ -74,7 +56,7 @@
   let transitioning = false;
   let navigationVersion = 0;
   let diaryInProgress = false;
-  const readingOrder = ['about', 'work', 'study', 'interests'];
+  const readingOrder = ['about', 'work', 'study', 'interests', 'people', 'pets'];
   const visibleScene = id => !readingOrder.includes(id) || window.SkyContent?.isVisible(id) !== false;
   const showScene = (id) => {
     currentScene = id;
@@ -95,7 +77,7 @@
       if (active) link.setAttribute('aria-current', 'page');
       else link.removeAttribute('aria-current');
     });
-    $('.scene-caption').textContent = id === 'home' ? window.SkyContent?.data?.profile.footer ?? '在 UNSW builder space 制作' : id === 'lobby' ? '提灯入室，探索个人档案' : titles[id];
+    $('.scene-caption').textContent = id === 'home' ? window.SkyContent?.data?.profile.footer ?? '启迪于 UNSW Builder Space Club' : id === 'lobby' ? '' : titles[id];
     document.title = `${window.SkyContent?.data?.profile.name || 'Sky 天'} · ${titles[id]}`;
   };
   const focusScene = (id) => $(`#${id}`).querySelector('h1,h2').focus({ preventScroll: true });
@@ -133,22 +115,22 @@
         stage.inert = true;
         const diary = await diaryReady;
         if (version !== navigationVersion) return;
-        await diary?.play({ title: titles[id], reducedMotion, onReveal: () => {
+        await diary?.play({ title: titles[id], onReveal: () => {
           if (version === navigationVersion) showScene(id);
         } });
         if (version !== navigationVersion) return;
         // Missing assets and a mid-transition motion preference still reveal the page.
         if (currentScene !== id) showScene(id);
-      } else if (id === 'lobby' && fromScene === 'home' && !reducedMotion && window.SkyIntro) {
+      } else if (id === 'lobby' && fromScene === 'home' && window.SkyIntro) {
         await SkyIntro.play({
-          caption: '匹配成功',
+          caption: '',
           ready: roomReady,
           onCovered: () => showScene(id),
           onReveal: () => revealLobby()
         });
       } else {
         showScene(id);
-        if (!reducedMotion && window.gsap) {
+        if (window.gsap) {
           gsap.fromTo(`#${id} > .container`, { x: id === 'home' ? -30 : 40, opacity: 0 }, { x: 0, opacity: 1, duration: .7, ease: 'power2.out', clearProps: 'transform,opacity' });
         }
       }
@@ -172,13 +154,6 @@
     if (!Object.hasOwn(titles, id)) return;
     link.addEventListener('click', event => { event.preventDefault(); transitionTo(id); });
   });
-  $('.restore-entrance').addEventListener('click', () => {
-    reducedMotion = false;
-    storedMotion = 'full';
-    try { localStorage.setItem('sky-motion', 'full'); } catch (_) {}
-    applyMotion();
-    transitionTo('lobby');
-  });
   window.addEventListener('popstate', () => transitionTo(location.hash.slice(1) || 'home', false));
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape' && diaryInProgress) {
@@ -201,18 +176,38 @@
     catch (_) { /* The cover remains usable if history updates are unavailable. */ }
   }
   const fullscreenButton = $('.fullscreen-button');
-  fullscreenButton.addEventListener('click', async () => {
-    try {
-      if (document.fullscreenElement) await document.exitFullscreen();
-      else await document.documentElement.requestFullscreen();
-    } catch (_) { notify('可使用浏览器的全屏功能打开。'); }
-  });
-  document.addEventListener('fullscreenchange', () => {
-    const label = document.fullscreenElement ? '退出全屏' : '进入全屏';
+  const fullscreenElement = () => document.fullscreenElement || document.webkitFullscreenElement;
+  const updateFullscreen = () => {
+    const active = Boolean(fullscreenElement());
+    const label = active ? '退出全屏' : '进入全屏';
     fullscreenButton.setAttribute('aria-label', label);
+    fullscreenButton.setAttribute('aria-pressed', String(active));
     fullscreenButton.title = label;
     fitStage();
+  };
+  fullscreenButton.addEventListener('click', async () => {
+    if (fullscreenButton.disabled) return;
+    fullscreenButton.disabled = true;
+    try {
+      const active = fullscreenElement();
+      const target = active ? document : document.documentElement;
+      const action = active ? document.exitFullscreen || document.webkitExitFullscreen : target.requestFullscreen || target.webkitRequestFullscreen;
+      if (!action) { notify('当前浏览器不支持网页全屏，可使用浏览器菜单或横屏查看。'); return; }
+      await action.call(target);
+      updateFullscreen();
+    } catch (_) { notify('浏览器未允许进入全屏，请在浏览器菜单中开启全屏。'); }
+    finally { fullscreenButton.disabled = false; }
   });
+  document.addEventListener('fullscreenchange', updateFullscreen);
+  document.addEventListener('webkitfullscreenchange', updateFullscreen);
+  document.addEventListener('keydown', event => {
+    if (event.key !== 'Escape' || !fullscreenElement()) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    const exit = document.exitFullscreen || document.webkitExitFullscreen;
+    if (exit) Promise.resolve(exit.call(document)).catch(() => notify('请点击全屏按钮退出。'));
+  }, true);
+  updateFullscreen();
 
   document.addEventListener('click', event => {
     const connectButton = event.target.closest('.connection-toggle');
@@ -294,7 +289,7 @@
   document.addEventListener('click', event => {
     const control = event.target.closest('button,a[href]');
     // Navigation, E and the touch-read button share transitionTo's single accepted cue.
-    if (!control || control.disabled || control.matches('.sound-button,.room-interact,.room-touch-read,.restore-entrance,a[href^="#"]')) return;
+    if (!control || control.disabled || control.matches('.sound-button,.room-interact,.room-touch-read,a[href^="#"]')) return;
     window.SkyAudio?.play('click', { group: 'interface' });
   });
   updateSound();
@@ -324,25 +319,13 @@
   applyPublishedContent();
 
   const revealLobby = () => {
-    if (!window.gsap || reducedMotion) return;
+    if (!window.gsap) return;
     gsap.fromTo('.lobby-hotspot', { opacity: 0 }, { opacity: 1, duration: 1.1, stagger: .12, ease: 'power2.out', clearProps: 'opacity' });
   };
   const revealHero = () => {
-    if (!window.gsap || reducedMotion) return;
+    if (!window.gsap) return;
     gsap.fromTo('.hero-copy', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 1.1, ease: 'power2.out', clearProps: 'opacity,transform' });
     gsap.fromTo('.merchant-display', { opacity: 0 }, { opacity: 1, duration: 1.3, ease: 'power2.out', clearProps: 'opacity' });
   };
-  const playIntro = async (replay = false) => {
-    if (transitioning) return;
-    if (reducedMotion) { if (replay) notify('已启用减少动效，可点击底部恢复动效后重播。'); return; }
-    if (!window.SkyIntro) { revealLobby(); return; }
-    const version = ++navigationVersion;
-    transitioning = true;
-    try {
-      await window.SkyIntro.play({ caption: '匹配成功', ready: roomReady, onCovered: () => showScene('lobby') });
-      if (version === navigationVersion) revealLobby();
-    } finally { if (version === navigationVersion) transitioning = false; }
-  };
-  $('.replay').addEventListener('click', () => playIntro(true));
   if (currentScene === 'home') revealHero();
 })();

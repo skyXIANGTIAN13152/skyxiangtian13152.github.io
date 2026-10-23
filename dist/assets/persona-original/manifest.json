@@ -1,0 +1,106 @@
+[
+  {
+    "resource": "system/note_persona/bg_stage.astc",
+    "file": "bg_stage.png",
+    "width": 667,
+    "height": 375,
+    "md5": "b734afdab17a4eb9f915a56ff828d000",
+    "source": "official Android cached UI package / ui2.wpk"
+  },
+  {
+    "resource": "system/note_persona/bg_map_grid.astc",
+    "file": "bg_map_grid.png",
+    "width": 223,
+    "height": 223,
+    "md5": "075d175170245af2aa9c90fd5e9bcb9d",
+    "source": "official Android cached UI package / ui2.wpk"
+  },
+  {
+    "resource": "system/note_persona/bg_talent_ink.astc",
+    "file": "bg_talent_ink.png",
+    "width": 270,
+    "height": 250,
+    "md5": "03afe329bf45244ec725c52574391581",
+    "source": "official Android cached UI package / ui2.wpk"
+  },
+  {
+    "resource": "system/note_persona/grid_h_talent_activated_nml.astc",
+    "file": "grid_h_talent_activated_nml.png",
+    "width": 124,
+    "height": 124,
+    "md5": "2e905bed82eb9c754c67a5b30bac958e",
+    "source": "official Android cached UI package / ui2.wpk"
+  },
+  {
+    "resource": "system/note_persona/grid_h_talent_select.astc",
+    "file": "grid_h_talent_select.png",
+    "width": 136,
+    "height": 136,
+    "md5": "67b0d8131207ad07f1bcfc7edd03884e",
+    "source": "official Android cached UI package / ui2.wpk"
+  },
+  {
+    "resource": "system/note_persona/grid_h_talent_locked_nml.astc",
+    "file": "grid_h_talent_locked_nml.png",
+    "width": 124,
+    "height": 124,
+    "md5": "35c173d20bd04dabf75191b9d33ab717",
+    "source": "official Android cached UI package / ui2.wpk"
+  },
+  {
+    "resource": "system/note_persona/grid_s_talent_activated_nml.astc",
+    "file": "grid_s_talent_activated_nml.png",
+    "width": 124,
+    "height": 124,
+    "md5": "6d3ed58c9a7b58ff074f679fcc4858f6",
+    "source": "official Android cached UI package / ui2.wpk"
+  },
+  {
+    "resource": "system/note_persona/grid_s_talent_select.astc",
+    "file": "grid_s_talent_select.png",
+    "width": 136,
+    "height": 136,
+    "md5": "88e0b9691436fe193e38846a054c6c7b",
+    "source": "official Android cached UI package / ui2.wpk"
+  },
+  {
+    "resource": "system/note_persona/grid_s_talent_locked_nml.astc",
+    "file": "grid_s_talent_locked_nml.png",
+    "width": 124,
+    "height": 124,
+    "md5": "3a591cf26f0eee747cf2f04a32531d18",
+    "source": "official Android cached UI package / ui2.wpk"
+  },
+  {
+    "resource": "system/note_persona/ico_survivortype_calm.astc",
+    "file": "ico_survivortype_calm.png",
+    "width": 60,
+    "height": 60,
+    "md5": "fd93ffe23cc182c7e95cca1fabee42fe",
+    "source": "official Android cached UI package / ui2.wpk"
+  },
+  {
+    "resource": "system/note_persona/ico_survivortype_brave.astc",
+    "file": "ico_survivortype_brave.png",
+    "width": 60,
+    "height": 60,
+    "md5": "b52ded10fdb1056408a95b9355d38b8b",
+    "source": "official Android cached UI package / ui2.wpk"
+  },
+  {
+    "resource": "system/note_persona/ico_survivortype_friendly.astc",
+    "file": "ico_survivortype_friendly.png",
+    "width": 60,
+    "height": 60,
+    "md5": "d08047cabaa252a52cf681f55fc114f2",
+    "source": "official Android cached UI package / ui2.wpk"
+  },
+  {
+    "resource": "system/note_persona/ico_survivortype_persistent.astc",
+    "file": "ico_survivortype_persistent.png",
+    "width": 60,
+    "height": 60,
+    "md5": "f8e036505a9bbd8355a6594908d31816",
+    "source": "official Android cached UI package / ui2.wpk"
+  }
+]

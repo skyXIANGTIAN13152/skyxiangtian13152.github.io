@@ -53,7 +53,6 @@ body{position:fixed;inset:0;contain:paint}
 .game-stage [tabindex='-1']:focus{outline:none}
 .orientation-note{display:none;position:fixed;left:20px;right:20px;bottom:12%;text-align:center;font-size:12px;letter-spacing:.15em;color:#92a0a6}
 @media(orientation:portrait) and (max-width:760px){.orientation-note{display:block}}
-@media(prefers-reduced-motion:reduce){html:not(.full-motion) .game-stage .scene{transition:none}}
 /* Keep every scene inside the game viewport, including keyboard focus. */
 .game-stage .scene{overflow:clip}
 .game-stage .work-section{padding:116px 0 85px}

@@ -1,0 +1,312 @@
+{
+  "sourcePage": "https://id5.163.com/nrzx/role.html",
+  "officialModel": "https://id5.res.netease.com/pc/gw/20220408094220/data/role/wanjushang/h55_survivor_w_shangren_idle.gltf?1",
+  "officialPmx": "https://id5.res.netease.com/pc/gw/20220408094220/data/moxingzip/wanjushang-pmx.zip",
+  "textures": [
+    {
+      "file": "h55_survivor_w_shangren_body_diff.png",
+      "officialUri": "h55_survivor_w_shangren_body_diff.png",
+      "resolution": [
+        1024,
+        1024
+      ],
+      "sha256": "5b2f14ae1024381b2646ab6677036e956720521bc402c159cbbad274cc2bd090"
+    },
+    {
+      "file": "h55_survivor_w_shangren_head_diff.png",
+      "officialUri": "h55_survivor_w_shangren_head_diff.png",
+      "resolution": [
+        1024,
+        1024
+      ],
+      "sha256": "09e98865bc9e9f7364ccc8397dd53e8560516e87f2b198e227c7f4ed9c8a73e1"
+    },
+    {
+      "file": "h55_survivor_w_shangren_daoju_diff.png",
+      "officialUri": "h55_survivor_w_shangren_daoju_diff.png",
+      "resolution": [
+        1024,
+        1024
+      ],
+      "sha256": "3c928e133edd4e20c1395e3f1da0656bd2e432dc607600e688e577c3be02daa8"
+    }
+  ],
+  "basketTexture": {
+    "archivePath": "玩具商人/h55_survivor_w_shangren_daoju03_diff.tga",
+    "resolution": [
+      256,
+      256
+    ],
+    "sha256": "562c59a51d9d89d5ff29fb2a42fafb36e4c404d23553b43252de9c3d22925cd0"
+  },
+  "originalGameFiles": [
+    {
+      "path": "chr/player/dm65_survivor_w/h55_survivor_w_shangren/h55_survivor_w_shangren.mtg",
+      "url": "https://h55.gsf.netease.com/nx3_release_ios_ad/dynamic/fc/4b0e4ede14a3b05cd9803d5cece405c9a77040",
+      "md5": "fc4b0e4ede14a3b05cd9803d5cece405",
+      "size": 528
+    },
+    {
+      "path": "chr/player/dm65_survivor_w/h55_survivor_w_shangren/h55_survivor_w_shangren_plane.animconfig",
+      "url": "https://h55.gsf.netease.com/nx3_release_ios_ad/dynamic/a3/3838943074c39648aedae21706664ccc474e37",
+      "md5": "a33838943074c39648aedae21706664c",
+      "size": 5806
+    },
+    {
+      "path": "chr/player/dm65_survivor_w/h55_survivor_w_shangren/h55_survivor_w_shangren_plane.gim",
+      "url": "https://h55.gsf.netease.com/nx3_release_ios_ad/dynamic/b6/e2b2e19ce4206f4bd79faca19d6d862b9a4d50",
+      "md5": "b6e2b2e19ce4206f4bd79faca19d6d86",
+      "size": 3898
+    },
+    {
+      "path": "chr/player/dm65_survivor_w/h55_survivor_w_shangren/h55_survivor_w_shangren_plane.mesh",
+      "url": "https://h55.gsf.netease.com/nx3_release_ios_ad/dynamic/29/a79b71a1c007327b4235ccfff1acc29ac35403",
+      "md5": "29a79b71a1c007327b4235ccfff1acc2",
+      "size": 112680
+    },
+    {
+      "path": "chr/player/dm65_survivor_w/h55_survivor_w_shangren/h55_survivor_w_shangren_plane.mtg",
+      "url": "https://h55.gsf.netease.com/nx3_release_ios_ad/dynamic/bf/4325ae59a83e4ac9ee1c055338a1de43a46a57",
+      "md5": "bf4325ae59a83e4ac9ee1c055338a1de",
+      "size": 392
+    },
+    {
+      "path": "chr/player/dm65_survivor_w/h55_survivor_w_shangren/h55_survivor_w_shangren_plane.skeleton",
+      "url": "https://h55.gsf.netease.com/nx3_release_ios_ad/dynamic/ec/41468af42ef01c8713475fd96e73eaf12c66cd",
+      "md5": "ec41468af42ef01c8713475fd96e73ea",
+      "size": 2500
+    },
+    {
+      "path": "chr/player/dm65_survivor_w/h55_survivor_w_shangren/h55_survivor_w_shangren_plane_standard_16_upgraded.mtl",
+      "url": "https://h55.gsf.netease.com/nx3_release_ios_ad/dynamic/55/15e61f15e84596eb24031129b68f84ab3ed448",
+      "md5": "5515e61f15e84596eb24031129b68f84",
+      "size": 1162
+    },
+    {
+      "path": "chr/player/dm65_survivor_w/h55_survivor_w_shangren/h55_survivor_w_shangren_plane_standard_17_upgraded.mtl",
+      "url": "https://h55.gsf.netease.com/nx3_release_ios_ad/dynamic/43/8aa4990c3418ad05ee077008319c2370abdc5f",
+      "md5": "438aa4990c3418ad05ee077008319c23",
+      "size": 1167
+    },
+    {
+      "path": "chr/player/dm65_survivor_w/h55_survivor_w_shangren/h55_survivor_w_shangren_tiaoban.animconfig",
+      "url": "https://h55.gsf.netease.com/nx3_release_ios_ad/dynamic/94/9af317adb6446f6e0c844d14c5ddb8207fd1fe",
+      "md5": "949af317adb6446f6e0c844d14c5ddb8",
+      "size": 4617
+    },
+    {
+      "path": "chr/player/dm65_survivor_w/h55_survivor_w_shangren/h55_survivor_w_shangren_tiaoban.gim",
+      "url": "https://h55.gsf.netease.com/nx3_release_ios_ad/dynamic/f3/f77705e450417b1e1cbd4159293eb2fd3f60de",
+      "md5": "f3f77705e450417b1e1cbd4159293eb2",
+      "size": 3447
+    },
+    {
+      "path": "chr/player/dm65_survivor_w/h55_survivor_w_shangren/h55_survivor_w_shangren_tiaoban.mesh",
+      "url": "https://h55.gsf.netease.com/nx3_release_ios_ad/dynamic/60/267a26eb19553242af9374a4b37fa10faa4ae4",
+      "md5": "60267a26eb19553242af9374a4b37fa1",
+      "size": 63388
+    },
+    {
+      "path": "chr/player/dm65_survivor_w/h55_survivor_w_shangren/h55_survivor_w_shangren_tiaoban.mtg",
+      "url": "https://h55.gsf.netease.com/nx3_release_ios_ad/dynamic/69/70160355c6e41d25b715fab91f2b2bad6b7d33",
+      "md5": "6970160355c6e41d25b715fab91f2b2b",
+      "size": 290
+    },
+    {
+      "path": "chr/player/dm65_survivor_w/h55_survivor_w_shangren/h55_survivor_w_shangren_tiaoban.skeleton",
+      "url": "https://h55.gsf.netease.com/nx3_release_ios_ad/dynamic/45/03d1c86e4fb56ea0dc357efb161df16ff4263f",
+      "md5": "4503d1c86e4fb56ea0dc357efb161df1",
+      "size": 1892
+    },
+    {
+      "path": "chr/player/dm65_survivor_w/h55_survivor_w_shangren/h55_survivor_w_shangren_tiaoban_h55_survivor_w_shangren_daoju_upgraded.mtl",
+      "url": "https://h55.gsf.netease.com/nx3_release_ios_ad/dynamic/43/356469b073a5666aa5643f27f85af7badfe8a4",
+      "md5": "43356469b073a5666aa5643f27f85af7",
+      "size": 1179
+    },
+    {
+      "path": "chr/player/dm65_survivor_w/h55_survivor_w_shangren/animations_h55_survivor_w_shangren_plane/toyman_fly.cpdanimation",
+      "url": "https://h55.gsf.netease.com/nx3_release_ios_ad/dynamic/a8/11f16f266fcb55d06deaa162874ec1129f9a88",
+      "md5": "a811f16f266fcb55d06deaa162874ec1",
+      "size": 1485
+    },
+    {
+      "path": "chr/player/dm65_survivor_w/h55_survivor_w_shangren/animations_h55_survivor_w_shangren_plane/toyman_fly_over.cpdanimation",
+      "url": "https://h55.gsf.netease.com/nx3_release_ios_ad/dynamic/f2/8850347f9bd526985a9b8ad2ac2689c78a91e0",
+      "md5": "f28850347f9bd526985a9b8ad2ac2689",
+      "size": 1373
+    },
+    {
+      "path": "chr/player/dm65_survivor_w/h55_survivor_w_shangren/animations_h55_survivor_w_shangren_plane/toyman_fly_prepare.cpdanimation",
+      "url": "https://h55.gsf.netease.com/nx3_release_ios_ad/dynamic/a1/1b95541a24732c1c1e9d41d83a98ab56505cfb",
+      "md5": "a11b95541a24732c1c1e9d41d83a98ab",
+      "size": 1677
+    },
+    {
+      "path": "chr/player/dm65_survivor_w/h55_survivor_w_shangren/animations_h55_survivor_w_shangren_tiaoban/idle.cpdanimation",
+      "url": "https://h55.gsf.netease.com/nx3_release_ios_ad/dynamic/af/c2ab65cc8c9f1adaeba63857509dfaf40d1eba",
+      "md5": "afc2ab65cc8c9f1adaeba63857509dfa",
+      "size": 399
+    },
+    {
+      "path": "chr/player/dm65_survivor_w/h55_survivor_w_shangren/animations_h55_survivor_w_shangren_tiaoban/toyman_jump_out_1.cpdanimation",
+      "url": "https://h55.gsf.netease.com/nx3_release_ios_ad/dynamic/8c/741f04b3c4a4e7cb53e1cbcfff1261af238e51",
+      "md5": "8c741f04b3c4a4e7cb53e1cbcfff1261",
+      "size": 511
+    },
+    {
+      "path": "chr/player/dm65_survivor_w/h55_survivor_w_shangren/animations_h55_survivor_w_shangren_tiaoban/toyman_jump_out_2.cpdanimation",
+      "url": "https://h55.gsf.netease.com/nx3_release_ios_ad/dynamic/5c/6cd9f4a6806f1d7ef30c2197f9a92a11583e85",
+      "md5": "5c6cd9f4a6806f1d7ef30c2197f9a92a",
+      "size": 431
+    },
+    {
+      "path": "chr/player/dm65_survivor_w/h55_survivor_w_shangren/animations_h55_survivor_w_shangren_tiaoban/toyman_jump_set.cpdanimation",
+      "url": "https://h55.gsf.netease.com/nx3_release_ios_ad/dynamic/ca/dba951a68b173fc24b08fdf31e52b3df02d023",
+      "md5": "cadba951a68b173fc24b08fdf31e52b3",
+      "size": 1119
+    },
+    {
+      "path": "chr/player/dm65_survivor_w/dm65_survivor_w.skeleton",
+      "url": "https://h55.gsf.netease.com/nx3_release_ios_ad/dynamic/51/1de69e0e498a1b94d49c04593dde4243e5e961",
+      "md5": "511de69e0e498a1b94d49c04593dde42",
+      "size": 97234
+    },
+    {
+      "path": "chr/player/dm65_survivor_w/animations_dm65_survivor_w/toyman_fly.cpdanimation",
+      "url": "https://h55.gsf.netease.com/nx3_release_ios_ad/dynamic/e2/c2bbee33217b65bcf2a1a27a962ed7e4222e93",
+      "md5": "e2c2bbee33217b65bcf2a1a27a962ed7",
+      "size": 9839
+    },
+    {
+      "path": "chr/player/dm65_survivor_w/animations_dm65_survivor_w/toyman_fly_prepare.cpdanimation",
+      "url": "https://h55.gsf.netease.com/nx3_release_ios_ad/dynamic/3b/e7b566bd1507a05438a174d35f8b9ab7d46b60",
+      "md5": "3be7b566bd1507a05438a174d35f8b9a",
+      "size": 7343
+    },
+    {
+      "path": "chr/player/dm65_survivor_w/animations_dm65_survivor_w/toyman_jump_out_1.cpdanimation",
+      "url": "https://h55.gsf.netease.com/nx3_release_ios_ad/dynamic/a3/dbc799f3c0df48008d576de756b57785cb8c73",
+      "md5": "a3dbc799f3c0df48008d576de756b577",
+      "size": 9423
+    },
+    {
+      "path": "chr/player/dm65_survivor_w/animations_dm65_survivor_w/toyman_jump_out_2.cpdanimation",
+      "url": "https://h55.gsf.netease.com/nx3_release_ios_ad/dynamic/b0/32da27554a6810a5cd0fc85a35cb23547d21b6",
+      "md5": "b032da27554a6810a5cd0fc85a35cb23",
+      "size": 6911
+    },
+    {
+      "path": "chr/player/dm65_survivor_w/animations_dm65_survivor_w/toyman_jump_set.cpdanimation",
+      "url": "https://h55.gsf.netease.com/nx3_release_ios_ad/dynamic/38/0d21a92cafc20948d6bd0c37acbc2eaa99e066",
+      "md5": "380d21a92cafc20948d6bd0c37acbc2e",
+      "size": 14927
+    },
+    {
+      "path": "chr/player/dm65_survivor_w/h55_survivor_w_shangren/h55_survivor_w_shangren.gim",
+      "url": "https://h55.gsf.netease.com/nx3_release_ios_ad/dynamic/67/32ef58174bb28212056b88bced4ca7425a457f",
+      "md5": "6732ef58174bb28212056b88bced4ca7",
+      "size": 142932
+    },
+    {
+      "path": "chr/player/dm65_survivor_w/h55_survivor_w_shangren/h55_survivor_w_shangren.mesh",
+      "url": "https://h55.gsf.netease.com/nx3_release_ios_ad/dynamic/e3/31fc18493930b645c8656229390b485df26262",
+      "md5": "e331fc18493930b645c8656229390b48",
+      "size": 570172
+    },
+    {
+      "path": "chr/player/dm65_survivor_w/animations_dm65_survivor_w/idle.cpdanimation",
+      "url": "https://h55.gsf.netease.com/nx3_release_ios_ad/dynamic/46/1c780356d38d9124ce90dfddb6f77c8f7f3751",
+      "md5": "461c780356d38d9124ce90dfddb6f77c",
+      "size": 34159
+    }
+  ],
+  "exports": [
+    {
+      "file": "annie.glb",
+      "animations": [
+        {
+          "name": "idle",
+          "duration": 9.0,
+          "bones": 69
+        },
+        {
+          "name": "toyman_jump_set",
+          "duration": 2.0,
+          "bones": 69
+        },
+        {
+          "name": "toyman_jump_out_1",
+          "duration": 0.7333332896232605,
+          "bones": 69
+        },
+        {
+          "name": "toyman_jump_out_2",
+          "duration": 0.6666666865348816,
+          "bones": 69
+        },
+        {
+          "name": "toyman_fly_prepare",
+          "duration": 0.6000000238418579,
+          "bones": 69
+        },
+        {
+          "name": "toyman_fly",
+          "duration": 2.6666667461395264,
+          "bones": 69
+        }
+      ],
+      "bytes": 5348412,
+      "sha256": "73710863c0f2c4223b065561e32e98b3c6a45cdcfe7fb0f7fedfdd332ff27d10"
+    },
+    {
+      "file": "plane.glb",
+      "animations": [
+        {
+          "name": "toyman_fly_prepare",
+          "duration": 0.6000000238418579,
+          "bones": 11
+        },
+        {
+          "name": "toyman_fly",
+          "duration": 2.6666667461395264,
+          "bones": 11
+        },
+        {
+          "name": "toyman_fly_over",
+          "duration": 0.3333333432674408,
+          "bones": 11
+        }
+      ],
+      "bytes": 1418808,
+      "sha256": "ea0f281d06ab8cc4d37eed8b856d24773fc6f9088926bc26d723011e756ac1fe"
+    },
+    {
+      "file": "tiaoban.glb",
+      "animations": [
+        {
+          "name": "idle",
+          "duration": 1.0,
+          "bones": 5
+        },
+        {
+          "name": "toyman_jump_set",
+          "duration": 2.0,
+          "bones": 5
+        },
+        {
+          "name": "toyman_jump_out_1",
+          "duration": 0.7333332896232605,
+          "bones": 5
+        },
+        {
+          "name": "toyman_jump_out_2",
+          "duration": 0.6666666865348816,
+          "bones": 5
+        }
+      ],
+      "bytes": 1282668,
+      "sha256": "5897b15d06a34aaded45c4b6646b5c25b6092f9ff8d2f1d6b9fcc2f9a189113c"
+    }
+  ]
+}

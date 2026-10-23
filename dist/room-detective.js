@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { createDetectiveLocomotion } from './detective-locomotion.js?v=20261023-14';
+import { createDetectiveLocomotion } from './detective-locomotion.js?v=20261023-16';
 
 /** Original game mesh, textures, skeleton and original lantern locomotion clips. */
 export async function createDetective({
@@ -74,11 +74,11 @@ export async function createDetective({
     object.frustumCulled = false;
   });
   let previousTime;
-  function update(time, speed = 0, reducedMotion = false, footstepsAllowed = false) {
+  function update(time, speed = 0, footstepsAllowed = false) {
     const delta = previousTime === undefined ? 0 : Math.min(0.1, Math.max(0, time - previousTime));
     previousTime = time;
-    locomotion.update(delta, speed, reducedMotion, footstepsAllowed);
-    const frame = reducedMotion ? 0 : Math.floor(time * 32) % 32;
+    locomotion.update(delta, speed, footstepsAllowed);
+    const frame = Math.floor(time * 32) % 32;
     fireTexture.offset.set((frame % 8) / 8, (3 - Math.floor(frame / 8)) / 4);
     group.updateMatrixWorld(true);
   }

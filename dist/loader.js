@@ -52,11 +52,6 @@
     try { state[name](); }
     catch (error) { console.error('[SkyIntro] ' + name + ' callback failed.', error); }
   }
-  function reducedMotion() {
-    if (document.documentElement.classList.contains('reduced-motion')) return true;
-    return !document.documentElement.classList.contains('full-motion') &&
-      window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  }
   function finish(cancelled) {
     if (!active || active.finishing) return;
     var state = active;
@@ -140,10 +135,6 @@
       finishing: false, elapsed: 0, lastTime: null, raf: 0, loadingSoundPlayed: false, glassSoundPlayed: false
     };
     active = state;
-    if (reducedMotion()) {
-      Promise.resolve().then(function () { if (active === state) finish(); });
-      return promise;
-    }
     var overlay = document.createElement('div');
     overlay.className = 'sky-intro is-preparing';
     overlay.dataset.phase = 'preparing';
@@ -201,7 +192,6 @@
       callOnce(state, 'onCovered');
       function tick(now) {
         if (active !== state || state.finishing) return;
-        if (reducedMotion()) { finish(); return; }
         if (!document.hidden) {
           // Keep the visual clock aligned with the native audio even after a slow frame.
           if (state.lastTime !== null) state.elapsed += Math.max(0, now - state.lastTime);
@@ -230,5 +220,5 @@
   }
   window.SkyIntro = { play: play, skip: finish };
   // Preload local images without playing anything; every entry remains a full playback.
-  if (!reducedMotion()) preload().catch(function () {});
+  preload().catch(function () {});
 })();

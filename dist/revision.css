@@ -1,0 +1,28 @@
+@font-face{font-family:ManorXiaowei;src:url('assets/fonts/zcool-xiaowei.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+:root{--art:ManorXiaowei,ArchiveSong,SimSun,serif;--candle:#d5bd8c;--coal:#11191f;--vellum:#d6c8a8;--faded:#929b98;--wax:#7c4940}
+.game-stage .hotspot-title,.game-stage .section-heading h2,.game-stage .detail-heading h2,.game-stage .merchant-caption h2,.game-stage .tian-name,.game-stage .dossier-writing h4,.game-stage .interest-typewritten{font-family:var(--art);font-weight:400}
+.game-stage .hotspot-title{font-size:29px;letter-spacing:.08em}
+.game-stage .desktop-nav{gap:26px;margin-left:20px}.game-stage .desktop-nav a{font-family:var(--art);font-size:16px;letter-spacing:.08em}
+.game-stage .section-heading h2,.game-stage .detail-heading h2{font-size:32px;letter-spacing:.14em}
+.game-stage .brand{font-family:var(--display),var(--art)}
+.game-stage .dossier-wrap{top:70px;height:446px}.game-stage .dossier{height:446px}.game-stage .dossier-spread{height:355px;grid-template-columns:40% 1fr;gap:11%}
+.game-stage .dossier-identity>p{font:20px/1.45 var(--display);max-width:294px;white-space:pre-line;color:#454c40}
+.game-stage .dossier-emblem{width:48px;height:48px;margin-bottom:10px}.game-stage .dossier h3{font:42px/1.1 var(--display),var(--art);margin-bottom:16px}
+.game-stage .dossier-identity .signature{font-size:25px;margin-top:15px}.profile-school{display:inline-block;font:12px/1.5 var(--serif);color:#5c4b32;border-bottom:1px solid #77634366;padding-bottom:3px;margin-top:15px}.profile-school:hover,.profile-facts a:hover{color:#1c312c}
+.game-stage .dossier-writing h4{font-size:26px;margin:2px 0 10px}.game-stage .bio{font-size:12px;line-height:1.8}
+.game-stage .bio:empty{display:none}
+.profile-facts{display:grid;gap:10px;margin:18px 0 15px}.profile-facts>div{display:grid;grid-template-columns:82px 1fr;align-items:baseline;gap:8px}.profile-facts dt{font-size:10px;color:#716953}.profile-facts dd{margin:0;font:14px/1.5 var(--serif);overflow-wrap:anywhere;color:#3f453a}.profile-facts a{border-bottom:1px solid #7d70575c}
+.game-stage .dossier-rule{margin:12px 0}.game-stage .dossier-details{gap:10px}.game-stage .dossier-details dd{font-size:12px;line-height:1.5}.game-stage .course-list{gap:10px}.game-stage .next-scene{margin-top:10px;min-height:30px}
+.game-stage .interest-writing-desk{width:980px;top:187px}.game-stage .interest-note{padding:35px 44px 48px;height:290px}.game-stage .interest-entries{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:30px;height:185px}.game-stage .interest-entry+.interest-entry{margin:0;border-top:0;border-left:1px solid #86775450;padding:0 0 0 28px}.game-stage .interest-typewritten{font-size:25px;line-height:1.4;letter-spacing:.02em}.game-stage .interest-description{font-size:13px;line-height:1.8;margin-top:15px}.game-stage .interest-typewriter{top:277px}.game-stage .interest-carriage{top:264px}
+.game-stage .people-section{background:linear-gradient(90deg,#0c141aee,#0c151be0),url('assets/original/room.jpg') center/cover;isolation:isolate}
+.people-gallery{position:absolute;top:182px;left:14px;right:14px;height:365px;overflow:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:35px;scrollbar-width:thin;scrollbar-color:#a39471 #182023;overscroll-behavior:contain}
+.people-empty{grid-column:1/-1;display:flex;justify-content:center;align-items:center;gap:65px;height:340px}.people-empty h3{font:30px var(--art);font-weight:400;letter-spacing:.13em;color:#dac9a7;margin:0 0 20px}.people-empty p{font:15px/1.9 var(--serif);color:#a8afa9}
+.people-frame{width:205px;height:270px;padding:16px;display:flex;align-items:center;justify-content:center;color:#9a8965;font:65px var(--display);background:linear-gradient(120deg,#303634,#131d22);border:10px ridge #695b3c;outline:1px solid #b09b6766;box-shadow:inset 0 0 0 3px #232620,inset 0 0 45px #0009,0 14px 24px #0005;transform:rotate(-1deg)}
+.people-frame img{width:100%;height:100%;object-fit:cover;filter:sepia(.18)}.person-portrait{display:grid;grid-template-columns:160px 1fr;align-items:start;gap:26px;padding:16px 12px}.person-portrait .people-frame{width:160px;height:210px}.person-copy h3{font:25px var(--art);color:#ded1b2;margin:5px 0 10px}.person-role{font-size:12px;color:#b5a989}.person-story{font:13px/1.9 var(--serif);color:#b4bbb5;white-space:pre-line;overflow-wrap:anywhere}.person-link{display:inline-block;border-bottom:1px solid #a39471;font-size:12px;color:#d4c39c;margin-top:15px;padding-bottom:5px}
+.hotspot-people{left:16%;top:37%}.game-stage .people-section .detail-bottom{top:577px}.game-stage .scene-progress{gap:8px}.game-stage .scene-progress i{width:22px}
+.game-stage .pets-section{background:linear-gradient(90deg,#0b141bef,#0d191fed),url('assets/original/room.jpg') center/cover;isolation:isolate}
+.game-stage .pets-section .pet-gallery-host{position:absolute;left:0;top:176px;width:1108px;height:440px}
+.game-stage .pets-section .detail-bottom{top:634px;left:0;right:0}.hotspot-pets{left:10%;top:55%}
+.game-stage .desktop-nav{gap:21px;margin-left:4px}
+/* Navigation, movement and presentation settings occupy separate lobby zones. */
+.game-stage[data-scene=lobby] .site-footer{left:64px;right:64px;justify-content:flex-end}

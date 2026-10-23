@@ -1,0 +1,93 @@
+.pet-gallery-host { --pet-paper:#c9b99a; --pet-ink:#292621; --pet-brass:#887657; width:100%; height:440px; min-width:0; position:relative; font-family:var(--serif,Georgia,serif); color:#ded4bd; isolation:isolate; }
+.pet-gallery-host * { box-sizing:border-box; }
+.pet-gallery-host [hidden] { display:none !important; }
+.pet-gallery-host button { font:inherit; color:inherit; cursor:pointer; }
+.pet-gallery-host button:disabled { cursor:default; opacity:.32; }
+.pet-gallery-host button:focus-visible,.pet-description:focus-visible { outline:2px solid #e4d6b3; outline-offset:4px; }
+.pet-album { height:100%; display:grid; grid-template-columns:156px 231px minmax(0,1fr); gap:25px; padding:28px; border:1px solid #75644966; background:linear-gradient(100deg,#151c20f2,#192226f5 38%,#101719f5); box-shadow:0 18px 42px #0006,inset 0 0 60px #0005; }
+.pet-index { display:flex; flex-direction:column; min-width:0; padding-right:21px; border-right:1px solid #80715855; }
+.pet-index-heading { margin:4px 0 28px; font-size:13px; letter-spacing:.16em; color:#ae9c7c; }
+.pet-index-list { display:grid; gap:10px; }
+.pet-index-item { position:relative; border:0; border-bottom:1px solid #7c705c40; text-align:left; min-height:48px; padding:9px 8px 10px 13px; background:transparent; font-size:17px!important; line-height:1.45; overflow-wrap:anywhere; }
+.pet-index-item[aria-pressed=true] { color:#f2e6c9; background:linear-gradient(90deg,#9e86672d,transparent); }
+.pet-index-item[aria-pressed=true]:before { content:''; position:absolute; left:0; top:18px; width:3px; height:14px; background:#c6ae7d; }
+.pet-index-paging { display:flex; gap:11px; align-items:center; justify-content:space-between; margin-top:auto; font-size:12px; color:#aa9b81; }
+.pet-introduction { padding:16px 4px 0 0; min-width:0; display:flex; flex-direction:column; min-height:0; }
+.pet-name { font-size:31px; font-weight:400; line-height:1.4; margin:0; overflow-wrap:anywhere; color:#e5d9bd; }
+.pet-intro-rule { display:block; width:38px; height:1px; background:#9a8661; margin:20px 0; flex-shrink:0; }
+.pet-description { font-size:15px; line-height:1.95; color:#bfb7a7; overflow-y:auto; scrollbar-width:thin; scrollbar-color:#8d7d63 transparent; overscroll-behavior:contain; padding-right:8px; min-height:0; }
+.pet-description p { margin:0 0 15px; white-space:pre-line; overflow-wrap:anywhere; }
+.pet-photographs { min-width:0; min-height:0; display:grid; grid-template-rows:minmax(0,1fr) 55px 15px; gap:11px; }
+.pet-main-photo { display:block; min-height:0; width:100%; position:relative; padding:10px; border:0; background:#c9b99a; box-shadow:2px 4px 8px #0006; }
+.pet-main-photo:before,.pet-main-photo:after { content:''; position:absolute; width:25px; height:25px; z-index:1; border-color:#7a694e; opacity:.6; pointer-events:none; }
+.pet-main-photo:before { left:3px; top:3px; border-top:1px solid; border-left:1px solid; }
+.pet-main-photo:after { right:3px; bottom:3px; border-bottom:1px solid; border-right:1px solid; }
+.pet-image-frame { display:block; position:relative; width:100%; height:100%; min-height:0; background:#171c1d; overflow:hidden; }
+.pet-image-frame img { display:block; width:100%; height:100%; object-fit:contain; }
+.pet-enlarge-hint { position:absolute; bottom:17px; right:17px; padding:4px 8px; background:#101617c9; color:#eee2ca; font-size:11px; letter-spacing:.08em; opacity:0; transition:opacity .18s; }
+.pet-main-photo:hover .pet-enlarge-hint,.pet-main-photo:focus-visible .pet-enlarge-hint { opacity:1; }
+.pet-photo-controls { display:flex; align-items:center; justify-content:center; gap:10px; min-width:0; }
+.pet-arrow { border:0; background:transparent; font-size:29px!important; line-height:1; padding:2px; width:28px; height:36px; flex-shrink:0; }
+.pet-thumbnails { display:flex; gap:8px; align-items:center; justify-content:center; min-width:0; flex:1; height:100%; }
+.pet-thumbnail { padding:3px; background:transparent; border:1px solid #6c64524d; width:54px; min-width:0; height:52px; flex:0 1 54px; opacity:.62; }
+.pet-thumbnail[aria-pressed=true] { border-color:#c8af7e; opacity:1; }
+.pet-thumbnail:hover { opacity:1; }
+.pet-thumb-image img { object-fit:cover; }
+.pet-photo-caption { font-size:11px; letter-spacing:.12em; line-height:15px; margin:0; text-align:center; color:#aa9d83; }
+.pet-image-error { display:flex; align-items:center; justify-content:center; padding:18px; width:100%; height:100%; text-align:center; font-size:13px; line-height:1.8; color:#bfb4a0; }
+.pet-thumb-image .pet-image-error { font-size:0; padding:0; }
+.pet-thumb-image .pet-image-error:after { content:'—'; font-size:15px; }
+.pet-photos-empty { align-self:center; grid-row:1/-1; text-align:center; padding:80px 25px; margin:0; border:1px dashed #87775d50; color:#ae9e83; font-size:15px; }
+.pet-photo-viewer { position:absolute; inset:0; z-index:10; display:grid; grid-template-rows:48px minmax(0,1fr) 40px; gap:9px; padding:12px 23px; background:#101719fc; border:1px solid #927e5866; box-shadow:0 10px 40px #0009; }
+.pet-viewer-header { display:flex; align-items:center; justify-content:space-between; gap:16px; min-width:0; }
+.pet-viewer-header h3 { margin:0; font-size:21px; font-weight:400; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+.pet-viewer-close { border:0; background:transparent; font-size:30px!important; line-height:1; width:38px; height:38px; }
+.pet-viewer-image { min-width:0; min-height:0; }
+.pet-full-image { background:transparent; }
+.pet-viewer-footer { display:flex; align-items:center; justify-content:center; gap:25px; }
+.pet-viewer-count { color:#c3b592; font-size:12px; margin:0; min-width:55px; text-align:center; }
+.pet-album-empty { display:flex; align-items:center; justify-content:center; gap:63px; height:100%; padding:40px; background:radial-gradient(ellipse at 42% 70%,#5c554227,transparent 65%); }
+.pet-closed-album { position:relative; flex:0 0 156px; height:207px; transform:rotate(-7deg); background:linear-gradient(90deg,#252724 8%,#454437 9%,#30342d 13%,#32382e 94%,#242a23); border:1px solid #7a6f4d70; box-shadow:8px 12px 18px #0006,3px 1px 0 #8b80634d,5px 2px 0 #282d27; }
+.pet-closed-album:after { content:''; position:absolute; inset:16px 13px 16px 24px; border:1px solid #9c895455; }
+.pet-closed-album i { position:absolute; inset:23px 20px 23px 31px; border:1px solid #9c895430; }
+.pet-closed-album span { position:absolute; inset:0; display:grid; place-items:center; color:#baa471; font-size:22px; letter-spacing:.35em; padding-left:.35em; }
+.pet-empty-writing h3 { margin:0 0 19px; font-size:26px; font-weight:400; letter-spacing:.12em; color:#d8ccb2; }
+.pet-empty-writing p { margin:0; font-size:14px; line-height:1.9; color:#a99e89; }
+/* The game stage scales as a unit on phones. Container rules also allow this
+   album to be used independently in the management preview at a narrow width. */
+.pet-gallery-host { container-type:inline-size; }
+@container (max-width:760px) {
+  .pet-album { grid-template-columns:128px minmax(0,1fr); grid-template-rows:92px minmax(0,1fr); gap:14px 20px; padding:20px; }
+  .pet-index { grid-row:1/-1; padding-right:14px; }
+  .pet-introduction { padding:0; display:block; }
+  .pet-name { font-size:24px; }
+  .pet-intro-rule { display:none; }
+  .pet-description { max-height:55px; font-size:13px; }
+  .pet-description p { margin:5px 0 0; }
+  .pet-photographs { grid-column:2; grid-template-rows:minmax(0,1fr) 43px 15px; gap:8px; }
+  .pet-thumbnail { height:40px; width:42px; flex-basis:42px; }
+  .pet-thumbnails { gap:5px; }
+  .pet-photo-controls { gap:5px; }
+}
+@container (max-width:440px) {
+  .pet-album { grid-template-columns:minmax(0,1fr); grid-template-rows:45px 67px minmax(0,1fr); padding:14px; gap:10px; }
+  .pet-index { grid-row:1; flex-direction:row; padding:0; border:0; gap:7px; min-height:0; }
+  .pet-index-heading { display:none; }
+  .pet-index-list { display:flex; gap:5px; flex:1; min-width:0; }
+  .pet-index-item { min-height:40px; padding:7px 9px; font-size:13px!important; flex:1; min-width:0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+  .pet-index-item[aria-pressed=true]:before { top:10px; height:13px; }
+  .pet-index-paging { margin:0; gap:0; }
+  .pet-index-paging>span { display:none; }
+  .pet-index-paging .pet-arrow { width:22px; }
+  .pet-introduction { grid-row:2; }
+  .pet-name { font-size:21px; }
+  .pet-description { max-height:33px; font-size:12px; line-height:1.7; }
+  .pet-photographs { grid-column:1; grid-row:3; }
+  .pet-thumbnail { height:37px; }
+  .pet-album-empty { flex-direction:column; gap:28px; padding:25px 16px; }
+  .pet-closed-album { flex:0 0 160px; width:122px; height:160px; }
+  .pet-empty-writing { text-align:center; }
+  .pet-empty-writing h3 { font-size:20px; }
+  .pet-empty-writing p { font-size:12px; }
+  .pet-photo-viewer { padding:10px 14px; }
+}

@@ -144,7 +144,7 @@ export function cancel() {
  * onReveal runs exactly once after the entrance; it may return a Promise.
  * The gap between the two source clips is a browser navigation boundary.
  */
-export function play({ onReveal = () => {}, title = '个人档案', signal, reducedMotion } = {}) {
+export function play({ onReveal = () => {}, title = '个人档案', signal } = {}) {
   cancel();
   return new Promise(resolve => {
     const state = { resolve, signal, nodes: null, raf: 0, revealed: false, abort: null };
@@ -183,8 +183,6 @@ export function play({ onReveal = () => {}, title = '个人档案', signal, redu
       };
       state.raf = requestAnimationFrame(tick);
     };
-    const reduce = reducedMotion ?? matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduce) { reveal().then(ok => { if (ok) finish(); }).catch(fail); return; }
     preload().then(async loaded => {
       if (!isActive()) return;
       if (!loaded.every(Boolean)) {

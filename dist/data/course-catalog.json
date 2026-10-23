@@ -1,0 +1,17 @@
+[
+  { "id": "comp1511", "code": "COMP1511", "name": "Programming Fundamentals", "status": "completed", "notes": "", "url": "https://www.handbook.unsw.edu.au/undergraduate/courses/2026/COMP1511", "visible": true },
+  { "id": "elec1111", "code": "ELEC1111", "name": "Electrical Circuit Fundamentals", "status": "completed", "notes": "", "url": "https://www.handbook.unsw.edu.au/undergraduate/courses/2026/ELEC1111", "visible": true },
+  { "id": "desn1000", "code": "DESN1000", "name": "Introduction to Engineering Design and Innovation", "status": "completed", "notes": "", "url": "https://www.handbook.unsw.edu.au/undergraduate/courses/2026/DESN1000", "visible": true },
+  { "id": "phys1231", "code": "PHYS1231", "name": "Higher Physics 1B", "status": "completed", "notes": "", "url": "https://www.handbook.unsw.edu.au/undergraduate/courses/2026/PHYS1231", "visible": true },
+  { "id": "math1131", "code": "MATH1131", "name": "Mathematics 1A", "status": "completed", "notes": "", "url": "https://www.handbook.unsw.edu.au/undergraduate/courses/2026/MATH1131", "visible": true },
+  { "id": "phys1121", "code": "PHYS1121", "name": "Physics 1A", "status": "completed", "notes": "", "url": "https://www.handbook.unsw.edu.au/undergraduate/courses/2026/PHYS1121", "visible": true },
+  { "id": "math1231", "code": "MATH1231", "name": "Mathematics 1B", "status": "completed", "notes": "", "url": "https://www.handbook.unsw.edu.au/undergraduate/courses/2026/MATH1231", "visible": true },
+  { "id": "desn2000", "code": "DESN2000", "name": "Engineering Design and Professional Practice", "status": "completed", "notes": "", "url": "https://www.handbook.unsw.edu.au/undergraduate/courses/2026/DESN2000", "visible": true },
+  { "id": "elec2141", "code": "ELEC2141", "name": "Digital Circuit Design", "status": "completed", "notes": "", "url": "https://www.handbook.unsw.edu.au/undergraduate/courses/2026/ELEC2141", "visible": true },
+  { "id": "math2099", "code": "MATH2099", "name": "Mathematics 2B", "status": "completed", "notes": "", "url": "https://www.handbook.unsw.edu.au/undergraduate/courses/2026/MATH2099", "visible": true },
+  { "id": "comp1521", "code": "COMP1521", "name": "Computer Systems Fundamentals", "status": "completed", "notes": "", "url": "https://www.handbook.unsw.edu.au/undergraduate/courses/2026/COMP1521", "visible": true },
+  { "id": "comp1531", "code": "COMP1531", "name": "Software Engineering Fundamentals", "status": "completed", "notes": "", "url": "https://www.handbook.unsw.edu.au/undergraduate/courses/2026/COMP1531", "visible": true },
+  { "id": "comp2521", "code": "COMP2521", "name": "Data Structures and Algorithms", "status": "current", "notes": "", "url": "https://www.handbook.unsw.edu.au/undergraduate/courses/2026/COMP2521", "visible": true },
+  { "id": "elec2134", "code": "ELEC2134", "name": "Circuits and Signals", "status": "current", "notes": "", "url": "https://www.handbook.unsw.edu.au/undergraduate/courses/2026/ELEC2134", "visible": true },
+  { "id": "math2069", "code": "MATH2069", "name": "Mathematics 2A", "status": "current", "notes": "", "url": "https://www.handbook.unsw.edu.au/undergraduate/courses/2026/MATH2069", "visible": true }
+]

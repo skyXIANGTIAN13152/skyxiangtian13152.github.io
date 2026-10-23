@@ -10,6 +10,12 @@ const v3 = a => new THREE.Vector3(...a);
 const values = (p, key, fallback) => (p[key]?.Value || fallback).split(',').map(Number);
 const seasonalProps = /\/(?:h55_manor_halloween01|h55_coa5_word0[12]|h55_p5wardrobe_p5mail01|h55_main_haibao01|h55_main_envelope01)\.gim$/;
 
+export function isOriginalFloorSurface(path, hidden = false) {
+  // The main floor has a cutout under the coat-rack carpet. In this lobby the
+  // original cellar door is closed and fills it at the same walking height.
+  return !hidden && /\/dm65_main_(?:ground001|cellardoor001)\.gim$/.test(path);
+}
+
 function originalMirror(mesh, data, mask) {
   // Reflector expects a local +Z plane. Rebase the original mesh onto that
   // plane and apply the exact inverse transform; no mirror outline is rebuilt.
@@ -242,7 +248,7 @@ export async function createRoom(options = {}) {
     while (instance && !instance.userData.originalInstance) instance = instance.parent;
     if (!instance) return;
     const path = instance.userData.originalInstance.resource.replaceAll('\\', '/').toLowerCase();
-    if (/dm65_main_ground001/.test(path)) floorMeshes.push(o);
+    if (isOriginalFloorSurface(path, instance.userData.hiddenFlag)) floorMeshes.push(o);
     if (!exactCollision.test(path) && !(solidGeometry.test(path) && !instance.userData.hiddenFlag)) return;
     const geometry = o.geometry.clone().applyMatrix4(o.matrixWorld);
     computeRoomBounds(geometry);
@@ -270,6 +276,8 @@ export async function createRoom(options = {}) {
   }
   const spawn = { x: 6.05, y: floorHeight(6.05, -2.4) || 0, z: -2.4 };
   const hotspots = [
+    { id: 'pets', label: '宠物小屋', position: v3([7.7, 1.35, -8.6]), approach: v3([6.55, 0, -8.6]) },
+    { id: 'people', label: '名人墙', position: v3([3.1, 2.15, -9.35]), approach: v3([3.1, 0, -8.2]) },
     { id: 'about', label: '关于我', position: v3([7.9, 2.3, -3.9]), approach: v3([6.8, 0, -3.9]) },
     { id: 'work', label: '作品集', position: v3([8, 2.2, .35]), approach: v3([6.7, 0, .35]) },
     { id: 'study', label: '专业学习', position: v3([8.1, 2.1, -1.6]), approach: v3([6.7, 0, -1.6]) },
