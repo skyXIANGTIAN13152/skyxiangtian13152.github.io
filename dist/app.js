@@ -82,7 +82,7 @@
       if (active) link.setAttribute('aria-current', 'page');
       else link.removeAttribute('aria-current');
     });
-    $('.scene-caption').textContent = id === 'home' ? '在 UNSW builder space 制作' : id === 'lobby' ? '点击大厅中的文字，开始探索' : titles[id];
+    $('.scene-caption').textContent = id === 'home' ? '在 UNSW builder space 制作' : id === 'lobby' ? '提灯入室，探索个人档案' : titles[id];
     document.title = `Sky 天 · ${titles[id]}`;
   };
   const focusScene = (id) => $(`#${id}`).querySelector('h1,h2').focus({ preventScroll: true });
@@ -99,6 +99,7 @@
     const version = ++navigationVersion;
     const fromScene = currentScene;
     transitioning = true;
+    window.dispatchEvent(new CustomEvent('sky:transitionstart'));
     closeMenu();
     try {
       if (fromScene === 'lobby' && id !== 'lobby' && id !== 'home' && !reducedMotion) {

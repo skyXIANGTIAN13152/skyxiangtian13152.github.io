@@ -43,6 +43,11 @@ for (const file of files) {
   if (extension === '.js') {
     const result = spawnSync(process.execPath, ['--check', file], { encoding: 'utf8' });
     if (result.status !== 0) failures.push(result.stderr || `JavaScript 语法检查失败：${file}`);
+    const source = await readFile(file, 'utf8');
+    const modules = [...source.matchAll(/(?:\bfrom\s*|\bimport\s*\()\s*['"](\.{1,2}\/[^'"]+)['"]/g)];
+    for (const match of modules) await checkReference(file, match[1]);
+    const assets = [...source.matchAll(/new URL\(\s*['"](\.{1,2}\/[^'"]+)['"]\s*,\s*import\.meta\.url/g)];
+    for (const match of assets) await checkReference(file, match[1]);
   }
   if (extension !== '.html' && extension !== '.css') continue;
   const content = await readFile(file, 'utf8');

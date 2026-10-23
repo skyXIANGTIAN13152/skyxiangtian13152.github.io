@@ -1,0 +1,28 @@
+{
+  "effect": "Original lobby color lookup table",
+  "configurationSource": "2022 original dm65_main1.postprocess",
+  "sourceGamePath": "lut/zhujiemian.bmp",
+  "sourceDecodedMD5": "1373ac429afec3672d1815e7b2e27015",
+  "sourcePackage": "User-provided installed game: res/lut2.wpk",
+  "image": "original-lobby-lut.png",
+  "imageDimensions": [256, 16],
+  "cubeSize": 16,
+  "shaderSource": "Original installed-game shader/posteffects/color_grading.hlsl and color_grading.nfx",
+  "implementation": "Original horizontal 16-cube sampling and interpolation, with no added exposure or tint. Original PNG row 0 maps G=0; texture uses flipY=false and NoColorSpace. The full scene renders to a linear offscreen target, is encoded into sRGB for the original LUT, and converted once into the final display output.",
+  "renderer": {"library": "Three.js 0.186.1", "outputColorSpace": "SRGBColorSpace", "toneMapping": "NoToneMapping"},
+  "included": ["Original color lookup across room, detective and original flame"],
+  "notPorted": {
+    "dark_corner": "Source active=true, DarkIntensity=0, DarkBegin=0.05, DarkAlpha=1.38. No verified shader formula was located, so no invented vignette is added.",
+    "bloom": "Original configuration is recorded in research, but the proprietary bloom pipeline is not reproduced.",
+    "dof_mobile": "Original depth-of-field pipeline is not reproduced."
+  },
+  "validation": {
+    "method": "Actual browser WebGL framebuffer versus independent CPU trilinear lookup from original PNG bytes",
+    "samples": 32,
+    "maximum8BitChannelError": 1,
+    "webglError": 0,
+    "resize": "768x128 to 384x64 passed",
+    "dispose": "Repeated disposal passed"
+  },
+  "limits": "The source table and its sampling formula are preserved. Legacy engine pass order and platform compile flags have not been reproduced in full, so this is not a claim of pixel-identical game rendering. The webpage's separate CSS shading belongs to its interface, not this game color pass."
+}

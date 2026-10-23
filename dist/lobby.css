@@ -4,7 +4,7 @@
 .lobby-room{position:absolute;inset:0;transform-origin:50% 50%;will-change:transform;transition:transform .65s cubic-bezier(.2,.65,.25,1)}
 .lobby-section.is-entering .lobby-room{transform:scale(1.07)}
 .lobby-section.is-entering .lobby-entrances{opacity:.3;transition:opacity .4s}
-.lobby-room-image{position:absolute;inset:0;background:url('assets/original/lobby-cleaned.png') center/cover no-repeat}
+.lobby-room-image{position:absolute;inset:0;background:url('assets/original/lobby-render.png') center/cover no-repeat}
 .lobby-room-shade{position:absolute;inset:0;background:linear-gradient(0deg,#090c12c4 0%,transparent 23%,transparent 78%,#0b0e12b5 100%),radial-gradient(ellipse at 50% 50%,transparent 30%,#090c114d 100%)}
 .lobby-content.container{position:absolute;inset:0;width:1280px;height:720px;margin:0;max-width:none}
 .lobby-candle{position:absolute;left:560px;top:190px;width:78px;height:92px;background:radial-gradient(ellipse,#ecb56926,transparent 65%);mix-blend-mode:screen;pointer-events:none}
@@ -46,9 +46,9 @@
 .game-stage[data-scene=lobby] .motion-toggle{font-size:10px}
 .game-stage .scene-progress{gap:6px}.game-stage .scene-progress i{width:22px}.game-stage .scene-progress a{width:27px}
 .game-stage .site-footer>.scene-caption{white-space:nowrap}
-.game-stage .about-section:before{background-image:url('assets/original/lobby-cleaned.png');opacity:.4}
-.game-stage .work-section{background-image:linear-gradient(90deg,#0c141aea,#0c151bde),url('assets/original/lobby-cleaned.png')}
-.game-stage .study-section:before,.game-stage .interests-section:before{background-image:url('assets/original/lobby-cleaned.png')}
+.game-stage .about-section:before{background-image:url('assets/original/lobby-render.png');opacity:.4}
+.game-stage .work-section{background-image:linear-gradient(90deg,#0c141aea,#0c151bde),url('assets/original/lobby-render.png')}
+.game-stage .study-section:before,.game-stage .interests-section:before{background-image:url('assets/original/lobby-render.png')}
 
 /* The original personal cover is the front door; the room is the next scene. */
 .game-stage[data-scene=home] .desktop-nav{visibility:hidden;pointer-events:none}

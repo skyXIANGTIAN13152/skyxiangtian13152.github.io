@@ -4,6 +4,6 @@ Thumbs.db
 *.log
 .env
 .env.*
-.openai/
-
+.openai/*
+!.openai/hosting.json
 

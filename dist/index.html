@@ -10,17 +10,20 @@
   <meta property="og:type" content="website">
   <title>Sky 天 · 个人档案</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="preload" href="assets/fonts/cormorant-garamond-regular-latin.woff2?v=20261022-7" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="style.css?v=20261022-7">
-  <link rel="stylesheet" href="loader.css?v=20261022-7">
-  <link rel="stylesheet" href="scenes.css?v=20261022-7">
-  <link rel="stylesheet" href="toys.css?v=20261022-7">
-  <link rel="stylesheet" href="details.css?v=20261022-7">
-  <link rel="stylesheet" href="lobby.css?v=20261022-7">
-  <script src="vendor/gsap.min.js?v=20261022-7" defer></script>
-  <script src="loader.js?v=20261022-7" defer></script>
-  <script src="app.js?v=20261022-8" defer></script>
-  <script src="toys.js?v=20261022-7" defer></script>
+  <link rel="preload" href="assets/fonts/cormorant-garamond-regular-latin.woff2?v=20261023-9" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css?v=20261023-9">
+  <link rel="stylesheet" href="loader.css?v=20261023-9">
+  <link rel="stylesheet" href="scenes.css?v=20261023-9">
+  <link rel="stylesheet" href="toys.css?v=20261023-9">
+  <link rel="stylesheet" href="details.css?v=20261023-9">
+  <link rel="stylesheet" href="lobby.css?v=20261023-9">
+  <link rel="stylesheet" href="room3d.css?v=20261023-9">
+  <script type="importmap">{"imports":{"three":"./vendor/three.module.js","three/addons/":"./vendor/three-addons/"}}</script>
+  <script type="module" src="room3d.js?v=20261023-9"></script>
+  <script src="vendor/gsap.min.js?v=20261023-9" defer></script>
+  <script src="loader.js?v=20261023-9" defer></script>
+  <script src="app.js?v=20261023-9" defer></script>
+  <script src="toys.js?v=20261023-9" defer></script>
 </head>
 <body>
   <div class="game-stage" data-scene="home">
@@ -62,10 +65,15 @@
       </div>
     </section>
     <section class="lobby-section scene" id="lobby" aria-labelledby="lobby-title">
-      <div class="lobby-room" aria-hidden="true"><div class="lobby-room-image"></div><div class="lobby-room-shade"></div><div class="lobby-candle"></div></div>
+      <div class="lobby-room"><div class="lobby-room-image"></div><div class="lobby-room-shade"></div><div class="lobby-candle"></div></div>
       <div class="lobby-prop-light" aria-hidden="true"></div>
       <div class="container lobby-content">
         <h1 id="lobby-title" class="visually-hidden" tabindex="-1">Sky 天的个人大厅</h1>
+        <div class="room-directory"><button class="room-directory-toggle" type="button" aria-expanded="false" aria-controls="room-directory-list"><svg aria-hidden="true"><use href="#profile-icon"/></svg>个人档案目录</button><nav class="room-directory-list" id="room-directory-list" aria-label="直接阅读个人页面" hidden><a href="#about">关于我</a><a href="#work">作品集</a><a href="#study">专业学习</a><a href="#interests">兴趣爱好</a></nav></div>
+        <div class="room-help"><div class="room-help-keys" aria-hidden="true"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></div><div><span>行走，靠近物件后按 E 阅读</span><span class="room-help-secondary">拖动观察房间 · Q / R 转动视角</span></div></div>
+        <p class="room-loading" role="status">正在点亮侦探的油灯…</p>
+        <button class="room-interact" type="button" hidden><kbd>E</kbd><span>阅读档案</span></button>
+        <button class="room-reset" type="button">回到入口</button>
         <nav class="lobby-entrances" aria-label="大厅中的个人网页入口">
           <a class="lobby-hotspot hotspot-about" href="#about" data-prop="about" data-camera="28% 33%"><svg class="laurel left" aria-hidden="true"><use href="#laurel"/></svg><span class="hotspot-title">关于我</span><span class="hotspot-subtitle">Sky 天 · 个人档案</span><svg class="laurel right" aria-hidden="true"><use href="#laurel"/></svg><span class="hotspot-glint" aria-hidden="true"></span></a>
           <a class="lobby-hotspot hotspot-work" href="#work" data-prop="work" data-camera="86% 44%"><svg class="laurel left" aria-hidden="true"><use href="#laurel"/></svg><span class="hotspot-title">作品集</span><span class="hotspot-subtitle">SyncWallpaper</span><svg class="laurel right" aria-hidden="true"><use href="#laurel"/></svg><span class="hotspot-glint" aria-hidden="true"></span></a>
@@ -176,6 +184,7 @@
   <audio id="lobby-music" src="assets/audio/identity-v-manor.mp3" preload="none" loop hidden></audio>
   <p class="orientation-note">横屏浏览，进入完整庄园</p>
   <div class="notification" role="status" aria-live="polite"></div>
+  <div class="room-touch-controls" hidden><div class="room-joystick" role="group" aria-label="移动摇杆，拖动控制侦探"><span class="room-joystick-knob"></span></div><button class="room-touch-read" type="button" disabled><span>靠近</span><small>房间物件</small></button><a class="room-touch-exit" href="#home">离开大厅</a><span class="room-touch-look">左侧摇杆行走 · 拖动画面观察房间</span></div>
 </body>
 </html>
 

@@ -1,0 +1,61 @@
+.room-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;outline:none;touch-action:none;opacity:0;transition:opacity .7s}
+.room-canvas:focus-visible{outline:1px solid #d4b47788;outline-offset:-7px}
+.room-ready .room-canvas{opacity:1}
+.room-ready .lobby-room-image,.room-ready .lobby-candle{opacity:0;visibility:hidden}
+.room-ready .lobby-room-shade{z-index:2;background:linear-gradient(0deg,#080b10c2,transparent 19%,transparent 80%,#0b0e1266),radial-gradient(ellipse,transparent 40%,#090c1126);pointer-events:none}
+.lobby-content.container{pointer-events:none}
+.lobby-content a,.lobby-content button{pointer-events:auto}
+.room-ready .lobby-prop-light,.room-ready .lobby-tagline{display:none}
+.room-ready .lobby-hotspot{width:200px;min-height:84px;padding:13px 23px;transform:translate(-50%,-50%);transition:color .2s,opacity .25s,filter .2s}
+.room-ready .lobby-hotspot:hover,.room-ready .lobby-hotspot:focus-visible{transform:translate(-50%,-50%)}
+.room-ready .hotspot-title{font-size:26px;letter-spacing:.1em}
+.room-ready .hotspot-subtitle{font-size:12px}
+.room-ready .laurel{width:22px;height:55px;top:12px}
+.room-ready .lobby-hotspot.is-distant{pointer-events:none;opacity:.52}
+.room-ready .lobby-hotspot.is-near{filter:drop-shadow(0 0 9px #d4b47788)}
+.room-ready .lobby-hotspot.is-near:before{opacity:1}
+.room-ready .lobby-hotspot.is-near .hotspot-glint{opacity:1}
+.room-ready .lobby-hotspot.is-occluded{opacity:0;pointer-events:none}
+.room-help{position:absolute;left:48px;bottom:86px;display:flex;gap:15px;align-items:center;color:#c2c0b3;text-shadow:0 2px 5px #000;font-size:12px;line-height:1.9;letter-spacing:.06em}
+.room-help kbd,.room-interact kbd{font:12px Georgia,serif;display:inline-flex;align-items:center;justify-content:center;min-width:25px;height:25px;border:1px solid #c8bfa155;background:#151b1db3;color:#dfd1af}
+.room-help-keys{display:grid;grid-template-columns:repeat(3,25px);gap:3px}.room-help-keys kbd:first-child{grid-column:2}.room-help-keys kbd:nth-child(2){grid-column:1}
+.room-help span{display:block}.room-help .room-help-secondary{font-size:10px;color:#959d99}
+.room-directory{position:absolute;left:48px;top:102px;pointer-events:auto;color:#d9ceb6}
+.room-directory-toggle{font:12px var(--serif);letter-spacing:.08em;border-bottom:1px solid #c8bfa155;padding:10px 2px;display:flex;align-items:center;gap:9px;text-shadow:0 2px 4px #000}
+.room-directory-toggle svg{width:16px;height:16px}
+.room-directory-list{margin-top:10px;padding:14px 19px;background:#11191bee;border:1px solid #8d806544;min-width:150px;box-shadow:0 8px 35px #0006}
+.room-directory-list a{display:block;padding:9px 0;font:13px var(--serif);letter-spacing:.1em;color:#d9ceb6}
+.room-directory-list a:hover{color:#fff2cc}
+.room-directory-list[hidden]{display:none}
+.room-interact{position:absolute;left:50%;bottom:90px;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;gap:12px;padding:10px 25px;min-height:48px;background:linear-gradient(90deg,transparent,#14191dd9 20%,#14191dd9 80%,transparent);color:#eddfc2;font:14px var(--serif);letter-spacing:.12em;white-space:nowrap}
+.room-interact[hidden]{display:none}
+.room-loading{position:absolute;bottom:82px;left:50%;transform:translateX(-50%);color:#dfd6bd;font-size:12px;text-shadow:0 2px 4px #000;letter-spacing:.12em}
+.room-ready .room-loading{display:none}
+.room-reset{position:absolute;right:51px;bottom:84px;color:#bebcae;letter-spacing:.08em;font:11px var(--serif);padding:10px 4px}
+.room-touch-controls{position:fixed;inset:0;z-index:65;pointer-events:none;display:none}
+.room-touch-controls[hidden]{display:none!important}
+.room-joystick{position:absolute;left:max(23px,env(safe-area-inset-left));bottom:max(23px,env(safe-area-inset-bottom));width:112px;height:112px;border:1px solid #d2c3a45c;border-radius:50%;background:radial-gradient(circle,#19222660,#10161936 65%,#a89c7933);box-shadow:inset 0 0 20px #0004,0 2px 15px #0003;pointer-events:auto;touch-action:none}
+.room-joystick:before,.room-joystick:after{content:'';position:absolute;left:50%;top:50%;background:#d2c3a43a;transform:translate(-50%,-50%)}
+.room-joystick:before{width:70px;height:1px}.room-joystick:after{height:70px;width:1px}
+.room-joystick-knob{position:absolute;left:35px;top:35px;width:40px;height:40px;border:1px solid #e2d5b98a;border-radius:50%;background:radial-gradient(circle at 37% 30%,#a79e7fba,#474e46b3 65%,#171e22dc);box-shadow:0 3px 12px #0007;pointer-events:none}
+.room-touch-read{position:absolute;right:max(24px,env(safe-area-inset-right));bottom:max(40px,env(safe-area-inset-bottom));pointer-events:auto;width:76px;height:76px;border:1px solid #cfbb8b88;border-radius:50%;background:#151b1ed4;color:#e8d6ae;font:14px var(--serif);box-shadow:inset 0 0 24px #aa8d4b1a,0 2px 14px #0006;line-height:1.8}
+.room-touch-read:disabled{opacity:.4}
+.room-touch-read small{display:block;font-size:10px;color:#aca997}
+.room-touch-exit{position:absolute;top:max(12px,env(safe-area-inset-top));right:max(15px,env(safe-area-inset-right));padding:9px 12px;color:#dfd5be;font:12px var(--serif);background:#151b1ecb;border:1px solid #8d806544;pointer-events:auto}
+.room-touch-look{position:absolute;bottom:14px;left:150px;right:115px;text-align:center;color:#a8b2aa;font:10px var(--serif);text-shadow:0 1px 3px #000;letter-spacing:.04em}
+@media(pointer:coarse),(max-width:760px){
+ .room-touch-controls{display:block}
+ .room-ready .room-help{display:none}
+ .room-ready .room-interact{bottom:97px}
+ .room-ready .room-reset{bottom:78px}
+ .room-ready .room-directory{top:100px}
+ .room-ready .lobby-hotspot{width:220px}
+}
+@media(orientation:portrait) and (max-width:760px){
+ .room-touch-controls{background:linear-gradient(0deg,#080d12 0%,transparent 24%,transparent 80%,#080d12 100%)}
+ .room-touch-controls .room-touch-look{bottom:160px;left:20px;right:20px;font-size:11px}
+ body:has(.room-touch-controls:not([hidden])) .orientation-note{bottom:auto;top:20%;font-size:11px}
+ .room-ready .room-interact{font-size:18px;bottom:82px}
+}
+.reduced-motion .room-canvas{transition:none}
+.lobby-section:not(.room-ready) .room-help,.lobby-section:not(.room-ready) .room-reset{display:none}

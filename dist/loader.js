@@ -1,91 +1,126 @@
-/* A short, skippable frosted-mirror entrance. No framework or network dependency. */
+/* Original Identity V loading.csb imagery and timeline. See assets/muse-original/provenance.json. */
 (function () {
   'use strict';
   var active = null;
-  var paths = [
-    'M450 252 C442 231 429 215 430 191 C431 173 451 168 458 153 C463 139 448 128 436 132 C420 136 421 153 431 160 C442 168 450 159 446 152',
-    'M450 252 C454 223 467 214 488 204 C508 194 533 180 533 164 C531 149 513 142 501 151 C486 161 493 176 505 176 C513 176 518 169 514 163',
-    'M450 252 C471 230 497 226 521 231 C543 236 546 215 559 216 C575 216 580 233 568 245 C552 260 533 249 514 247 C492 244 477 254 450 252',
-    'M450 252 C481 251 504 265 516 283 C527 300 551 308 560 296 C571 281 550 269 538 278 C529 285 537 293 542 290',
-    'M450 252 C468 269 466 287 482 307 C497 326 511 335 504 347 C497 361 480 355 476 345 C472 333 482 327 490 333',
-    'M450 252 C442 278 454 303 442 324 C429 344 424 360 409 357 C394 354 396 334 408 328 C418 322 426 331 420 338',
-    'M450 252 C433 275 415 280 394 282 C375 285 365 310 350 307 C332 305 330 284 342 276 C354 267 366 278 360 288',
-    'M450 252 C425 256 411 244 395 231 C374 214 354 204 341 216 C325 228 332 246 345 247 C358 247 366 237 359 228',
-    'M450 252 C429 232 407 220 405 199 C404 182 397 153 380 153 C364 153 358 168 366 181 C373 195 390 192 393 183 C396 175 389 169 383 172'
-  ];
-  var fractures = [
-    'M450 252 L458 196 L471 124 L484 68 L499 0',
-    'M450 252 L504 186 L560 113 L612 44 L657 0',
-    'M450 252 L522 272 L613 303 L698 336 L798 365 L900 401',
-    'M450 252 L506 287 L566 330 L639 375 L720 428 L814 477 L900 528',
-    'M450 252 L471 315 L516 377 L548 450 L591 524 L628 600',
-    'M450 252 L388 307 L322 360 L249 412 L173 464 L101 499 L0 525',
-    'M450 252 L363 242 L282 234 L172 233 L82 230 L0 230',
-    'M450 252 L368 240 L307 230 L229 217 L143 205 L0 176',
-    'M471 124 L536 103 L612 44',
-    'M388 307 L333 323 L327 237',
-    'M566 330 L613 303 L698 336',
-    'M322 360 L274 373 L249 412'
-  ];
-  var pieces = [
-    ['50% 42%,0 29.3%,0 0,55.5% 0', '-42vw', '-46vh', '210px', '-36deg', '-16deg', '-17deg', '0ms'],
-    ['50% 42%,55.5% 0,73% 0', '8vw', '-61vh', '300px', '34deg', '-19deg', '12deg', '20ms'],
-    ['50% 42%,73% 0,100% 0,100% 66.8%', '52vw', '-33vh', '240px', '-21deg', '37deg', '17deg', '35ms'],
-    ['50% 42%,100% 66.8%,100% 88%', '68vw', '4vh', '350px', '-25deg', '28deg', '21deg', '5ms'],
-    ['50% 42%,100% 88%,100% 100%,69.8% 100%', '45vw', '53vh', '320px', '18deg', '31deg', '23deg', '55ms'],
-    ['50% 42%,69.8% 100%,40% 100%,43.1% 51.2%', '5vw', '76vh', '270px', '42deg', '-13deg', '-14deg', '15ms'],
-    ['43.1% 51.2%,40% 100%,0 100%,0 87.5%,27.7% 68.7%', '-41vw', '58vh', '180px', '24deg', '-25deg', '-21deg', '45ms'],
-    ['50% 42%,43.1% 51.2%,27.7% 68.7%,0 87.5%,0 38.3%,36.3% 39.5%,37% 53.8%', '-70vw', '14vh', '350px', '-29deg', '-31deg', '11deg', '10ms'],
-    ['50% 42%,37% 53.8%,36.3% 39.5%', '-23vw', '24vh', '520px', '68deg', '-51deg', '-38deg', '0ms'],
-    ['50% 42%,36.3% 39.5%,0 38.3%,0 29.3%', '-63vw', '-15vh', '270px', '17deg', '-42deg', '-23deg', '25ms']
-  ];
-  function sealMarkup() {
-    var lines = paths.map(function (d, i) {
-      return '<path class="sky-intro__line" pathLength="1" d="' + d + '" style="transition-delay:' + (i * 30) + 'ms"/>';
-    }).join('');
-    return '<svg class="sky-intro__seal" viewBox="0 0 900 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' +
-      '<g class="sky-intro__ink" fill="#091116"><path d="M247 151 Q412 121 602 103 Q650 103 624 145 L605 169 Q665 174 647 208 L621 225 Q654 244 630 267 L625 286 Q661 321 629 343 L608 347 Q638 388 591 387 L326 377 Q289 371 300 347 L320 323 Q284 315 290 285 L305 256 Q306 242 294 227 L267 214 Q227 208 238 179 Q217 158 247 151Z"/></g>' +
-      '<g>' + lines + '</g><g transform="translate(1.8,-1.6)">' + lines.replace(/sky-intro__line/g, 'sky-intro__line sky-intro__line--echo') + '</g></svg>';
-  }
-  function crackMarkup() {
-    return '<svg class="sky-intro__cracks" viewBox="0 0 900 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' + fractures.map(function(d, i) {
-      return '<path class="sky-intro__fracture' + (i > 7 ? ' sky-intro__fracture--fine' : '') + '" pathLength="1" d="' + d + '" style="transition-delay:' + ((i % 4) * 24) + 'ms"/>';
-    }).join('') + '</svg>';
+  var assetPromise = null;
+  var scriptURL = document.currentScript && document.currentScript.src;
+  var assetRoot = new URL('assets/muse-original/', scriptURL || document.baseURI).href;
+  var symbolFrames = [[56,13],[58,16],[60,19],[62,22],[64,25],[66,28],[68,31],[70,34],[72,37],[74,40],[76,43],[78,46],[80,46],[82,52],[84,55],[86,58],[88,61],[90,61],[92,61],[94,61],[96,73],[98,76],[100,79],[102,82],[104,85],[106,88],[108,91],[110,91],[112,91],[114,100],[116,103],[118,106],[120,109],[122,112],[124,115],[126,115],[128,115],[130,124],[132,127],[134,130],[136,133],[138,136],[140,139],[142,139],[144,145],[145,146],[147,148],[149,150],[151,152],[153,154],[155,156],[157,158],[159,160]];
+  var glassFrames = [[158,2],[159,3],[160,4],[161,5],[162,6]];
+  // The original CSB runs at 60 fps with speed 0.666700005531311.
+  var frameRate = 60 * 0.666700005531311;
+  var firstFrame = 48;
+  var lastFrame = 220;
+  function textureName(prefix, number) { return prefix + String(number).padStart(4, '0'); }
+  function preload() {
+    if (assetPromise) return assetPromise;
+    var names = new Set(['bg_loading']);
+    symbolFrames.forEach(function (frame) { names.add(textureName('symbol', frame[1])); });
+    glassFrames.forEach(function (frame) { names.add(textureName('glassbroken', frame[1])); });
+    var images = Object.create(null);
+    assetPromise = Promise.all(Array.from(names).map(function (name) {
+      return new Promise(function (resolve, reject) {
+        var image = new Image();
+        var done = false;
+        var timeout = setTimeout(function () { settle(new Error('Animation image timed out: ' + name)); }, 12000);
+        function settle(error) {
+          if (done) return;
+          done = true;
+          clearTimeout(timeout);
+          image.onload = image.onerror = null;
+          if (error) reject(error);
+          else { images[name] = image; resolve(); }
+        }
+        image.onload = function () {
+          if (!image.naturalWidth) { settle(new Error('Animation image is empty: ' + name)); return; }
+          if (image.decode) image.decode().then(function () { settle(); }, function () { settle(); });
+          else settle();
+        };
+        image.onerror = function () { settle(new Error('Animation image unavailable: ' + name)); };
+        image.src = assetRoot + name + '.webp?v=pc-20261023';
+      });
+    })).then(function () { return images; }, function (error) {
+      assetPromise = null;
+      throw error;
+    });
+    return assetPromise;
   }
   function callOnce(state, name) {
-    var called = name + 'Called';
-    if (state[called]) return;
-    state[called] = true;
+    if (state[name + 'Called']) return;
+    state[name + 'Called'] = true;
     if (typeof state[name] !== 'function') return;
-    try {
-      state[name]();
-    } catch (error) {
-      // A scene callback must not strand the visitor behind the loading cover.
-      console.error('[SkyIntro] ' + name + ' callback failed.', error);
-    }
+    try { state[name](); }
+    catch (error) { console.error('[SkyIntro] ' + name + ' callback failed.', error); }
+  }
+  function reducedMotion() {
+    if (document.documentElement.classList.contains('reduced-motion')) return true;
+    return !document.documentElement.classList.contains('full-motion') &&
+      window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   }
   function finish() {
     if (!active || active.finishing) return;
     var state = active;
     state.finishing = true;
+    cancelAnimationFrame(state.raf);
     state.timers.forEach(clearTimeout);
-    // Skipping shortens the transition, but still reaches the intended scene.
     callOnce(state, 'onCovered');
     callOnce(state, 'onReveal');
     if (state.overlay) {
       document.removeEventListener('keydown', state.keydown, true);
+      document.removeEventListener('visibilitychange', state.visibility);
+      window.removeEventListener('resize', state.resize);
       document.body.style.overflow = state.overflow;
       state.siblings.forEach(function (item) { if (item.element.isConnected) item.element.inert = item.inert; });
       var hadFocus = state.overlay.contains(document.activeElement);
       state.overlay.remove();
       document.documentElement.classList.remove('sky-intro-active');
-      if (hadFocus && state.previousFocus && state.previousFocus.isConnected && state.previousFocus !== document.body) {
+      if (hadFocus && state.previousFocus && state.previousFocus.isConnected && !state.previousFocus.closest('[inert]')) {
         state.previousFocus.focus({ preventScroll: true });
       }
     }
     active = null;
     document.dispatchEvent(new CustomEvent('sky:intro-complete'));
     state.resolve();
+  }
+  function alpha(frame, start, end, from, to) {
+    var progress = Math.max(0, Math.min(1, (frame - start) / (end - start)));
+    return from + (to - from) * progress;
+  }
+  function atFrame(frames, frame) {
+    var current = frames[0][1];
+    for (var i = 0; i < frames.length && frames[i][0] <= frame; i++) current = frames[i][1];
+    return current;
+  }
+  function render(state, frame) {
+    var c = state.context;
+    var w = state.canvas.width;
+    var h = state.canvas.height;
+    c.clearRect(0, 0, w, h);
+    var scale = Math.min(w / 1334, h / 750);
+    var ox = (w - 1334 * scale) / 2;
+    var oy = (h - 750 * scale) / 2;
+    var backdropAlpha = alpha(frame, 208, 220, 1, 0);
+    var panelAlpha = alpha(frame, 208, 215, 1, 0);
+    c.globalAlpha = backdropAlpha;
+    c.fillStyle = '#000';
+    c.fillRect(0, 0, w, h);
+    c.drawImage(state.images.bg_loading, ox, oy, 1334 * scale, 750 * scale);
+    function sprite(image, cx, cy, width, height, opacity) {
+      c.globalAlpha = opacity;
+      c.drawImage(image, ox + (cx - width / 2) * scale, oy + (cy - height / 2) * scale, width * scale, height * scale);
+    }
+    // Coordinates, 1.43 scale, and opacity tracks come directly from loading.csb.
+    sprite(state.images[textureName('symbol', atFrame(symbolFrames, frame))],
+      659.000500202179, 359.001000404358, 434 * 1.4299999475479126, 296 * 1.4299999475479126,
+      panelAlpha * alpha(frame, 48, 56, 0, 1));
+    sprite(state.images[textureName('glassbroken', atFrame(glassFrames, frame))],
+      670, 381, 934 * 1.4299999475479126, 525 * 1.4299999475479126,
+      panelAlpha * alpha(frame, 157, 158, 0, 1));
+    c.globalAlpha = 1;
+    state.caption.style.opacity = String(backdropAlpha);
+    state.caption.style.top = ((oy + 695 * scale) / state.pixelRatio) + 'px';
+    state.overlay.dataset.frame = frame.toFixed(2);
+    state.overlay.dataset.phase = frame < 157 ? 'wiping' : frame < 208 ? 'cracked' : 'revealing';
   }
   function play(options) {
     if (active) return active.promise;
@@ -98,59 +133,85 @@
     var state = {
       promise: promise, resolve: resolvePromise, timers: [], overlay: null,
       onCovered: options.onCovered, onReveal: options.onReveal,
-      onCoveredCalled: false, onRevealCalled: false, finishing: false
+      finishing: false, elapsed: 0, lastTime: null, raf: 0
     };
     active = state;
-    if (document.documentElement.classList.contains('reduced-motion')) {
+    if (reducedMotion()) {
       Promise.resolve().then(function () { if (active === state) finish(); });
       return promise;
     }
     var overlay = document.createElement('div');
-    overlay.className = 'sky-intro';
+    overlay.className = 'sky-intro is-preparing';
+    overlay.dataset.phase = 'preparing';
     overlay.setAttribute('role', 'dialog');
     overlay.setAttribute('aria-modal', 'true');
     overlay.setAttribute('aria-label', '缪斯印记过场动画');
-    overlay.innerHTML = '<div class="sky-intro__veil"></div><div class="sky-intro__still"></div>' + sealMarkup() +
-      pieces.map(function (piece) { return '<div class="sky-intro__shard" style="clip-path:polygon(' + piece[0] + ');--dx:' + piece[1] + ';--dy:' + piece[2] + ';--dz:' + piece[3] + ';--rx:' + piece[4] + ';--ry:' + piece[5] + ';--rz:' + piece[6] + ';--lag:' + piece[7] + '"></div>'; }).join('') +
-      crackMarkup() + '<p class="sky-intro__caption">正在翻开档案</p><button type="button" class="sky-intro__skip">跳过</button>';
-    if (typeof options.caption === 'string') overlay.querySelector('.sky-intro__caption').textContent = options.caption;
+    overlay.innerHTML = '<canvas class="sky-intro__canvas" aria-hidden="true"></canvas>' +
+      '<p class="sky-intro__caption" role="status">正在进入大厅</p>' +
+      '<button type="button" class="sky-intro__skip">跳过</button>';
     var skipButton = overlay.querySelector('.sky-intro__skip');
-    var keydown = function (event) {
-      if (event.key === 'Escape') { event.preventDefault(); finish(); }
-      if (event.key === 'Tab') { event.preventDefault(); skipButton.focus(); }
+    state.caption = overlay.querySelector('.sky-intro__caption');
+    state.canvas = overlay.querySelector('canvas');
+    state.context = state.canvas.getContext('2d', { alpha: true });
+    state.keydown = function (event) {
+      if (event.key === 'Escape') { event.preventDefault(); event.stopImmediatePropagation(); finish(); }
+      if (event.key === 'Tab') { event.preventDefault(); event.stopImmediatePropagation(); skipButton.focus(); }
     };
-    var siblings = Array.from(document.body.children).map(function (element) { return { element: element, inert: element.inert }; });
+    state.resize = function () {
+      state.pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+      state.canvas.width = Math.round(window.innerWidth * state.pixelRatio);
+      state.canvas.height = Math.round(window.innerHeight * state.pixelRatio);
+      if (state.images && state.context) render(state, firstFrame + state.elapsed * frameRate / 1000);
+    };
+    // A background tab pauses the original timeline; returning never skips the entrance.
+    state.visibility = function () { state.lastTime = null; };
+    state.siblings = Array.from(document.body.children).map(function (element) { return { element: element, inert: element.inert }; });
     state.overlay = overlay;
     state.overflow = document.body.style.overflow;
-    state.siblings = siblings;
-    state.keydown = keydown;
     state.previousFocus = document.activeElement;
-    siblings.forEach(function (item) { item.element.inert = true; });
+    state.siblings.forEach(function (item) { item.element.inert = true; });
     document.body.appendChild(overlay);
     skipButton.focus({ preventScroll: true });
     document.body.style.overflow = 'hidden';
     document.documentElement.classList.add('sky-intro-active');
-    document.addEventListener('keydown', keydown, true);
+    document.addEventListener('keydown', state.keydown, true);
+    document.addEventListener('visibilitychange', state.visibility);
+    window.addEventListener('resize', state.resize, { passive: true });
     skipButton.addEventListener('click', finish);
-    function later(delay, callback) { state.timers.push(setTimeout(function () { if (active === state && !state.finishing) callback(); }, delay)); }
-    later(50, function () {
-      // The opaque mirror has been mounted before the underlying scene changes.
-      callOnce(state, 'onCovered');
-      if (active === state && !state.finishing) overlay.classList.add('is-developing');
-    });
-    later(1270, function () { overlay.classList.add('is-cracked'); });
-    later(1530, function () {
-      callOnce(state, 'onCovered');
+    state.resize();
+    function fallback(error) {
       if (active !== state || state.finishing) return;
-      overlay.classList.add('is-breaking');
-      callOnce(state, 'onReveal');
-    });
-    later(2660, finish);
-    // A visibility change should never leave a loading cover over a usable page.
-    var onVisibility = function () { if (document.hidden && active === state) finish(); document.removeEventListener('visibilitychange', onVisibility); };
-    document.addEventListener('visibilitychange', onVisibility);
-    promise.then(function () { document.removeEventListener('visibilitychange', onVisibility); });
+      console.warn('[SkyIntro] Original animation unavailable; entering the lobby.', error);
+      overlay.dataset.phase = 'fallback';
+      callOnce(state, 'onCovered');
+      state.timers.push(setTimeout(function () { if (active === state) finish(); }, 180));
+    }
+    if (!state.context) { fallback('Canvas unavailable'); return promise; }
+    preload().then(function (images) {
+      if (active !== state || state.finishing) return;
+      state.images = images;
+      state.caption.textContent = typeof options.caption === 'string' ? options.caption : '正在进入大厅';
+      render(state, firstFrame);
+      overlay.classList.remove('is-preparing');
+      callOnce(state, 'onCovered');
+      function tick(now) {
+        if (active !== state || state.finishing) return;
+        if (reducedMotion()) { finish(); return; }
+        if (!document.hidden) {
+          if (state.lastTime !== null) state.elapsed += Math.min(now - state.lastTime, 100);
+          state.lastTime = now;
+          var frame = Math.min(lastFrame, firstFrame + state.elapsed * frameRate / 1000);
+          render(state, frame);
+          if (frame >= 208) callOnce(state, 'onReveal');
+          if (frame >= lastFrame) { finish(); return; }
+        } else state.lastTime = null;
+        state.raf = requestAnimationFrame(tick);
+      }
+      state.raf = requestAnimationFrame(tick);
+    }).catch(fallback);
     return promise;
   }
   window.SkyIntro = { play: play, skip: finish };
+  // Preload local images without playing anything; every entry remains a full playback.
+  if (!reducedMotion()) preload().catch(function () {});
 })();
