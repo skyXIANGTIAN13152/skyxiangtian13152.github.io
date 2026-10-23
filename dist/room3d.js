@@ -281,6 +281,6 @@ stick.addEventListener('pointerdown',e => {if(!canMove() || pointerId!==null)ret
 stick.addEventListener('pointermove',e => {if(pointerId===e.pointerId && canMove())stickMove(e);});
 function stickEnd(e){if(pointerId===e.pointerId){pointerId=null;stickInput={x:0,z:0};knob.style.transform='';}}
 stick.addEventListener('pointerup',stickEnd);stick.addEventListener('pointercancel',stickEnd);stick.addEventListener('lostpointercapture',stickEnd);
-window.SkyRoom = {get ready(){return ready;},setActive,resetInput};
+window.SkyRoom = {get ready(){return ready;},setActive,resetInput,whenReady:null};
 // Prepare while the cover is visible; entry should never land on an empty canvas.
-initialize();
+window.SkyRoom.whenReady = initialize();

@@ -1,6 +1,17 @@
 (() => {
   'use strict';
   const $ = (selector) => document.querySelector(selector);
+  const diaryReady = import('./assets/diary-original/diary-transition.js').then(api => {
+    window.SkyDiary = api;
+    api.preload();
+    return api;
+  }).catch(() => null);
+  // Deferred module loading must also finish when a visitor clicks immediately.
+  const roomReady = new Promise(resolve => {
+    const loaded = () => resolve(window.SkyRoom?.whenReady);
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', loaded, { once: true });
+    else loaded();
+  });
   const systemMotion = matchMedia('(prefers-reduced-motion: reduce)');
   let storedMotion = null;
   try { storedMotion = localStorage.getItem('sky-motion'); } catch (_) {}
@@ -12,7 +23,7 @@
     motionButton.setAttribute('aria-pressed', String(reducedMotion));
     motionButton.textContent = reducedMotion ? '恢复动效' : '减少动效';
     $('.entrance-motion-note').hidden = !reducedMotion;
-    if (reducedMotion) window.SkyIntro?.skip();
+    if (reducedMotion) { window.SkyIntro?.skip(); window.SkyDiary?.cancel(); }
   };
   applyMotion();
   motionButton.addEventListener('click', () => {
@@ -50,7 +61,6 @@
   const navLinks = [...document.querySelectorAll('.desktop-nav a, .scene-progress a')];
   const titles = { home: '序章', lobby: '个人大厅', about: '关于我', work: '作品集', study: '专业学习', interests: '兴趣爱好' };
   const lobby = $('#lobby');
-  const room = $('.lobby-room');
   const hotspots = [...document.querySelectorAll('.lobby-hotspot')];
   hotspots.forEach(link => {
     const highlight = () => { lobby.dataset.highlight = link.dataset.prop; };
@@ -63,6 +73,8 @@
   let currentScene = 'home';
   let transitioning = false;
   let navigationVersion = 0;
+  let diaryInProgress = false;
+  const readingOrder = ['about', 'work', 'study', 'interests'];
   const showScene = (id) => {
     currentScene = id;
     stage.dataset.scene = id;
@@ -92,26 +104,43 @@
       if (updateHistory) return;
       navigationVersion += 1;
       window.SkyIntro?.skip();
-      lobby.classList.remove('is-entering');
+      window.SkyDiary?.cancel();
+      window.SkyAudio?.stopAll('navigation');
+      stage.inert = false;
+      diaryInProgress = false;
       transitioning = false;
     }
-    if (id === currentScene) return;
+    if (id === currentScene) {
+      if (!updateHistory) { showScene(id); focusScene(id); }
+      return;
+    }
     const version = ++navigationVersion;
     const fromScene = currentScene;
     transitioning = true;
+    const reading = !['home', 'lobby'].includes(id);
+    const wasReading = !['home', 'lobby'].includes(fromScene);
+    window.SkyAudio?.stopAll('intro');
+    window.SkyAudio?.stopAll('navigation');
+    const pageSound = readingOrder.indexOf(id) < readingOrder.indexOf(fromScene) ? 'pageBack' : 'pageTurn';
+    window.SkyAudio?.play(fromScene === 'lobby' && reading ? 'diaryOpen' : id === 'lobby' && wasReading ? 'diaryClose' : wasReading && reading ? pageSound : 'click', { group: 'navigation' });
     window.dispatchEvent(new CustomEvent('sky:transitionstart'));
     closeMenu();
     try {
-      if (fromScene === 'lobby' && id !== 'lobby' && id !== 'home' && !reducedMotion) {
-        const entrance = hotspots.find(link => link.hash === `#${id}`);
-        room.style.transformOrigin = entrance?.dataset.camera || '50% 50%';
-        lobby.classList.add('is-entering');
-        await new Promise(resolve => setTimeout(resolve, 300));
+      if (fromScene === 'lobby' && reading) {
+        diaryInProgress = true;
+        stage.inert = true;
+        const diary = await diaryReady;
         if (version !== navigationVersion) return;
-      }
-      if (id === 'lobby' && fromScene === 'home' && !reducedMotion && window.SkyIntro) {
+        await diary?.play({ title: titles[id], reducedMotion, onReveal: () => {
+          if (version === navigationVersion) showScene(id);
+        } });
+        if (version !== navigationVersion) return;
+        // Missing assets and a mid-transition motion preference still reveal the page.
+        if (currentScene !== id) showScene(id);
+      } else if (id === 'lobby' && fromScene === 'home' && !reducedMotion && window.SkyIntro) {
         await SkyIntro.play({
           caption: '匹配成功',
+          ready: roomReady,
           onCovered: () => showScene(id),
           onReveal: () => revealLobby()
         });
@@ -126,8 +155,15 @@
         try { history.pushState({ scene: id }, '', `#${id}`); }
         catch (_) { location.hash = id; }
       }
+      stage.inert = false;
       focusScene(id);
-    } finally { if (version === navigationVersion) transitioning = false; }
+    } finally {
+      if (version === navigationVersion) {
+        transitioning = false;
+        diaryInProgress = false;
+        stage.inert = false;
+      }
+    }
   };
   document.querySelectorAll('a[href^="#"]').forEach(link => {
     const id = link.getAttribute('href').slice(1);
@@ -143,6 +179,16 @@
   });
   window.addEventListener('popstate', () => transitionTo(location.hash.slice(1) || 'home', false));
   document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && diaryInProgress) {
+      navigationVersion += 1;
+      window.SkyDiary?.cancel();
+      window.SkyAudio?.stopAll('navigation');
+      diaryInProgress = transitioning = false;
+      stage.inert = false;
+      showScene('lobby');
+      focusScene('lobby');
+      return;
+    }
     if (event.key === 'Escape' && !transitioning && currentScene !== 'home' && currentScene !== 'lobby') transitionTo('lobby');
   });
   // A shared room URL must still start with the cover and its entrance sequence.
@@ -192,8 +238,8 @@
   const soundButton = $('.sound-button');
   const updateSound = () => {
     soundButton.setAttribute('aria-pressed', String(audioOn));
-    soundButton.setAttribute('aria-label', audioOn ? '关闭大厅音乐' : '开启大厅音乐');
-    soundButton.title = `${audioOn ? '关闭' : '开启'}大厅音乐 · 庄园`;
+    soundButton.setAttribute('aria-label', audioOn ? '关闭声音，包括音乐和音效' : '开启声音，包括音乐和音效');
+    soundButton.title = `${audioOn ? '关闭' : '开启'}声音 · 大厅音乐与原版音效`;
     $('.sound-label').textContent = audioOn ? '声音开' : '声音关';
   };
   const startMusic = async (silent = false) => {
@@ -208,9 +254,7 @@
         // Autoplay policy postpones playback until the first visitor gesture;
         // it does not turn the visitor's music preference off.
         if (error.name !== 'NotAllowedError' && error.name !== 'AbortError') {
-          audioOn = false;
-          updateSound();
-          if (!silent) notify('音乐暂未播放，请再次点击声音开关。');
+          if (!silent) notify('大厅音乐暂未播放，请再次点击声音开关。');
         }
       }
     } finally {
@@ -228,6 +272,7 @@
   };
   soundButton.addEventListener('click', () => {
     audioOn = !audioOn;
+    window.SkyAudio?.setEnabled(audioOn);
     updateSound();
     if (audioOn) startMusic();
     else pauseMusic();
@@ -243,6 +288,12 @@
   };
   document.addEventListener('click', beginOnGesture);
   document.addEventListener('keydown', beginOnGesture);
+  document.addEventListener('click', event => {
+    const control = event.target.closest('button,a[href]');
+    // Navigation, E and the touch-read button share transitionTo's single accepted cue.
+    if (!control || control.disabled || control.matches('.sound-button,.room-interact,.room-touch-read,.restore-entrance,a[href^="#"]')) return;
+    window.SkyAudio?.play('click', { group: 'interface' });
+  });
   updateSound();
   startMusic(true);
 
@@ -262,7 +313,7 @@
     const version = ++navigationVersion;
     transitioning = true;
     try {
-      await window.SkyIntro.play({ caption: '匹配成功', onCovered: () => showScene('lobby') });
+      await window.SkyIntro.play({ caption: '匹配成功', ready: roomReady, onCovered: () => showScene('lobby') });
       if (version === navigationVersion) revealLobby();
     } finally { if (version === navigationVersion) transitioning = false; }
   };

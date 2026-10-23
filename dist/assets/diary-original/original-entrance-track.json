@@ -1,0 +1,744 @@
+{
+  "source": "Original 2022 hall_ei_entrance.csb",
+  "sourceMd5": "0b0cfbe48c73e54a7c33bd3e0f9fb7e9",
+  "speed": 0.5,
+  "fps": 60,
+  "effectiveFps": 30,
+  "animations": [
+    {
+      "name": "in",
+      "start": 0,
+      "end": 15
+    },
+    {
+      "name": "out",
+      "start": 35,
+      "end": 50
+    },
+    {
+      "name": "loop",
+      "start": 20,
+      "end": 30
+    }
+  ],
+  "tree": {
+    "kind": "Node",
+    "name": "hall_ei_frame",
+    "actionTag": 0,
+    "rotation": [
+      0.0,
+      0.0
+    ],
+    "z": 0,
+    "visible": true,
+    "alpha": 255,
+    "position": [
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0
+    ],
+    "anchor": [
+      0.0,
+      0.0
+    ],
+    "size": [
+      0.0,
+      0.0
+    ],
+    "tag": 267,
+    "flipX": false,
+    "flipY": false,
+    "frameEvent": "",
+    "customProperty": "",
+    "callbackType": "",
+    "callbackName": "",
+    "argb": [
+      255,
+      255,
+      255,
+      255
+    ],
+    "tracks": {},
+    "children": [
+      {
+        "kind": "ProjectNode",
+        "name": "ani_fog",
+        "actionTag": -1575228400,
+        "rotation": [
+          0.0,
+          0.0
+        ],
+        "z": 0,
+        "visible": true,
+        "alpha": 0,
+        "position": [
+          0.0,
+          0.0
+        ],
+        "scale": [
+          0.75,
+          0.75
+        ],
+        "anchor": [
+          0.0,
+          0.0
+        ],
+        "size": [
+          0.0,
+          0.0
+        ],
+        "tag": 568,
+        "flipX": false,
+        "flipY": false,
+        "frameEvent": "",
+        "customProperty": "",
+        "callbackType": "",
+        "callbackName": "",
+        "argb": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "file": "hall_ei_ani_fog.csb",
+        "innerActionSpeed": 0.5,
+        "tracks": {
+          "ActionValue": [
+            {
+              "index": 0,
+              "tween": false
+            }
+          ],
+          "Alpha": [
+            {
+              "index": 5,
+              "tween": true,
+              "value": 0
+            },
+            {
+              "index": 15,
+              "tween": true,
+              "value": 255
+            },
+            {
+              "index": 35,
+              "tween": true,
+              "value": 255
+            },
+            {
+              "index": 50,
+              "tween": true,
+              "value": 0
+            }
+          ]
+        },
+        "children": []
+      },
+      {
+        "kind": "Button",
+        "name": "btn_ei",
+        "actionTag": -1772038095,
+        "rotation": [
+          0.0,
+          0.0
+        ],
+        "z": 0,
+        "visible": true,
+        "alpha": 255,
+        "position": [
+          0.0,
+          0.0
+        ],
+        "scale": [
+          0.8999999761581421,
+          0.8999999761581421
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ],
+        "size": [
+          200.0,
+          90.0
+        ],
+        "tag": 109000,
+        "flipX": false,
+        "flipY": false,
+        "frameEvent": "",
+        "customProperty": "",
+        "callbackType": "",
+        "callbackName": "",
+        "argb": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "tracks": {
+          "Scale": [
+            {
+              "index": 5,
+              "tween": true,
+              "value": [
+                0.8999999761581421,
+                0.8999999761581421
+              ]
+            },
+            {
+              "index": 15,
+              "tween": true,
+              "value": [
+                1.0,
+                1.0
+              ]
+            },
+            {
+              "index": 35,
+              "tween": true,
+              "value": [
+                1.0,
+                1.0
+              ]
+            },
+            {
+              "index": 50,
+              "tween": true,
+              "value": [
+                1.100000023841858,
+                1.100000023841858
+              ]
+            }
+          ],
+          "Alpha": [
+            {
+              "index": 35,
+              "tween": true,
+              "value": 255
+            },
+            {
+              "index": 50,
+              "tween": true,
+              "value": 0
+            }
+          ]
+        },
+        "children": [
+          {
+            "kind": "ImageView",
+            "name": "ani_fog_1",
+            "actionTag": 1770481773,
+            "rotation": [
+              0.0,
+              0.0
+            ],
+            "z": 0,
+            "visible": true,
+            "alpha": 0,
+            "position": [
+              105.0,
+              45.0
+            ],
+            "scale": [
+              0.800000011920929,
+              0.800000011920929
+            ],
+            "anchor": [
+              0.5,
+              0.5
+            ],
+            "size": [
+              114.0,
+              66.0
+            ],
+            "resource": {
+              "path": "system/hall_ei/img_fog_appear.png",
+              "plist": "system/hall_ei_0.plist",
+              "type": 1
+            },
+            "tag": 94,
+            "flipX": false,
+            "flipY": false,
+            "frameEvent": "",
+            "customProperty": "",
+            "callbackType": "",
+            "callbackName": "",
+            "argb": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "tracks": {
+              "Scale": [
+                {
+                  "index": 0,
+                  "tween": true,
+                  "value": [
+                    0.800000011920929,
+                    0.800000011920929
+                  ]
+                },
+                {
+                  "index": 5,
+                  "tween": true,
+                  "value": [
+                    1.5,
+                    1.5
+                  ]
+                },
+                {
+                  "index": 15,
+                  "tween": true,
+                  "value": [
+                    2.200000047683716,
+                    2.200000047683716
+                  ]
+                }
+              ],
+              "Alpha": [
+                {
+                  "index": 0,
+                  "tween": true,
+                  "value": 0
+                },
+                {
+                  "index": 5,
+                  "tween": true,
+                  "value": 255
+                },
+                {
+                  "index": 15,
+                  "tween": true,
+                  "value": 0
+                }
+              ],
+              "Position": [
+                {
+                  "index": 0,
+                  "tween": true,
+                  "value": [
+                    105.0,
+                    45.0
+                  ]
+                },
+                {
+                  "index": 5,
+                  "tween": true,
+                  "value": [
+                    100.0,
+                    45.0
+                  ]
+                },
+                {
+                  "index": 15,
+                  "tween": true,
+                  "value": [
+                    80.0,
+                    45.0
+                  ]
+                }
+              ]
+            },
+            "children": []
+          },
+          {
+            "kind": "ImageView",
+            "name": "ani_fog_2",
+            "actionTag": 1173996240,
+            "rotation": [
+              0.0,
+              0.0
+            ],
+            "z": 0,
+            "visible": true,
+            "alpha": 0,
+            "position": [
+              95.0,
+              45.0
+            ],
+            "scale": [
+              0.800000011920929,
+              0.800000011920929
+            ],
+            "anchor": [
+              0.5,
+              0.5
+            ],
+            "size": [
+              114.0,
+              66.0
+            ],
+            "resource": {
+              "path": "system/hall_ei/img_fog_appear.png",
+              "plist": "system/hall_ei_0.plist",
+              "type": 1
+            },
+            "tag": 150,
+            "flipX": true,
+            "flipY": true,
+            "frameEvent": "",
+            "customProperty": "",
+            "callbackType": "",
+            "callbackName": "",
+            "argb": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "tracks": {
+              "Scale": [
+                {
+                  "index": 0,
+                  "tween": true,
+                  "value": [
+                    0.800000011920929,
+                    0.800000011920929
+                  ]
+                },
+                {
+                  "index": 5,
+                  "tween": true,
+                  "value": [
+                    1.5,
+                    1.5
+                  ]
+                },
+                {
+                  "index": 15,
+                  "tween": true,
+                  "value": [
+                    2.200000047683716,
+                    2.200000047683716
+                  ]
+                }
+              ],
+              "Alpha": [
+                {
+                  "index": 0,
+                  "tween": true,
+                  "value": 0
+                },
+                {
+                  "index": 5,
+                  "tween": true,
+                  "value": 255
+                },
+                {
+                  "index": 15,
+                  "tween": true,
+                  "value": 0
+                }
+              ],
+              "Position": [
+                {
+                  "index": 0,
+                  "tween": true,
+                  "value": [
+                    95.0,
+                    45.0
+                  ]
+                },
+                {
+                  "index": 5,
+                  "tween": true,
+                  "value": [
+                    100.0,
+                    45.0
+                  ]
+                },
+                {
+                  "index": 15,
+                  "tween": true,
+                  "value": [
+                    120.0,
+                    45.0
+                  ]
+                }
+              ]
+            },
+            "children": []
+          },
+          {
+            "kind": "ImageView",
+            "name": "ani_fog_3",
+            "actionTag": -18754812,
+            "rotation": [
+              0.0,
+              0.0
+            ],
+            "z": 0,
+            "visible": true,
+            "alpha": 0,
+            "position": [
+              100.0,
+              45.0
+            ],
+            "scale": [
+              1.2000000476837158,
+              0.800000011920929
+            ],
+            "anchor": [
+              0.5,
+              0.5
+            ],
+            "size": [
+              114.0,
+              66.0
+            ],
+            "resource": {
+              "path": "system/hall_ei/img_fog_appear.png",
+              "plist": "system/hall_ei_0.plist",
+              "type": 1
+            },
+            "tag": 111,
+            "flipX": false,
+            "flipY": true,
+            "frameEvent": "",
+            "customProperty": "",
+            "callbackType": "",
+            "callbackName": "",
+            "argb": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "tracks": {
+              "Scale": [
+                {
+                  "index": 0,
+                  "tween": true,
+                  "value": [
+                    1.2000000476837158,
+                    0.800000011920929
+                  ]
+                },
+                {
+                  "index": 5,
+                  "tween": true,
+                  "value": [
+                    1.2000000476837158,
+                    1.5
+                  ]
+                },
+                {
+                  "index": 15,
+                  "tween": true,
+                  "value": [
+                    1.600000023841858,
+                    3.0
+                  ]
+                }
+              ],
+              "Alpha": [
+                {
+                  "index": 0,
+                  "tween": true,
+                  "value": 0
+                },
+                {
+                  "index": 5,
+                  "tween": true,
+                  "value": 255
+                },
+                {
+                  "index": 15,
+                  "tween": true,
+                  "value": 0
+                }
+              ]
+            },
+            "children": []
+          },
+          {
+            "kind": "ImageView",
+            "name": "img_text_ei",
+            "actionTag": 203183179,
+            "rotation": [
+              0.0,
+              0.0
+            ],
+            "z": 0,
+            "visible": true,
+            "alpha": 0,
+            "position": [
+              100.0,
+              45.0
+            ],
+            "scale": [
+              1.0,
+              1.0
+            ],
+            "anchor": [
+              0.5,
+              0.5
+            ],
+            "size": [
+              140.0,
+              56.0
+            ],
+            "resource": {
+              "path": "system/hall_ei/text_tips_ranking.png",
+              "plist": "system/hall_ei_0.plist",
+              "type": 1
+            },
+            "tag": 67,
+            "flipX": false,
+            "flipY": false,
+            "frameEvent": "",
+            "customProperty": "",
+            "callbackType": "",
+            "callbackName": "",
+            "argb": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "tracks": {
+              "Alpha": [
+                {
+                  "index": 5,
+                  "tween": true,
+                  "value": 0
+                },
+                {
+                  "index": 15,
+                  "tween": true,
+                  "value": 255
+                }
+              ]
+            },
+            "children": []
+          },
+          {
+            "kind": "ImageView",
+            "name": "img_side_1",
+            "actionTag": -687723760,
+            "rotation": [
+              0.0,
+              0.0
+            ],
+            "z": 0,
+            "visible": true,
+            "alpha": 0,
+            "position": [
+              44.0,
+              45.0
+            ],
+            "scale": [
+              0.6000000238418579,
+              0.6000000238418579
+            ],
+            "anchor": [
+              0.5,
+              0.5
+            ],
+            "size": [
+              42.0,
+              82.0
+            ],
+            "resource": {
+              "path": "system/hall_ei/img_side.png",
+              "plist": "system/hall_ei_0.plist",
+              "type": 1
+            },
+            "tag": 579,
+            "flipX": false,
+            "flipY": false,
+            "frameEvent": "",
+            "customProperty": "",
+            "callbackType": "",
+            "callbackName": "",
+            "argb": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "tracks": {
+              "Alpha": [
+                {
+                  "index": 5,
+                  "tween": true,
+                  "value": 0
+                },
+                {
+                  "index": 15,
+                  "tween": true,
+                  "value": 255
+                }
+              ]
+            },
+            "children": []
+          },
+          {
+            "kind": "ImageView",
+            "name": "img_side_2",
+            "actionTag": 1984683896,
+            "rotation": [
+              0.0,
+              0.0
+            ],
+            "z": 0,
+            "visible": true,
+            "alpha": 0,
+            "position": [
+              156.0,
+              45.0
+            ],
+            "scale": [
+              0.6000000238418579,
+              0.6000000238418579
+            ],
+            "anchor": [
+              0.5,
+              0.5
+            ],
+            "size": [
+              42.0,
+              82.0
+            ],
+            "resource": {
+              "path": "system/hall_ei/img_side.png",
+              "plist": "system/hall_ei_0.plist",
+              "type": 1
+            },
+            "tag": 580,
+            "flipX": true,
+            "flipY": false,
+            "frameEvent": "",
+            "customProperty": "",
+            "callbackType": "",
+            "callbackName": "",
+            "argb": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "tracks": {
+              "Alpha": [
+                {
+                  "index": 5,
+                  "tween": true,
+                  "value": 0
+                },
+                {
+                  "index": 15,
+                  "tween": true,
+                  "value": 255
+                }
+              ]
+            },
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

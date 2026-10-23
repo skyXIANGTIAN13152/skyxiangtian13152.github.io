@@ -100,3 +100,19 @@
 ## Three.js
 
 WebGL 渲染与 glTF 加载使用 Three.js 0.186.1（MIT），本地分发以保证首次打开无需第三方 CDN。许可证见 `licenses/three-MIT.txt`。
+
+## 原版界面与缪斯过场音效
+
+- 文件：`dist/assets/audio/game-sfx/` 内的七个 WAV 及 `provenance.json`。
+- 来源：用户提供的官方 PC 原资源 `wwise/dwrg.bnk` 及其中引用的原 WEM 媒体。事件经原 `pydata/ui_sound.py`、`pydata/loading_config.py` 和 `UILoading` 调用路径核对；逐文件原路径、事件 ID、媒体 ID、WEM MD5、WAV SHA-256、原音量字段偏移均见随附来源记录。
+- 使用 vgmstream-cli r2117 将原 Wwise Vorbis 解码为 44.1 kHz、单声道 PCM16 WAV。未剪辑、调速、重采样、归一化或合成；运行时保留原事件 -3 至 -6 dB 的增益，网页音效总线另以 75% 音量混合。
+- 加载开始事件为 `P_dwrg_ui_ui_loading_start`（原 sound ID 114，48–144 帧阶段开始）；碎镜为 `P_dwrg_ui_ui_loading_glass_broke`（sound ID 113，145–220 帧阶段开始）。破碎录音自带前导，按 145 帧播放后与 158 帧的玻璃图像自然对齐。两段有限时长声音按原调用方式自然结束；网页的跳过和总静音会主动停止它们。
+- 普通点击、书本打开／关闭、向前／向后翻页均为独立原游戏音效。它们与本网站个人页面及按钮的对应关系属于网页交互适配，不能将该对应关系当成旧游戏每个入口的原触发证据。声音控制、首次手势解锁与后台暂停由浏览器实现。
+- 素材权利仍归《第五人格》／网易及相关权利人，沿用用户声明的合作授权，不作为开源音频分发。
+
+## 2022 年旧版日记子入口动画
+
+- `dist/assets/diary-original/`：原 `hall_ei_entrance.csb` 的三个烟雾层、两侧纹饰与标题显现/退出轨道；原 CSB MD5 为 `0b0cfbe48c73e54a7c33bd3e0f9fb7e9`。
+- 来源为 2022 年官方 Android 原包资源的存档，具体下载来源、图集哈希、原轨道与适配边界见该目录的 `PROVENANCE.md` 和 `original-entrance-track.json`。
+- 保留原 114 × 66 烟雾与 42 × 82 纹饰像素，没有生成或放大重绘。按 Cocos 每秒 60 帧与原 speed 0.5 还原各 15 帧的入/退场，分别为 500 毫秒。
+- 个人标题替换、居中响应式尺寸、黑色整页遮罩、与个人书页的连接及音效触发为网页适配。2022 年完整旧版日记主菜单动画尚未核实，因此不将此子入口动画称为完整原版日记主菜单。

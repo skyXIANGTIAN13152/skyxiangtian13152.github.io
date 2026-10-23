@@ -2,8 +2,6 @@
 .visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip-path:inset(50%)!important;white-space:nowrap!important;border:0!important}
 .game-stage .lobby-section{background:#171717}
 .lobby-room{position:absolute;inset:0;transform-origin:50% 50%;will-change:transform;transition:transform .65s cubic-bezier(.2,.65,.25,1)}
-.lobby-section.is-entering .lobby-room{transform:scale(1.07)}
-.lobby-section.is-entering .lobby-entrances{opacity:.3;transition:opacity .4s}
 .lobby-room-image{position:absolute;inset:0;background:url('assets/original/lobby-render.png') center/cover no-repeat}
 .lobby-room-shade{position:absolute;inset:0;background:linear-gradient(0deg,#090c12c4 0%,transparent 23%,transparent 78%,#0b0e12b5 100%),radial-gradient(ellipse at 50% 50%,transparent 30%,#090c114d 100%)}
 .lobby-content.container{position:absolute;inset:0;width:1280px;height:720px;margin:0;max-width:none}

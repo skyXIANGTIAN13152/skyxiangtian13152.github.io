@@ -57,11 +57,14 @@
     return !document.documentElement.classList.contains('full-motion') &&
       window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   }
-  function finish() {
+  function finish(cancelled) {
     if (!active || active.finishing) return;
     var state = active;
     state.finishing = true;
     cancelAnimationFrame(state.raf);
+    // The original six-second glass sample has a long tail after the room appears.
+    // Keep that tail on normal completion; skipping/cancelling must stop it.
+    if (cancelled !== false) window.SkyAudio?.stopAll('intro');
     state.timers.forEach(clearTimeout);
     callOnce(state, 'onCovered');
     callOnce(state, 'onReveal');
@@ -124,6 +127,7 @@
   }
   function play(options) {
     if (active) return active.promise;
+    window.SkyAudio?.stopAll('intro');
     options = options || {};
     if (!document.body) return new Promise(function (resolve) {
       document.addEventListener('DOMContentLoaded', function () { play(options).then(resolve); }, { once: true });
@@ -133,7 +137,7 @@
     var state = {
       promise: promise, resolve: resolvePromise, timers: [], overlay: null,
       onCovered: options.onCovered, onReveal: options.onReveal,
-      finishing: false, elapsed: 0, lastTime: null, raf: 0
+      finishing: false, elapsed: 0, lastTime: null, raf: 0, loadingSoundPlayed: false, glassSoundPlayed: false
     };
     active = state;
     if (reducedMotion()) {
@@ -187,7 +191,8 @@
       state.timers.push(setTimeout(function () { if (active === state) finish(); }, 180));
     }
     if (!state.context) { fallback('Canvas unavailable'); return promise; }
-    preload().then(function (images) {
+    Promise.all([preload(), window.SkyAudio?.prepare(['loadingStart', 'shatter']).catch(function () { return false; }), options.ready]).then(function (resources) {
+      var images = resources[0];
       if (active !== state || state.finishing) return;
       state.images = images;
       state.caption.textContent = typeof options.caption === 'string' ? options.caption : '正在进入大厅';
@@ -198,12 +203,24 @@
         if (active !== state || state.finishing) return;
         if (reducedMotion()) { finish(); return; }
         if (!document.hidden) {
-          if (state.lastTime !== null) state.elapsed += Math.min(now - state.lastTime, 100);
+          // Keep the visual clock aligned with the native audio even after a slow frame.
+          if (state.lastTime !== null) state.elapsed += Math.max(0, now - state.lastTime);
           state.lastTime = now;
-          var frame = Math.min(lastFrame, firstFrame + state.elapsed * frameRate / 1000);
+          var liveFrame = firstFrame + state.elapsed * frameRate / 1000;
+          var frame = Math.min(lastFrame, liveFrame);
           render(state, frame);
+          if (!state.loadingSoundPlayed) {
+            state.loadingSoundPlayed = true;
+            window.SkyAudio?.play('loadingStart', { group: 'intro', maxDelay: 100, offset: (liveFrame - 48) / frameRate });
+          }
+          // UILoading starts sound ID 113 with stage 2 at frame 145. Its original
+          // sample contains the lead-in before the visible glass at frame 158.
+          if (frame >= 145 && !state.glassSoundPlayed) {
+            state.glassSoundPlayed = true;
+            window.SkyAudio?.play('shatter', { group: 'intro', maxDelay: 100, offset: (liveFrame - 145) / frameRate });
+          }
           if (frame >= 208) callOnce(state, 'onReveal');
-          if (frame >= lastFrame) { finish(); return; }
+          if (frame >= lastFrame) { finish(false); return; }
         } else state.lastTime = null;
         state.raf = requestAnimationFrame(tick);
       }

@@ -1,0 +1,261 @@
+{
+  "source": {
+    "bankPath": "wwise/dwrg.bnk",
+    "bankMD5": "7009e5360173705477245fe59612afa7",
+    "bankBytes": 10614815,
+    "bankVersion": 135,
+    "readOnly": true
+  },
+  "conversion": {
+    "method": "vgmstream-cli -i -o output.wav original.wem",
+    "toolRelease": "https://github.com/vgmstream/vgmstream/releases/tag/r2117",
+    "archiveSHA256": "6c4a8a3813864fefed081bbd337dbc0ad93bf88e0b92f5db98d7ab258b22dc6c",
+    "eventParserRelease": "https://github.com/bnnm/wwiser/releases/tag/v20260808",
+    "eventParserSHA256": "f4ba1368895adab285f27fa37b142e5da805bcc6fb77e8daba282dac65d89411",
+    "processing": "Original Wwise Vorbis decoded to PCM16 WAV at native sample rate/channels. No resampling, volume baking, trimming, looping or synthesis. Apply original event gain separately."
+  },
+  "audio": {
+    "shatter": {
+      "name": "muse-shatter",
+      "mediaID": 84052700,
+      "channels": 1,
+      "sampleRate": 44100,
+      "sampleWidth": 2,
+      "samples": 277293,
+      "duration": 6.2878231292517,
+      "wavBytes": 554630,
+      "sourceMD5": "142febced59739ac11d79e2e58b3365a",
+      "wavSHA256": "f2271b55dc8dcd205eb311d4b12cd9cebda633f356d65deb4c995a52f1485de6",
+      "file": "muse-shatter.wav",
+      "event": "P_dwrg_ui_ui_loading_glass_broke",
+      "eventID": 2992330120,
+      "uiSoundID": 113,
+      "soundObjectID": 1007388646,
+      "gainDB": -5.0,
+      "gainLinear": 0.5623413251903491,
+      "gainEvidence": {
+        "field": "CAkSound.NodeBaseParams.NodeInitialParams.AkPropBundle.pProps[pID=0 Volume].pValue",
+        "bankByteOffset": 10485385
+      },
+      "sourcePath": "wwise/84052700.wem",
+      "loop": false,
+      "embeddedInBank": null,
+      "triggerEvidence": "Original pydata/loading_config.py record 1 range_one/two_sound_data and UILoading._handle_loading_leave_stage, animation and sound entered together.",
+      "sourceTimelineFrame": 145
+    },
+    "loadingStart": {
+      "name": "muse-start",
+      "mediaID": 591559467,
+      "channels": 1,
+      "sampleRate": 44100,
+      "sampleWidth": 2,
+      "samples": 283136,
+      "duration": 6.42031746031746,
+      "wavBytes": 566316,
+      "sourceMD5": "8819ecaf7727ee49e8e172a9d9389b31",
+      "wavSHA256": "c3e3a286eaa0d38b48fdab448db4f848d3859d4d1e741c51f13d75ae8fad7917",
+      "file": "muse-start.wav",
+      "event": "P_dwrg_ui_ui_loading_start",
+      "eventID": 3250929702,
+      "uiSoundID": 114,
+      "soundObjectID": 271413867,
+      "gainDB": -3.0,
+      "gainLinear": 0.7079457843841379,
+      "gainEvidence": {
+        "field": "CAkSound.NodeBaseParams.NodeInitialParams.AkPropBundle.pProps[pID=0 Volume].pValue",
+        "bankByteOffset": 10483179
+      },
+      "sourcePath": "wwise/591559467.wem",
+      "loop": false,
+      "embeddedInBank": null,
+      "triggerEvidence": "Original pydata/loading_config.py record 1 range_one/two_sound_data and UILoading._handle_loading_leave_stage, animation and sound entered together.",
+      "sourceTimelineFrame": 48
+    },
+    "click": {
+      "name": "ui-click",
+      "mediaID": 539335028,
+      "channels": 1,
+      "sampleRate": 44100,
+      "sampleWidth": 2,
+      "samples": 5440,
+      "duration": 0.12335600907029479,
+      "wavBytes": 10924,
+      "sourceMD5": "bd1b7725fef60b5e61cfa1b95d6e905e",
+      "wavSHA256": "692be35c9cdb9dbf96a6aa0616a934ae7b9172fff38037fac4b3ebb79d9ac658",
+      "file": "ui-click.wav",
+      "event": "P_dwrg_ui_ui_common_click",
+      "eventID": 3439478479,
+      "uiSoundID": 107,
+      "soundObjectID": 167360101,
+      "gainDB": -3.0,
+      "gainLinear": 0.7079457843841379,
+      "gainEvidence": {
+        "field": "CAkSound.NodeBaseParams.NodeInitialParams.AkPropBundle.pProps[pID=0 Volume].pValue",
+        "bankByteOffset": 10483005
+      },
+      "sourcePath": "wwise/539335028.wem",
+      "loop": false,
+      "embeddedInBank": {
+        "bankDataOffset": 5386688,
+        "sourceBytes": 1511,
+        "didxOffset": 5260
+      },
+      "triggerEvidence": "Original ui_sound alias and Wwise Event/Play/Sound graph verified. Mapping to this portfolio action is a browser adaptation; an exact original hall-menu trigger is not asserted."
+    },
+    "diaryOpen": {
+      "name": "diary-open",
+      "mediaID": 763489943,
+      "channels": 1,
+      "sampleRate": 44100,
+      "sampleWidth": 2,
+      "samples": 79236,
+      "duration": 1.796734693877551,
+      "wavBytes": 158516,
+      "sourceMD5": "200b2de33e420f51e8a487503e315afb",
+      "wavSHA256": "89c67e2d25f429562f0d1b043195ce81303a81f315cfd9809af7a68b70f73e05",
+      "file": "diary-open.wav",
+      "event": "P_dwrg_ui_ui_book_open",
+      "eventID": 686851329,
+      "uiSoundID": 106,
+      "soundObjectID": 156499116,
+      "gainDB": -6.0,
+      "gainLinear": 0.5011872336272722,
+      "gainEvidence": {
+        "field": "CAkSound.NodeBaseParams.NodeInitialParams.AkPropBundle.pProps[pID=0 Volume].pValue",
+        "bankByteOffset": 10482947
+      },
+      "sourcePath": "wwise/763489943.wem",
+      "loop": false,
+      "embeddedInBank": {
+        "bankDataOffset": 7667936,
+        "sourceBytes": 12052,
+        "didxOffset": 7492
+      },
+      "triggerEvidence": "Original ui_sound alias and Wwise Event/Play/Sound graph verified. Mapping to this portfolio action is a browser adaptation; an exact original hall-menu trigger is not asserted."
+    },
+    "diaryClose": {
+      "name": "diary-close",
+      "mediaID": 529818426,
+      "channels": 1,
+      "sampleRate": 44100,
+      "sampleWidth": 2,
+      "samples": 54144,
+      "duration": 1.2277551020408164,
+      "wavBytes": 108332,
+      "sourceMD5": "9c3cffb86dcc63d6dde3be10f4649a2b",
+      "wavSHA256": "b24ce7bb8229086bd80e74c958c3f6a7be58e89674a610c411dc53b7162d4e0c",
+      "file": "diary-close.wav",
+      "event": "P_dwrg_ui_ui_book_close",
+      "eventID": 1913401015,
+      "uiSoundID": 105,
+      "soundObjectID": 684908706,
+      "gainDB": -5.0,
+      "gainLinear": 0.5623413251903491,
+      "gainEvidence": {
+        "field": "CAkSound.NodeBaseParams.NodeInitialParams.AkPropBundle.pProps[pID=0 Volume].pValue",
+        "bankByteOffset": 10484165
+      },
+      "sourcePath": "wwise/529818426.wem",
+      "loop": false,
+      "embeddedInBank": {
+        "bankDataOffset": 5150272,
+        "sourceBytes": 9855,
+        "didxOffset": 5128
+      },
+      "triggerEvidence": "Original ui_sound alias and Wwise Event/Play/Sound graph verified. Mapping to this portfolio action is a browser adaptation; an exact original hall-menu trigger is not asserted."
+    },
+    "pageTurn": {
+      "name": "page-turn",
+      "mediaID": 779453860,
+      "channels": 1,
+      "sampleRate": 44100,
+      "sampleWidth": 2,
+      "samples": 17408,
+      "duration": 0.3947392290249433,
+      "wavBytes": 34860,
+      "sourceMD5": "3514cb7d381acc65454d69f00b5eaf41",
+      "wavSHA256": "865900b219747d34608fe8e7a79f2295b225098ff609824d868aafc322e0644e",
+      "file": "page-turn.wav",
+      "event": "P_dwrg_ui_ui_book_after",
+      "eventID": 3284014365,
+      "uiSoundID": 102,
+      "soundObjectID": 180308487,
+      "gainDB": -6.0,
+      "gainLinear": 0.5011872336272722,
+      "gainEvidence": {
+        "field": "CAkSound.NodeBaseParams.NodeInitialParams.AkPropBundle.pProps[pID=0 Volume].pValue",
+        "bankByteOffset": 10483063
+      },
+      "sourcePath": "wwise/779453860.wem",
+      "loop": false,
+      "embeddedInBank": {
+        "bankDataOffset": 7760512,
+        "sourceBytes": 3569,
+        "didxOffset": 7660
+      },
+      "triggerEvidence": "Original ui_sound alias and Wwise Event/Play/Sound graph verified. Mapping to this portfolio action is a browser adaptation; an exact original hall-menu trigger is not asserted."
+    },
+    "pageBack": {
+      "name": "page-back",
+      "mediaID": 15088178,
+      "channels": 1,
+      "sampleRate": 44100,
+      "sampleWidth": 2,
+      "samples": 19968,
+      "duration": 0.4527891156462585,
+      "wavBytes": 39980,
+      "sourceMD5": "8f27b777758ed7bcae307582f636d588",
+      "wavSHA256": "e44f3fa761743cf8284ff411fd69c63d4067c0d6be0c8b102347742f9029846e",
+      "file": "page-back.wav",
+      "event": "P_dwrg_ui_ui_book_before",
+      "eventID": 1240641704,
+      "uiSoundID": 104,
+      "soundObjectID": 446437042,
+      "gainDB": -6.0,
+      "gainLinear": 0.5011872336272722,
+      "gainEvidence": {
+        "field": "CAkSound.NodeBaseParams.NodeInitialParams.AkPropBundle.pProps[pID=0 Volume].pValue",
+        "bankByteOffset": 10483585
+      },
+      "sourcePath": "wwise/15088178.wem",
+      "loop": false,
+      "embeddedInBank": {
+        "bankDataOffset": 120992,
+        "sourceBytes": 4000,
+        "didxOffset": 184
+      },
+      "triggerEvidence": "Original ui_sound alias and Wwise Event/Play/Sound graph verified. Mapping to this portfolio action is a browser adaptation; an exact original hall-menu trigger is not asserted."
+    }
+  },
+  "loadingLifecycle": {
+    "sourceConfig": "script/loading_config.json",
+    "sourceLogic": "script/UILoading.json",
+    "originalTimeline": "loading.csb loading 48..144, loading_finish 145..220",
+    "timelineFPS": 60,
+    "timelineSpeed": 0.666700005531311,
+    "audioStartsAtFrames": {
+      "loadingStart": 48,
+      "shatter": 145
+    },
+    "firstVisibleGlassFrame": 158,
+    "stopPreviousAtStageChange": false,
+    "finiteAudioTailsContinue": true,
+    "onDestroy": "release_sound_event only stops events where get_length_seconds() == -1; finite events are not stopped.",
+    "shatterSecondAction": {
+      "type": "SetGameParameter",
+      "actionID": 880110407,
+      "parameterID": 3238327563,
+      "value": 1,
+      "initialValue": 1,
+      "transitionTime": 0,
+      "note": "This is not a Stop action; no loading-start volume RTPC uses this parameter."
+    },
+    "unused": "Random six-way UI_loading_glass event is not part of default loading_config record 1 and must not be layered onto it.",
+    "browserAdaptation": "User mute/skip/page hide may explicitly stop all active nodes; resume sound must not queue old actions."
+  },
+  "webPlayback": {
+    "masterGain": 0.75,
+    "sourceEventGainsAppliedAtRuntime": true,
+    "note": "Original game sound recordings; personal-page and website-control mappings are browser adaptations. This is not the original game client."
+  }
+}
