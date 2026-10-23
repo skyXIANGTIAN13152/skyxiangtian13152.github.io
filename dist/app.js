@@ -236,11 +236,11 @@
   const updateSound = () => {
     soundButton.setAttribute('aria-pressed', String(audioOn));
     soundButton.setAttribute('aria-label', audioOn ? '关闭声音，包括音乐和音效' : '开启声音，包括音乐和音效');
-    soundButton.title = `${audioOn ? '关闭' : '开启'}声音 · 大厅音乐与原版音效`;
+    soundButton.title = soundButton.getAttribute('aria-label');
     $('.sound-label').textContent = audioOn ? '声音开' : '声音关';
   };
   const startMusic = async (silent = false) => {
-    if (!audioOn || audioPending || !lobbyMusic.paused) return;
+    if (!audioOn || document.hidden || audioPending || !lobbyMusic.paused) return;
     audioPending = true;
     const attempt = ++audioAttempt;
     soundButton.setAttribute('aria-busy', 'true');
@@ -251,7 +251,7 @@
         // Autoplay policy postpones playback until the first visitor gesture;
         // it does not turn the visitor's music preference off.
         if (error.name !== 'NotAllowedError' && error.name !== 'AbortError') {
-          if (!silent) notify('大厅音乐暂未播放，请再次点击声音开关。');
+          if (!silent) notify(window.SkyLanguage?.language === 'en' ? 'The music could not start. Please try the sound button again.' : '背景音乐暂未播放，请再次点击声音开关。');
         }
       }
     } finally {
@@ -267,6 +267,20 @@
     lobbyMusic.pause();
     soundButton.setAttribute('aria-busy', 'false');
   };
+  const switchSceneMusic = (scene) => {
+    const track = scene === 'home' ? 'login' : 'manor';
+    const source = `assets/audio/identity-v-${track}.mp3`;
+    if (lobbyMusic.getAttribute('src') !== source) {
+      // Reuse the media element unlocked by the visitor's first gesture. Abort
+      // the old pending play before replacing its source, so tracks never overlap.
+      pauseMusic();
+      lobbyMusic.src = source;
+      lobbyMusic.load();
+    }
+    lobbyMusic.dataset.musicScene = track;
+    if (audioOn && !document.hidden) startMusic(true);
+  };
+  window.addEventListener('sky:scenechange', event => switchSceneMusic(event.detail.scene));
   soundButton.addEventListener('click', () => {
     soundUserChanged = true;
     audioOn = !audioOn;
@@ -293,7 +307,7 @@
     window.SkyAudio?.play('click', { group: 'interface' });
   });
   updateSound();
-  startMusic(true);
+  switchSceneMusic(currentScene);
 
   const applyPublishedContent = () => {
     const content = window.SkyContent?.data;

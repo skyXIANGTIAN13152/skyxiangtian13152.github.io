@@ -3,7 +3,7 @@ import {moveCircle, cameraRelativeInput} from './room-movement.js';
 import {originalRoomMovement} from './room-collision.js?v=20261023-13';
 import {createOriginalLobbyPostprocess} from './room-postprocess.js';
 import {createRoomResolution} from './room-resolution.js';
-import {createRoomPointerLook} from './room-pointer-look.js';
+import {createRoomPointerLook} from './room-pointer-look.js?v=20261023-21';
 
 const stage = document.querySelector('.game-stage');
 const lobby = document.querySelector('#lobby');

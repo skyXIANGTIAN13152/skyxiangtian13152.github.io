@@ -75,7 +75,10 @@ export function createRoomPointerLook(canvas,{canLook,onLook,onRelease}) {
   function pointerDown(event) {
     if (!available() || (event.button !== 0 && event.button !== 2)) return;
     if (event.button === 2) event.preventDefault();
-    if (locked()) return;
+    if (locked()) {
+      if (event.button === 2) release();
+      return;
+    }
     clearDrag();
     drag = {id:event.pointerId,x:event.clientX,y:event.clientY};
     try { canvas.setPointerCapture(event.pointerId); } catch {}
