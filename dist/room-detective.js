@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { crossedFootsteps } from './detective-footsteps.js';
+import { createDetectiveLocomotion } from './detective-locomotion.js?v=20261023-14';
 
 /** Original game mesh, textures, skeleton and original lantern locomotion clips. */
 export async function createDetective({
@@ -23,10 +23,7 @@ export async function createDetective({
   const idleClip = THREE.AnimationClip.findByName(gltf.animations, 'hall_idle_2');
   const walkClip = THREE.AnimationClip.findByName(gltf.animations, 'hall_walk_2');
   if (!idleClip || !walkClip) throw new Error('Original lantern movement clips are missing.');
-  const idle = mixer.clipAction(idleClip);
-  const walk = mixer.clipAction(walkClip);
-  idle.play();
-  mixer.update(0);
+  const locomotion = createDetectiveLocomotion(mixer, idleClip, walkClip, { nominalWalkSpeed, onFootstep });
 
   // Exact flame socket from detective.gim / Socket_0. Coordinates remain in game units.
   const lampBone = gltf.scene.getObjectByName('bone003');
@@ -77,28 +74,10 @@ export async function createDetective({
     object.frustumCulled = false;
   });
   let previousTime;
-  let active = idle;
   function update(time, speed = 0, reducedMotion = false, footstepsAllowed = false) {
     const delta = previousTime === undefined ? 0 : Math.min(0.1, Math.max(0, time - previousTime));
     previousTime = time;
-    const moving = Math.abs(speed) > 0.025;
-    const next = moving ? walk : idle;
-    if (next !== active) {
-      next.reset().setEffectiveTimeScale(1).setEffectiveWeight(1).play();
-      next.crossFadeFrom(active, reducedMotion ? 0.12 : 0.24, false);
-      active = next;
-    }
-    walk.setEffectiveTimeScale(Math.max(0.3, Math.min(2, Math.abs(speed) / nominalWalkSpeed)));
-    idle.setEffectiveTimeScale(reducedMotion && !moving ? 0 : 1);
-    const previousWalkTime = walk.time;
-    mixer.update(delta);
-    // Follow the actual animation phase, including slow joystick movement and
-    // looping. Collision/input permission is separate from the visual fade speed.
-    if (active === walk && moving && footstepsAllowed && delta > 0) {
-      for (const eventTime of crossedFootsteps(previousWalkTime, walk.time, walkClip.duration)) {
-        onFootstep({ eventTime, phase: walk.time });
-      }
-    }
+    locomotion.update(delta, speed, reducedMotion, footstepsAllowed);
     const frame = reducedMotion ? 0 : Math.floor(time * 32) % 32;
     fireTexture.offset.set((frame % 8) / 8, (3 - Math.floor(frame / 8)) / 4);
     group.updateMatrixWorld(true);

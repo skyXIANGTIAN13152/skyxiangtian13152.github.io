@@ -66,14 +66,18 @@
     }));
     return result.every(item => item.status === 'fulfilled');
   }
-  function unlock() {
+  function unlock(event) {
     if (!enabled || document.hidden) return Promise.resolve(false);
     let audio;
     try { audio = getContext(); } catch (_) { return Promise.resolve(false); }
     if (!audio) return Promise.resolve(false);
-    // resume() is invoked directly in the visitor's input event, before any await.
-    if (audio.state !== 'running' && !unlocking) {
-      const request = Promise.resolve(audio.resume()).then(() => audio.state === 'running', () => false);
+    // A pre-gesture resume() can remain pending on mobile. A later real input
+    // must retry synchronously, rather than wait on that blocked first request.
+    const gesture = event?.isTrusted || navigator.userActivation?.isActive;
+    if (audio.state !== 'running' && (!unlocking || gesture)) {
+      let resumed;
+      try { resumed = audio.resume(); } catch (_) { return Promise.resolve(false); }
+      const request = Promise.resolve(resumed).then(() => audio.state === 'running', () => false);
       unlocking = request;
       request.finally(() => { if (unlocking === request) unlocking = null; });
     }
@@ -147,9 +151,19 @@
     if (document.hidden) context.suspend().catch(() => {});
     else if (enabled) unlock();
   });
-  document.addEventListener('pointerdown', unlock, { capture: true, passive: true });
+  const gestureOptions = { capture: true, passive: true };
+  document.addEventListener('pointerdown', event => {
+    if (event.pointerType === 'mouse') unlock(event);
+  }, gestureOptions);
+  // Touch/pen activation occurs on release. click also covers keyboard,
+  // assistive controls and browsers without Pointer Events.
+  document.addEventListener('pointerup', event => {
+    if (event.pointerType !== 'mouse') unlock(event);
+  }, gestureOptions);
+  document.addEventListener('touchend', unlock, gestureOptions);
+  document.addEventListener('click', unlock, gestureOptions);
   document.addEventListener('keydown', event => {
-    if (!event.ctrlKey && !event.metaKey && !event.altKey) unlock();
+    if (event.key !== 'Escape' && !event.ctrlKey && !event.metaKey && !event.altKey) unlock(event);
   }, true);
   window.SkyAudio = { prepare, unlock, play, playFootstep, stopAll, setEnabled,
     get enabled() { return enabled; },

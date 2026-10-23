@@ -20,7 +20,7 @@ const keys = new Set();
 let scene, camera, renderer, postprocess, room, detective, lamp, shadow;
 let active = false, ready = false, frame = 0, last = 0, elapsed = 0;
 let pointerId = null, stickInput = {x:0,z:0}, drag = null, nearest = null;
-let yaw = 0, pitch = .42, currentSpeed = 0, lastInteraction = '';
+let yaw = 0, pitch = .42, lastInteraction = '';
 let pausedForTransition = false, contextLost = false;
 let footstepsMoving = false;
 const player = new THREE.Vector3();
@@ -41,7 +41,6 @@ const canMove = () => active && ready && !contextLost && !pausedForTransition &&
 function resetInput() {
   keys.clear(); stickInput = {x:0,z:0}; pointerId = null; drag = null;
   knob.style.transform = '';
-  currentSpeed = 0;
   stopFootsteps();
 }
 function stopFootsteps() { footstepsMoving = false; window.SkyAudio?.stopAll('footsteps'); }
@@ -145,7 +144,6 @@ function render(now) {
     player.set(next.x,room.floorHeight?.(next.x,next.z) ?? room.spawn.y ?? 0,next.z);
   }
   const speed = dt ? Math.hypot(player.x - previousX,player.z - previousZ) / dt : 0;
-  currentSpeed = THREE.MathUtils.damp(currentSpeed,speed,12,dt);
   detective.group.position.copy(player);
   if (speed > .03) {
     const angle = Math.atan2(input.x,input.z);
@@ -155,7 +153,9 @@ function render(now) {
   const walking = canMove() && speed > .025;
   if (footstepsMoving && !walking) stopFootsteps();
   footstepsMoving = walking;
-  detective.update(elapsed,currentSpeed,reduced(),walking);
+  // Fade to idle as soon as the character actually stops, including a wall
+  // collision. A damped speed used to keep the feet walking in place for 0.32s.
+  detective.update(elapsed,speed,reduced(),walking);
   room.update?.(elapsed,reduced());
   shadow.position.set(player.x,player.y + .018,player.z);
   focus.set(player.x,player.y + 1.35,player.z - .15);
@@ -195,7 +195,7 @@ function makeContactShadow() {
 }
 async function initialize() {
   try {
-    const [{createRoom},{createDetective}] = await Promise.all([import('./room-environment.js?v=20261023-13'),import('./room-detective.js?v=20261023-11')]);
+    const [{createRoom},{createDetective}] = await Promise.all([import('./room-environment.js?v=20261023-13'),import('./room-detective.js?v=20261023-14')]);
     scene = new THREE.Scene(); scene.background = new THREE.Color('#11181d');
     scene.fog = new THREE.FogExp2('#10151b',.007);
     camera = new THREE.PerspectiveCamera(45,1280/720,.05,80);
