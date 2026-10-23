@@ -71,7 +71,8 @@ function updateLabels() {
   camera.getWorldPosition(cameraPosition);
   for (const hotspot of room.hotspots) {
     const a = anchors.find(a => a.dataset.prop === hotspot.id);
-    if (!a) continue;
+    if (!a || a.hidden) continue;
+    hotspot.label = a.querySelector('.hotspot-title')?.textContent || hotspot.label;
     const distance = Math.hypot(player.x - hotspot.approach.x, player.z - hotspot.approach.z);
     if (distance < nearestDistance) {nearest = hotspot; nearestDistance = distance;}
     projected.copy(hotspot.position).project(camera);
@@ -95,7 +96,7 @@ function updateLabels() {
     a.tabIndex = visible && !occluded && near ? 0 : -1;
     a.setAttribute('aria-hidden',String(!visible || occluded || !near));
   }
-  const id = nearest?.id || '';
+  const id = nearest ? `${nearest.id}:${nearest.label}` : '';
   if (id !== lastInteraction) {
     lastInteraction = id;
     interact.hidden = !nearest;
@@ -269,7 +270,7 @@ document.addEventListener('sky:intro-complete',() => {pausedForTransition=false;
 new MutationObserver(updateTouchVisibility).observe(document.documentElement,{attributes:true,attributeFilter:['class']});
 directoryButton.addEventListener('click',() => {
   directory.hidden = !directory.hidden;directoryButton.setAttribute('aria-expanded',String(!directory.hidden));resetInput();
-  if (!directory.hidden) directory.querySelector('a').focus();
+  if (!directory.hidden) directory.querySelector('a:not([hidden])')?.focus();
 });
 document.addEventListener('keydown',e => {if(e.key === 'Escape' && !directory.hidden){directory.hidden=true;directoryButton.setAttribute('aria-expanded','false');directoryButton.focus();}});
 document.querySelector('.room-reset').addEventListener('click',() => {

@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "profile": {
+    "name": "Sky 天",
+    "tagline": "UNSW Quantum Engineering & Computer Science",
+    "bio": "我在 UNSW 的 builder space 制作了这个个人网站。\n目前正在学习 ELEC2134、COMP2521 和 MATH2069。",
+    "avatar": "",
+    "footer": "在 UNSW builder space 制作"
+  },
+  "sections": {
+    "about": { "title": "关于我", "subtitle": "Sky 天 · 个人档案", "visible": true },
+    "work": { "title": "作品集", "subtitle": "SyncWallpaper", "visible": true },
+    "study": { "title": "专业学习", "subtitle": "UNSW · 正在学习", "visible": true },
+    "interests": { "title": "兴趣爱好", "subtitle": "playing codex", "visible": true }
+  },
+  "projects": [{
+    "id": "syncwallpaper",
+    "title": "SyncWallpaper",
+    "category": "桌面工具",
+    "summary": "热插拔检测屏幕，自动切换壁纸。",
+    "body": "",
+    "cover": "",
+    "images": [],
+    "url": "https://github.com/skyXIANGTIAN13152/SyncWallpaper",
+    "visible": true
+  }],
+  "study": {
+    "university": "UNSW",
+    "major": "Quantum Engineering & Computer Science",
+    "description": "",
+    "courses": [
+      { "id": "elec2134", "code": "ELEC2134", "name": "", "notes": "", "visible": true },
+      { "id": "comp2521", "code": "COMP2521", "name": "", "notes": "", "visible": true },
+      { "id": "math2069", "code": "MATH2069", "name": "", "notes": "", "visible": true }
+    ]
+  },
+  "interests": [{ "id": "codex", "title": "playing codex", "body": "爱玩 Codex。", "image": "", "visible": true }],
+  "settings": { "musicVolume": 0.35, "musicEnabled": true }
+}

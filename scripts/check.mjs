@@ -3,7 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 
-const root = fileURLToPath(new URL('../dist/', import.meta.url));
+const root = process.argv[2] ? path.resolve(process.argv[2]) : fileURLToPath(new URL('../dist/', import.meta.url));
 const failures = [];
 const files = [];
 async function walk(directory) {
@@ -20,7 +20,9 @@ if (!files.includes(path.join(root, 'index.html'))) failures.push('缺少 dist/i
 async function checkReference(source, reference) {
   if (!reference || /^(?:#|data:|https?:|mailto:|tel:|blob:)/i.test(reference)) return;
   if (reference.startsWith('/')) {
-    failures.push(`${path.relative(root, source)} 使用了不适用于 GitHub 项目子路径的绝对资源路径：${reference}`);
+    // This is a personal root-domain site. The owner UI deliberately uses same-origin API routes.
+    if (reference === '/' || reference.startsWith('/api/manor/') || reference.startsWith('/admin/')) return;
+    await checkReference(path.join(root, 'index.html'), reference.slice(1));
     return;
   }
   const clean = decodeURIComponent(reference.split(/[?#]/, 1)[0]);

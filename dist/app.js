@@ -75,6 +75,7 @@
   let navigationVersion = 0;
   let diaryInProgress = false;
   const readingOrder = ['about', 'work', 'study', 'interests'];
+  const visibleScene = id => !readingOrder.includes(id) || window.SkyContent?.isVisible(id) !== false;
   const showScene = (id) => {
     currentScene = id;
     stage.dataset.scene = id;
@@ -94,12 +95,13 @@
       if (active) link.setAttribute('aria-current', 'page');
       else link.removeAttribute('aria-current');
     });
-    $('.scene-caption').textContent = id === 'home' ? '在 UNSW builder space 制作' : id === 'lobby' ? '提灯入室，探索个人档案' : titles[id];
-    document.title = `Sky 天 · ${titles[id]}`;
+    $('.scene-caption').textContent = id === 'home' ? window.SkyContent?.data?.profile.footer ?? '在 UNSW builder space 制作' : id === 'lobby' ? '提灯入室，探索个人档案' : titles[id];
+    document.title = `${window.SkyContent?.data?.profile.name || 'Sky 天'} · ${titles[id]}`;
   };
   const focusScene = (id) => $(`#${id}`).querySelector('h1,h2').focus({ preventScroll: true });
   const transitionTo = async (id, updateHistory = true) => {
     if (!Object.hasOwn(titles, id)) id = 'home';
+    if (!visibleScene(id)) id = 'lobby';
     if (transitioning) {
       if (updateHistory) return;
       navigationVersion += 1;
@@ -212,15 +214,14 @@
     fitStage();
   });
 
-  const demo = $('.project-visual');
-  const connectButton = $('.connection-toggle');
-  let connected = true;
-  connectButton.addEventListener('click', () => {
-    connected = !connected;
-    demo.classList.toggle('disconnected', !connected);
+  document.addEventListener('click', event => {
+    const connectButton = event.target.closest('.connection-toggle');
+    if (!connectButton) return;
+    const demo = connectButton.closest('.project-visual');
+    const connected = demo.classList.toggle('disconnected') === false;
     connectButton.setAttribute('aria-pressed', String(connected));
     connectButton.firstChild.textContent = connected ? '断开副屏' : '连接副屏';
-    $('#screen-status').textContent = connected ? '双屏已连接' : '副屏已断开 · 壁纸已切换';
+    demo.querySelector('#screen-status').textContent = connected ? '双屏已连接' : '副屏已断开 · 壁纸已切换';
   });
 
   const notify = (message) => {
@@ -233,6 +234,7 @@
   const lobbyMusic = $('#lobby-music');
   lobbyMusic.volume = .35;
   let audioOn = true;
+  let soundUserChanged = false;
   let audioAttempt = 0;
   let audioPending = false;
   const soundButton = $('.sound-button');
@@ -271,6 +273,7 @@
     soundButton.setAttribute('aria-busy', 'false');
   };
   soundButton.addEventListener('click', () => {
+    soundUserChanged = true;
     audioOn = !audioOn;
     window.SkyAudio?.setEnabled(audioOn);
     updateSound();
@@ -296,6 +299,29 @@
   });
   updateSound();
   startMusic(true);
+
+  const applyPublishedContent = () => {
+    const content = window.SkyContent?.data;
+    if (!content) return;
+    for (const key of readingOrder) titles[key] = content.sections[key].title;
+    lobbyMusic.volume = content.settings.musicVolume;
+    if (!soundUserChanged) {
+      audioOn = content.settings.musicEnabled;
+      window.SkyAudio?.setEnabled(audioOn);
+      updateSound();
+      if (audioOn) startMusic(true); else pauseMusic();
+    }
+    if (!visibleScene(currentScene)) {
+      navigationVersion += 1;
+      window.SkyDiary?.cancel();
+      window.SkyAudio?.stopAll('navigation');
+      transitioning = diaryInProgress = false;
+      stage.inert = false;
+      showScene('lobby');
+    } else showScene(currentScene);
+  };
+  window.addEventListener('sky:contentchange', applyPublishedContent);
+  applyPublishedContent();
 
   const revealLobby = () => {
     if (!window.gsap || reducedMotion) return;

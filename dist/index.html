@@ -18,14 +18,16 @@
   <link rel="stylesheet" href="details.css?v=20261023-10">
   <link rel="stylesheet" href="lobby.css?v=20261023-10">
   <link rel="stylesheet" href="room3d.css?v=20261023-10">
+  <link rel="stylesheet" href="content.css?v=20261023-12">
   <link rel="modulepreload" href="assets/diary-original/diary-transition.js">
   <script type="importmap">{"imports":{"three":"./vendor/three.module.js","three/addons/":"./vendor/three-addons/"}}</script>
-  <script type="module" src="room3d.js?v=20261023-11"></script>
+  <script type="module" src="room3d.js?v=20261023-12"></script>
   <script src="vendor/gsap.min.js?v=20261023-10" defer></script>
   <script src="sound-effects.js?v=20261023-11" defer></script>
   <script src="loader.js?v=20261023-10" defer></script>
-  <script src="app.js?v=20261023-10" defer></script>
+  <script src="app.js?v=20261023-12" defer></script>
   <script src="toys.js?v=20261023-10" defer></script>
+  <script type="module" src="content-client.js?v=20261023-12"></script>
 </head>
 <body>
   <div class="game-stage" data-scene="home">
@@ -54,7 +56,7 @@
           <p class="hero-kicker">个 人 档 案</p>
           <h1 id="hero-title" tabindex="-1"><span class="sky-name">Sky</span><span class="name-separator" aria-hidden="true"></span><span class="tian-name">天</span></h1>
           <p class="hero-focus">UNSW Quantum Engineering<br><span>&amp; Computer Science</span></p>
-          <div class="hero-actions"><a class="ornate-button enter-game" href="#lobby"><span>点击进入游戏</span><svg aria-hidden="true"><use href="#arrow"/></svg></a></div>
+          <div class="hero-actions"><a class="ornate-button enter-game" href="#lobby"><span>访客进入庄园</span><svg aria-hidden="true"><use href="#arrow"/></svg></a><a class="owner-entry" href="https://sky-tian-manor-portfolio.perky-berry-1262.chatgpt.site/admin/">庄园主登录</a></div>
           <p class="entrance-motion-note" hidden><span>当前已减少动效</span><button class="restore-entrance" type="button">恢复碎镜动画并进入</button></p>
         </div>
         <div class="merchant-display">
