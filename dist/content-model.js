@@ -1,6 +1,8 @@
+import { DEFAULT_GAMES } from './game-defaults.js?v=20261023-20';
+
 /** Shared by the owner editor, server and public reader. All prose is plain text. */
-export const CONTENT_SCHEMA_VERSION = 1;
-export const SECTION_KEYS = Object.freeze(['about', 'work', 'study', 'interests', 'people', 'pets']);
+export const CONTENT_SCHEMA_VERSION = 2;
+export const SECTION_KEYS = Object.freeze(['about', 'work', 'study', 'interests', 'people', 'pets', 'games']);
 export const COURSE_STATUSES = Object.freeze(['completed', 'current', 'planned']);
 export const PROJECT_DEMOS = Object.freeze(['', 'syncwallpaper', 'usage-monitor', 'cse-helper', 'wuji-ime', 'perch', 'bibi-keyboard', 'manor']);
 export const ENGLISH_FIELDS = Object.freeze({
@@ -12,6 +14,7 @@ export const ENGLISH_FIELDS = Object.freeze({
   interests: { title: ['兴趣标题', 160], body: ['兴趣正文', 30000] },
   people: { name: ['人物姓名', 160], role: ['人物身份', 160], body: ['人物介绍', 30000] },
   pets: { name: ['宠物名字', 160], description: ['宠物介绍', 12000] },
+  games: { title: ['游戏名称', 160], body: ['游戏介绍', 30000], favoriteCharacter: ['喜欢的角色', 160] },
 });
 
 function record(value, label) {
@@ -81,11 +84,23 @@ function id(value, label) {
 
 export function validateContent(input) {
   const source = record(input, '网站内容');
-  if (source.schemaVersion !== CONTENT_SCHEMA_VERSION) throw new Error('网站内容版本不受支持。');
+  if (![1, CONTENT_SCHEMA_VERSION].includes(source.schemaVersion)) throw new Error('网站内容版本不受支持。');
+  // A legacy document never had this collection. Upgrade only that state, so
+  // explicitly empty/deleted v2 content and v1 imports with games stay empty.
+  const migrateGames = source.schemaVersion === 1 && source.games === undefined;
+  const games = migrateGames ? structuredClone(DEFAULT_GAMES) : source.games === undefined ? [] : source.games;
+  let interests = source.interests;
+  if (migrateGames && Array.isArray(interests) && interests.length < 60 && !interests.some(item => item?.id === 'gaming' || (typeof item?.title === 'string' && item.title.trim() === '玩游戏'))) {
+    interests = [...interests, { id: 'gaming', title: '玩游戏', body: '我喜欢玩游戏。', image: '', visible: true, titleEn: 'Gaming', bodyEn: 'I enjoy playing games.' }];
+  }
   const profile = record(source.profile, '个人档案');
+  // This requested portrait is a one-time legacy default. A later owner removal
+  // stays empty, and an existing nonempty personal image is never replaced.
+  const avatar = source.schemaVersion === 1 && (profile.avatar === undefined || (typeof profile.avatar === 'string' && !profile.avatar.trim()))
+    ? 'assets/profile/sky-wechat.jpg' : profile.avatar === undefined ? '' : profile.avatar;
   const sectionSource = record(source.sections, '大厅入口');
   const sections = {};
-  const optionalSections = { people: { title: '名人墙', subtitle: '', visible: true }, pets: { title: '宠物小屋', subtitle: '我家的宠物与相处时光', visible: true } };
+  const optionalSections = { people: { title: '名人墙', subtitle: '', visible: true }, pets: { title: '宠物小屋', subtitle: '我家的宠物与相处时光', visible: true }, games: { title: '游戏合集', subtitle: '我玩的游戏', titleEn: 'Games', subtitleEn: 'Games I play', visible: true } };
   for (const key of SECTION_KEYS) {
     const section = record(sectionSource[key] === undefined ? optionalSections[key] : sectionSource[key], '大厅入口');
     sections[key] = { title: text(section.title, '入口名称', 40, true), subtitle: text(section.subtitle, '入口说明', 160), visible: flag(section.visible, '入口可见状态'), ...englishFields(section, 'sections') };
@@ -97,7 +112,7 @@ export function validateContent(input) {
     schemaVersion: CONTENT_SCHEMA_VERSION,
     profile: {
       name: text(profile.name, '姓名', 80, true), tagline: text(profile.tagline, '一句话介绍', 300),
-      bio: text(profile.bio, '关于我', 12000), avatar: url(profile.avatar, '头像地址', true), footer: text(profile.footer, '页脚文字', 180),
+      bio: text(profile.bio, '关于我', 12000), avatar: url(avatar, '头像地址', true), footer: text(profile.footer, '页脚文字', 180),
       education: text(profile.education === undefined ? '' : profile.education, '学历与专业', 500),
       nationality: text(profile.nationality === undefined ? '' : profile.nationality, '国籍', 160),
       birthplace: text(profile.birthplace === undefined ? '' : profile.birthplace, '出生城市', 160),
@@ -121,12 +136,18 @@ export function validateContent(input) {
       ...englishFields(study, 'study'),
       courses: entries(study.courses, '课程', (course) => ({ id: id(course.id, '课程'), code: text(course.code, '课程代码', 80), name: text(course.name, '课程名称', 160), notes: text(course.notes, '课程笔记', 30000), visible: flag(course.visible, '课程可见状态'), status: option(course.status, '课程状态', COURSE_STATUSES, 'current'), url: url(course.url === undefined ? '' : course.url, '课程手册链接'), ...englishFields(course, 'courses') })),
     },
-    interests: entries(source.interests, '兴趣爱好', (interest) => ({ id: id(interest.id, '兴趣'), title: text(interest.title, '兴趣标题', 160, true), body: text(interest.body, '兴趣正文', 30000), image: url(interest.image, '兴趣图片', true), visible: flag(interest.visible, '兴趣可见状态'), ...englishFields(interest, 'interests') })),
+    interests: entries(interests, '兴趣爱好', (interest) => ({ id: id(interest.id, '兴趣'), title: text(interest.title, '兴趣标题', 160, true), body: text(interest.body, '兴趣正文', 30000), image: url(interest.image, '兴趣图片', true), visible: flag(interest.visible, '兴趣可见状态'), ...englishFields(interest, 'interests') })),
     people: entries(source.people === undefined ? [] : source.people, '名人墙', (person) => ({ id: id(person.id, '人物'), name: text(person.name, '人物姓名', 160, true), role: text(person.role, '人物身份', 160), body: text(person.body, '人物介绍', 30000), image: url(person.image, '人物照片', true), url: url(person.url, '人物链接'), visible: flag(person.visible, '人物可见状态'), ...englishFields(person, 'people') })),
     pets: entries(source.pets === undefined ? [] : source.pets, '宠物小屋', pet => {
       if (!Array.isArray(pet.photos) || pet.photos.length > 12) throw new Error('每只宠物最多添加 12 张照片。');
       return { id: id(pet.id, '宠物'), name: text(pet.name, '宠物名字', 160, true), description: text(pet.description, '宠物介绍', 12000), photos: pet.photos.map(photo => url(photo, '宠物照片', true)).filter(Boolean), visible: flag(pet.visible, '宠物可见状态'), ...englishFields(pet, 'pets') };
     }, 40),
+    games: entries(games, '游戏合集', game => ({
+      id: id(game.id, '游戏'), title: text(game.title, '游戏名称', 160, true), body: text(game.body === undefined ? '' : game.body, '游戏介绍', 30000),
+      favoriteCharacter: text(game.favoriteCharacter === undefined ? '' : game.favoriteCharacter, '喜欢的角色', 160),
+      image: url(game.image === undefined ? '' : game.image, '游戏配图', true), url: url(game.url === undefined ? '' : game.url, '游戏链接'),
+      visible: flag(game.visible, '游戏可见状态'), ...englishFields(game, 'games'),
+    })),
     settings: { musicVolume: settings.musicVolume, musicEnabled: flag(settings.musicEnabled, '默认声音设置') },
   };
 }

@@ -16,6 +16,20 @@ export function isOriginalFloorSurface(path, hidden = false) {
   return !hidden && /\/dm65_main_(?:ground001|cellardoor001)\.gim$/.test(path);
 }
 
+export function createRoomHotspots() {
+  return [
+    // The original piano occupies x=1.78–2.59, z=3.73–5.80. Keep the
+    // approach on its open room side, separate from the archive wall labels.
+    { id: 'games', label: '游戏合集', position: v3([2.6, 1.9, 4.7]), approach: v3([3.8, 0, 4.7]) },
+    { id: 'pets', label: '宠物小屋', position: v3([7.7, 1.35, -8.6]), approach: v3([6.55, 0, -8.6]) },
+    { id: 'people', label: '名人墙', position: v3([3.1, 2.15, -9.35]), approach: v3([3.1, 0, -8.2]) },
+    { id: 'about', label: '关于我', position: v3([7.9, 2.3, -3.9]), approach: v3([6.8, 0, -3.9]) },
+    { id: 'work', label: '作品集', position: v3([8, 2.2, .35]), approach: v3([6.7, 0, .35]) },
+    { id: 'study', label: '专业学习', position: v3([8.1, 2.1, -1.6]), approach: v3([6.7, 0, -1.6]) },
+    { id: 'interests', label: '兴趣爱好', position: v3([7.55, 1.3, -4.45]), approach: v3([6.35, 0, -4.45]) },
+  ];
+}
+
 function originalMirror(mesh, data, mask) {
   // Reflector expects a local +Z plane. Rebase the original mesh onto that
   // plane and apply the exact inverse transform; no mirror outline is rebuilt.
@@ -275,14 +289,7 @@ export async function createRoom(options = {}) {
     return ray.intersectObjects(floorMeshes, false)[0]?.point.y ?? null;
   }
   const spawn = { x: 6.05, y: floorHeight(6.05, -2.4) || 0, z: -2.4 };
-  const hotspots = [
-    { id: 'pets', label: '宠物小屋', position: v3([7.7, 1.35, -8.6]), approach: v3([6.55, 0, -8.6]) },
-    { id: 'people', label: '名人墙', position: v3([3.1, 2.15, -9.35]), approach: v3([3.1, 0, -8.2]) },
-    { id: 'about', label: '关于我', position: v3([7.9, 2.3, -3.9]), approach: v3([6.8, 0, -3.9]) },
-    { id: 'work', label: '作品集', position: v3([8, 2.2, .35]), approach: v3([6.7, 0, .35]) },
-    { id: 'study', label: '专业学习', position: v3([8.1, 2.1, -1.6]), approach: v3([6.7, 0, -1.6]) },
-    { id: 'interests', label: '兴趣爱好', position: v3([7.55, 1.3, -4.45]), approach: v3([6.35, 0, -4.45]) },
-  ];
+  const hotspots = createRoomHotspots();
   return {
     group, collisionGroup, collisionMeshes, blockers: collisionMeshes,
     colliders: [], bounds, spawn, hotspots, floorHeight,

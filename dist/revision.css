@@ -8,12 +8,15 @@
 .game-stage .dossier-wrap{top:70px;height:446px}.game-stage .dossier{height:446px}.game-stage .dossier-spread{height:355px;grid-template-columns:40% 1fr;gap:11%}
 .game-stage .dossier-identity>p{font:20px/1.45 var(--display);max-width:294px;white-space:pre-line;color:#454c40}
 .game-stage .dossier-emblem{width:48px;height:48px;margin-bottom:10px}.game-stage .dossier h3{font:42px/1.1 var(--display),var(--art);margin-bottom:16px}
+.game-stage .profile-portrait{position:relative;flex:none;width:246px;height:246px;margin:0;background:url('assets/profile/original-oilpaint-frame.png') center/100% 100% no-repeat;box-shadow:3px 7px 12px #32281338}
+.game-stage .dossier-emblem[hidden]{display:none}
+.game-stage .profile-portrait .profile-avatar{position:absolute;inset:12.5%;width:75%;height:75%;margin:0;border:0;filter:none;object-fit:cover}
 .game-stage .dossier-identity .signature{font-size:25px;margin-top:15px}.profile-school{display:inline-block;font:12px/1.5 var(--serif);color:#5c4b32;border-bottom:1px solid #77634366;padding-bottom:3px;margin-top:15px}.profile-school:hover,.profile-facts a:hover{color:#1c312c}
 .game-stage .dossier-writing h4{font-size:26px;margin:2px 0 10px}.game-stage .bio{font-size:12px;line-height:1.8}
 .game-stage .bio:empty{display:none}
 .profile-facts{display:grid;gap:10px;margin:18px 0 15px}.profile-facts>div{display:grid;grid-template-columns:82px 1fr;align-items:baseline;gap:8px}.profile-facts dt{font-size:10px;color:#716953}.profile-facts dd{margin:0;font:14px/1.5 var(--serif);overflow-wrap:anywhere;color:#3f453a}.profile-facts a{border-bottom:1px solid #7d70575c}
 .game-stage .dossier-rule{margin:12px 0}.game-stage .dossier-details{gap:10px}.game-stage .dossier-details dd{font-size:12px;line-height:1.5}.game-stage .course-list{gap:10px}.game-stage .next-scene{margin-top:10px;min-height:30px}
-.game-stage .interest-writing-desk{width:980px;top:187px}.game-stage .interest-note{padding:35px 44px 48px;height:290px}.game-stage .interest-entries{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:30px;height:185px}.game-stage .interest-entry+.interest-entry{margin:0;border-top:0;border-left:1px solid #86775450;padding:0 0 0 28px}.game-stage .interest-typewritten{font-size:25px;line-height:1.4;letter-spacing:.02em}.game-stage .interest-description{font-size:13px;line-height:1.8;margin-top:15px}.game-stage .interest-typewriter{top:277px}.game-stage .interest-carriage{top:264px}
+.game-stage .interest-writing-desk{width:980px;top:187px}.game-stage .interest-note{padding:35px 44px 48px;height:290px}.game-stage .interest-entries{display:grid;grid-template-columns:repeat(var(--interest-columns,3),minmax(0,1fr));gap:20px;height:185px}.game-stage .interest-entry+.interest-entry{margin:0;border-top:0;border-left:1px solid #86775450;padding:0 0 0 28px}.game-stage .interest-typewritten{font-size:25px;line-height:1.4;letter-spacing:.02em}.game-stage .interest-description{font-size:13px;line-height:1.8;margin-top:15px}.game-stage .interest-typewriter{top:277px}.game-stage .interest-carriage{top:264px}
 .game-stage .people-section{background:linear-gradient(90deg,#0c141aee,#0c151be0),url('assets/original/room.jpg') center/cover;isolation:isolate}
 .people-gallery{position:absolute;top:182px;left:14px;right:14px;height:365px;overflow:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:35px;scrollbar-width:thin;scrollbar-color:#a39471 #182023;overscroll-behavior:contain}
 .people-empty{grid-column:1/-1;display:flex;justify-content:center;align-items:center;gap:65px;height:340px}.people-empty h3{font:30px var(--art);font-weight:400;letter-spacing:.13em;color:#dac9a7;margin:0 0 20px}.people-empty p{font:15px/1.9 var(--serif);color:#a8afa9}
@@ -26,3 +29,8 @@
 .game-stage .desktop-nav{gap:21px;margin-left:4px}
 /* Navigation, movement and presentation settings occupy separate lobby zones. */
 .game-stage[data-scene=lobby] .site-footer{left:64px;right:64px;justify-content:flex-end}
+
+.game-stage .games-section{background:linear-gradient(90deg,#0b141bef,#0d191fed),url('assets/original/room.jpg') center/cover;isolation:isolate}
+.game-stage .games-section .game-gallery-host{position:absolute;left:0;top:176px;width:1108px;height:440px}
+.game-stage .games-section .detail-bottom{top:634px;left:0;right:0}
+.hotspot-games{left:56%;top:78%}

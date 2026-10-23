@@ -1,8 +1,9 @@
 import { renderPetGallery } from './pet-gallery.js?v=20261023-15';
-import { validateContent, SECTION_KEYS } from './content-model.js?v=20261023-16';
+import { renderGameGallery } from './game-gallery.js?v=20261023-20';
+import { validateContent, SECTION_KEYS } from './content-model.js?v=20261023-20';
 import { renderStudyTree } from './study-tree.js?v=20261023-15';
 import { renderProjectShowcase } from './project-showcase.js?v=20261023-15';
-import { getLanguage, localizeContent, refreshLanguageUI } from './language.js?v=20261023-17';
+import { getLanguage, localizeContent, refreshLanguageUI } from './language.js?v=20261023-20';
 
 const HOSTED_ORIGIN = 'https://sky-tian-manor-portfolio.perky-berry-1262.chatgpt.site';
 const apiOrigin = location.hostname.endsWith('.github.io') ? HOSTED_ORIGIN : location.origin;
@@ -77,9 +78,14 @@ function names(content) {
   $('.dossier-writing').setAttribute('role', 'region');
   $('.dossier-writing').setAttribute('aria-label', content.sections.about.title);
   const identity = $('.dossier-identity');
+  identity.querySelector('.profile-portrait')?.remove();
   identity.querySelector('.profile-avatar')?.remove();
   $('.dossier-emblem').hidden = Boolean(profile.avatar);
-  if (profile.avatar) identity.prepend(picture(profile.avatar, bilingual(`${profile.name}的头像`,`${profile.name}’s portrait`), 'profile-avatar'));
+  if (profile.avatar) {
+    const frame=node('figure','profile-portrait');
+    frame.append(picture(profile.avatar, bilingual(`${profile.name}的头像`,`${profile.name}’s portrait`), 'profile-avatar'));
+    identity.querySelector('h3').after(frame);
+  }
   const description = document.querySelector('meta[name="description"]');
   if (description) description.content = [profile.name, profile.tagline].filter(Boolean).join(' · ');
   const ogTitle = document.querySelector('meta[property="og:title"]');
@@ -104,7 +110,7 @@ function sectionLabels(content) {
     });
   }
   setText('.dossier-writing h4', content.sections.about.title);
-  for (const key of ['study', 'interests']) $(`#${key} .detail-bottom`).setAttribute('aria-label', bilingual(`${content.sections[key].title}页面导航`,`${content.sections[key].title} navigation`));
+  for (const key of ['study', 'interests', 'games']) $(`#${key} .detail-bottom`).setAttribute('aria-label', bilingual(`${content.sections[key].title}页面导航`,`${content.sections[key].title} navigation`));
   $('#people-content').setAttribute('aria-label',content.sections.people.title);
 }
 
@@ -148,6 +154,7 @@ function people(content) {
 function interests(content) {
   const visible = content.interests.filter(interest => interest.visible);
   const entries = node('div', 'interest-entries');
+  entries.style.setProperty('--interest-columns', Math.min(visible.length || 1, 4));
   entries.setAttribute('role', 'region'); entries.setAttribute('aria-label', content.sections.interests.title); entries.tabIndex = 0;
   for (const interest of visible) {
     const article = node('article', 'interest-entry');
@@ -166,6 +173,7 @@ function render(input) {
   const content = localizeContent(rawContent);
   window.SkyContent.data = content;
   names(content); sectionLabels(content); projects(content); study(content); interests(content); people(content); renderPetGallery($('#pet-gallery'), content.pets || [], {mediaURL});
+  renderGameGallery($('#game-gallery'), content.games || [], {mediaURL});
   document.documentElement.classList.add('content-managed');
   window.dispatchEvent(new CustomEvent('sky:contentchange', { detail: { content, preview: Boolean(previewId) } }));
   refreshLanguageUI();

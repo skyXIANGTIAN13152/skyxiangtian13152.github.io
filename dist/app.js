@@ -41,7 +41,7 @@
   window.addEventListener('resize', fitStage, { passive: true });
   const sections = [...document.querySelectorAll('main > section')];
   const navLinks = [...document.querySelectorAll('.desktop-nav a, .scene-progress a')];
-  const titles = { home: '序章', lobby: '个人大厅', about: '关于我', work: '作品集', study: '专业学习', interests: '兴趣爱好', people: '名人墙', pets: '宠物小屋' };
+  const titles = { home: '序章', lobby: '个人大厅', about: '关于我', work: '作品集', study: '专业学习', interests: '兴趣爱好', games: '游戏合集', people: '名人墙', pets: '宠物小屋' };
   const lobby = $('#lobby');
   const hotspots = [...document.querySelectorAll('.lobby-hotspot')];
   hotspots.forEach(link => {
@@ -56,7 +56,7 @@
   let transitioning = false;
   let navigationVersion = 0;
   let diaryInProgress = false;
-  const readingOrder = ['about', 'work', 'study', 'interests', 'people', 'pets'];
+  const readingOrder = ['about', 'work', 'study', 'interests', 'games', 'people', 'pets'];
   const visibleScene = id => !readingOrder.includes(id) || window.SkyContent?.isVisible(id) !== false;
   const showScene = (id) => {
     currentScene = id;
