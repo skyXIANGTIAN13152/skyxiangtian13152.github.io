@@ -3,6 +3,7 @@ import {moveCircle, cameraRelativeInput} from './room-movement.js';
 import {originalRoomMovement} from './room-collision.js?v=20261023-13';
 import {createOriginalLobbyPostprocess} from './room-postprocess.js';
 import {createRoomResolution} from './room-resolution.js';
+import {createRoomPointerLook} from './room-pointer-look.js';
 
 const stage = document.querySelector('.game-stage');
 const lobby = document.querySelector('#lobby');
@@ -17,16 +18,15 @@ const directoryButton = document.querySelector('.room-directory-toggle');
 const directory = document.querySelector('.room-directory-list');
 const anchors = [...document.querySelectorAll('.lobby-hotspot')];
 const keys = new Set();
-let scene, camera, renderer, postprocess, room, detective, lamp, shadow;
+let scene, camera, renderer, postprocess, room, detective, shadow;
 let active = false, ready = false, frame = 0, last = 0, elapsed = 0;
-let pointerId = null, stickInput = {x:0,z:0}, drag = null, nearest = null;
+let pointerId = null, stickInput = {x:0,z:0}, pointerLook = null, nearest = null;
 let yaw = 0, pitch = .42, lastInteraction = '';
 let pausedForTransition = false, contextLost = false;
 let footstepsMoving = false;
 const player = new THREE.Vector3();
 const focus = new THREE.Vector3();
 const desiredCamera = new THREE.Vector3();
-const lightPosition = new THREE.Vector3();
 const projected = new THREE.Vector3();
 const cameraPosition = new THREE.Vector3();
 const raycaster = new THREE.Raycaster();
@@ -38,7 +38,10 @@ const intro = () => document.documentElement.classList.contains('sky-intro-activ
 const canMove = () => active && ready && !contextLost && !pausedForTransition && !intro() && !document.hidden && directory.hidden;
 
 function resetInput() {
-  keys.clear(); stickInput = {x:0,z:0}; pointerId = null; drag = null;
+  if (pointerLook) pointerLook.release(); else clearMovementInput();
+}
+function clearMovementInput() {
+  keys.clear(); stickInput = {x:0,z:0}; pointerId = null;
   knob.style.transform = '';
   stopFootsteps();
 }
@@ -136,13 +139,14 @@ function render(now) {
     if (keys.has('KeyQ')) yaw += dt * 1.25;
     if (keys.has('KeyR')) yaw -= dt * 1.25;
   }
-  const previousX = player.x, previousZ = player.z;
   const dx = input.x * dt * 1.1, dz = input.z * dt * 1.1;
   if (dx || dz) {
     const next = room.move ? room.move(player,dx,dz,.24) : moveCircle(player,dx,dz,room.colliders,room.bounds,.24);
     player.set(next.x,room.floorHeight?.(next.x,next.z) ?? room.spawn.y ?? 0,next.z);
   }
-  const speed = dt ? Math.hypot(player.x - previousX,player.z - previousZ) / dt : 0;
+  // Collision constrains world position; held movement input keeps the original
+  // walk cycle and footstep cadence, even while pushing against a wall.
+  const speed = Math.hypot(input.x,input.z) * 1.1;
   detective.group.position.copy(player);
   if (speed > .03) {
     const angle = Math.atan2(input.x,input.z);
@@ -152,8 +156,7 @@ function render(now) {
   const walking = canMove() && speed > .025;
   if (footstepsMoving && !walking) stopFootsteps();
   footstepsMoving = walking;
-  // Fade to idle as soon as the character actually stops, including a wall
-  // collision. A damped speed used to keep the feet walking in place for 0.32s.
+  // Releasing input or disabling movement starts the existing 240 ms idle fade.
   detective.update(elapsed,speed,walking);
   room.update?.(elapsed);
   shadow.position.set(player.x,player.y + .018,player.z);
@@ -177,9 +180,9 @@ function render(now) {
   if (cameraDistanceHit !== false) desiredCamera.copy(focus).addScaledVector(rayDirection,Math.max(.65,cameraDistanceHit - .18));
   camera.position.lerp(desiredCamera,1 - Math.exp(-dt * 6));
   camera.lookAt(focus);
-  detective.lantern.getWorldPosition(lightPosition);
-  lamp.position.copy(lightPosition);
-  lamp.intensity = .35 + Math.sin(elapsed * 8.1) * .008 + Math.sin(elapsed * 12.3) * .004;
+  // The detective owns the light at the original flame socket. A second
+  // co-located light doubled the under-lighting across the nose and eye sockets.
+  detective.lanternLight.intensity = .3 + Math.sin(elapsed * 8.1) * .008 + Math.sin(elapsed * 12.3) * .004;
   postprocess.render(scene,camera);
   updateLabels();
   frame = requestAnimationFrame(render);
@@ -194,7 +197,7 @@ function makeContactShadow() {
 }
 async function initialize() {
   try {
-    const [{createRoom},{createDetective}] = await Promise.all([import('./room-environment.js?v=20261023-16'),import('./room-detective.js?v=20261023-16')]);
+    const [{createRoom},{createDetective}] = await Promise.all([import('./room-environment.js?v=20261023-16'),import('./room-detective.js?v=20261023-19')]);
     scene = new THREE.Scene(); scene.background = new THREE.Color('#11181d');
     scene.fog = new THREE.FogExp2('#10151b',.007);
     camera = new THREE.PerspectiveCamera(45,1280/720,.05,80);
@@ -218,11 +221,6 @@ async function initialize() {
     scene.add(new THREE.HemisphereLight('#abb6c8','#323027',1.05));
     const moon = new THREE.DirectionalLight('#c1d4ee',.7); moon.position.set(-5,7,3); scene.add(moon);
     const fill = new THREE.DirectionalLight('#d9bda0',.38); fill.position.set(4,3,-2); scene.add(fill);
-    lamp = new THREE.PointLight('#ffc478',.35,4,2);
-    // Beyond the light's falloff distance no shadow can affect a lit surface.
-    lamp.castShadow = true; lamp.shadow.mapSize.set(512,512);lamp.shadow.bias = -.0015;lamp.shadow.normalBias = .035;lamp.shadow.camera.near = .12;lamp.shadow.camera.far = lamp.distance;
-    scene.add(lamp);
-
     shadow = makeContactShadow();scene.add(shadow);
     blockers = room.blockers || [];
     layoutRenderer();
@@ -248,20 +246,16 @@ function restoreFallback() {
   anchors.forEach(a => {a.classList.remove('is-occluded','is-distant','is-near');a.removeAttribute('style');a.removeAttribute('aria-hidden');a.removeAttribute('tabindex');});
 }
 function bindCanvas(canvas) {
-  canvas.addEventListener('pointerdown',e => {
-    if (!canMove() || (e.button !== 0 && e.button !== 2)) return;
-    drag = {id:e.pointerId,x:e.clientX,y:e.clientY};canvas.setPointerCapture(e.pointerId);
+  pointerLook = createRoomPointerLook(canvas,{
+    canLook:canMove,
+    onRelease:clearMovementInput,
+    onLook(dx,dy) {
+      const rect = canvas.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+      yaw -= dx / rect.width * 3.3;
+      pitch = THREE.MathUtils.clamp(pitch + dy / rect.height * 1.1,.15,.64);
+    }
   });
-  canvas.addEventListener('pointermove',e => {
-    if (!drag || e.pointerId !== drag.id || !canMove()) return;
-    const rect = canvas.getBoundingClientRect();
-    yaw -= (e.clientX-drag.x)/rect.width*3.3;
-    pitch = THREE.MathUtils.clamp(pitch+(e.clientY-drag.y)/rect.height*1.1,.15,.64);
-    drag.x = e.clientX;drag.y=e.clientY;
-  });
-  const end = e => {if(drag?.id === e.pointerId)drag=null;};
-  canvas.addEventListener('pointerup',end);canvas.addEventListener('pointercancel',end);canvas.addEventListener('lostpointercapture',end);
-  canvas.addEventListener('contextmenu',e => e.preventDefault());
 }
 const movementCodes = ['KeyW','KeyA','KeyS','KeyD','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','KeyQ','KeyR'];
 document.addEventListener('keydown',e => {

@@ -68,7 +68,8 @@ export async function createDetective({
         material.emissiveIntensity = 0.4;
       }
     }
-    object.castShadow = true;
+    // The source's transparent lantern glass must not become an opaque blocker.
+    object.castShadow = !materials.some(material => material.name === 'Original material slot 4');
     object.receiveShadow = true;
     // Animated bounds are evaluated by Three; avoid clipping at the old bind-pose box.
     object.frustumCulled = false;
