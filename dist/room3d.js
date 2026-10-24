@@ -1,10 +1,12 @@
 import * as THREE from './vendor/three.module.js';
 import {moveCircle, cameraRelativeInput} from './room-movement.js';
 import {originalRoomMovement} from './room-collision.js?v=20261024-31';
-import {createOriginalLobbyPostprocess} from './room-postprocess.js?v=20261024-31';
+import {createOriginalLobbyPostprocess} from './room-postprocess.js?v=20261024-32';
 import {createRoomLabelState} from './room-label-state.js?v=20261024-31';
 import {warmRoomResources} from './room-warmup.js?v=20261024-31';
-import {createRoomResolution} from './room-resolution.js';
+import {createRoomResolution} from './room-resolution.js?v=20261024-32';
+import {createMobileRoomQuality,isTouchOnlyRoomDevice} from './room-mobile-quality.js?v=20261024-32';
+import {ROOM_CAMERA_PITCH,clampRoomCameraPitch} from './room-camera-limits.js?v=20261024-32';
 import {createRoomPointerLook} from './room-pointer-look.js?v=20261023-21';
 
 const stage = document.querySelector('.game-stage');
@@ -27,7 +29,7 @@ const keys = new Set();
 let scene, camera, renderer, postprocess, room, detective, shadow;
 let active = false, ready = false, frame = 0, last = 0, elapsed = 0;
 let pointerId = null, stickInput = {x:0,z:0}, pointerLook = null, nearest = null;
-let yaw = 0, pitch = .42, lastInteraction = '';
+let yaw = 0, pitch = ROOM_CAMERA_PITCH.default, lastInteraction = '';
 let pausedForTransition = false, contextLost = false;
 let footstepsMoving = false;
 let warmupReport = null;
@@ -41,6 +43,9 @@ const raycaster = new THREE.Raycaster();
 const rayDirection = new THREE.Vector3();
 const color = new THREE.Color();
 const resolution = createRoomResolution();
+// Roll back the mobile experiment independently of the corrected camera limit.
+const MOBILE_QUALITY_EXPERIMENT = true;
+const mobileQuality = createMobileRoomQuality(MOBILE_QUALITY_EXPERIMENT && isTouchOnlyRoomDevice());
 let blockers = [];
 const intro = () => document.documentElement.classList.contains('sky-intro-active');
 const canMove = () => active && ready && !contextLost && !pausedForTransition && !intro() && !document.hidden && directory.hidden;
@@ -62,10 +67,11 @@ function setActive(value) {
   directory.hidden = true;
   directoryButton.setAttribute('aria-expanded','false');
   updateTouchVisibility();
+  room?.invalidateReflections?.();
   if (active && ready) layoutRenderer();
   if (active && ready && !contextLost && !document.hidden) start(); else stop();
 }
-function stop() { cancelAnimationFrame(frame); frame = 0; last = 0; resolution.reset(); stopFootsteps(); }
+function stop() { cancelAnimationFrame(frame); frame = 0; last = 0; resolution.reset(); mobileQuality.reset(); stopFootsteps(); }
 function start() { if (!frame) { last = 0; frame = requestAnimationFrame(render); } }
 function activateNearest() { if (canMove() && nearest) anchorStates.get(nearest.id)?.anchor.click(); }
 function layoutRenderer() {
@@ -75,6 +81,15 @@ function layoutRenderer() {
   renderer.setPixelRatio(resolution.configure(Math.min(2, Math.max(.55, rect.width / 1280 * devicePixelRatio))));
   renderer.setSize(1280,720,false);
   postprocess?.resize();
+  if (mobileQuality.configure(MOBILE_QUALITY_EXPERIMENT && isTouchOnlyRoomDevice())) applyMobileQuality();
+  mobileQuality.reset();room?.invalidateReflections?.();
+}
+function applyMobileQuality() {
+  if (!postprocess) return;
+  const samples = postprocess.getSampleOptions();
+  const original = samples[0] ?? 0;
+  const balanced = samples.includes(2) ? 2 : original;
+  postprocess.setSamples(mobileQuality.enabled && mobileQuality.tier >= 2 ? balanced : original);
 }
 function updateLabels() {
   nearest = null;
@@ -126,7 +141,11 @@ function updateLabels() {
 function render(now) {
   frame = 0;
   if (!active || !ready || document.hidden || contextLost) return;
-  const nextRatio = last && !pausedForTransition && !intro() ? resolution.sample(now - last) : null;
+  const sampling = last && !pausedForTransition && !intro();
+  const tierChanged = sampling ? mobileQuality.sample(now - last) : null;
+  if (tierChanged !== null) { applyMobileQuality();resolution.reset(); }
+  const nextRatio = sampling && tierChanged === null
+    ? resolution.sample(now - last,{allowDecrease:mobileQuality.allowResolutionDecrease}) : null;
   if (nextRatio !== null) {
     renderer.setPixelRatio(nextRatio);
     postprocess.resize();
@@ -188,6 +207,7 @@ function render(now) {
   // The detective owns the light at the original flame socket. A second
   // co-located light doubled the under-lighting across the nose and eye sockets.
   detective.lanternLight.intensity = .3 + Math.sin(elapsed * 8.1) * .008 + Math.sin(elapsed * 12.3) * .004;
+  room.prepareReflections?.(camera,now,mobileQuality.tier,{enabled:mobileQuality.enabled});
   postprocess.render(scene,camera);
   updateLabels();
   frame = requestAnimationFrame(render);
@@ -202,7 +222,7 @@ function makeContactShadow() {
 }
 async function initialize() {
   try {
-    const [{createRoom},{createDetective}] = await Promise.all([import('./room-environment.js?v=20261024-31'),import('./room-detective.js?v=20261023-19')]);
+    const [{createRoom},{createDetective}] = await Promise.all([import('./room-environment.js?v=20261024-32'),import('./room-detective.js?v=20261023-19')]);
     scene = new THREE.Scene(); scene.background = new THREE.Color('#11181d');
     scene.fog = new THREE.FogExp2('#10151b',.007);
     camera = new THREE.PerspectiveCamera(45,1280/720,.05,80);
@@ -219,7 +239,7 @@ async function initialize() {
     // Listen before GPU uploads begin, including losses during initial warmup.
     canvas.addEventListener('webglcontextlost',event => {
       event.preventDefault();contextLost = true;ready = false;contextGeneration++;
-      warmupController?.abort();stop();resetInput();lobby.classList.remove('room-ready');
+      warmupController?.abort();stop();resetInput();room?.invalidateReflections?.();lobby.classList.remove('room-ready');
       loading.textContent = '画面已暂停，正在恢复大厅…';restoreFallback();
     });
     canvas.addEventListener('webglcontextrestored',() => {
@@ -239,7 +259,7 @@ async function initialize() {
     scene.add(detective.group);
     player.set(room.spawn.x,room.spawn.y || 0,room.spawn.z);
     yaw = room.cameraYaw ?? Math.atan2(room.cameraPosition.x-room.cameraTarget.x,room.cameraPosition.z-room.cameraTarget.z);
-    pitch = room.cameraPitch ?? .32;
+    pitch = clampRoomCameraPitch(room.cameraPitch);
     detective.group.position.copy(player); detective.group.rotation.y = yaw + Math.PI;
     scene.add(new THREE.HemisphereLight('#abb6c8','#323027',1.05));
     const moon = new THREE.DirectionalLight('#c1d4ee',.7); moon.position.set(-5,7,3); scene.add(moon);
@@ -268,9 +288,11 @@ async function prepareDisplay() {
   const controller = new AbortController();
   warmupController?.abort();warmupController = controller;
   try {
+    postprocess.refreshSampleSupport();applyMobileQuality();room.invalidateReflections?.();
     const report = await warmRoomResources(renderer,scene,camera,{postprocess,signal:controller.signal});
     if (controller.signal.aborted || contextLost || generation !== contextGeneration || renderer.getContext().isContextLost()) return;
     warmupReport = report;
+    room.prepareReflections?.(camera,performance.now(),mobileQuality.tier,{enabled:mobileQuality.enabled});
     postprocess.render(scene,camera);
     ready = true;lobby.classList.add('room-ready');
     setActive(stage.dataset.scene === 'lobby');
@@ -294,7 +316,7 @@ function bindCanvas(canvas) {
       const rect = canvas.getBoundingClientRect();
       if (!rect.width || !rect.height) return;
       yaw -= dx / rect.width * 3.3;
-      pitch = THREE.MathUtils.clamp(pitch + dy / rect.height * 1.1,.15,.64);
+      pitch = clampRoomCameraPitch(pitch + dy / rect.height * 1.1);
     }
   });
 }
@@ -322,7 +344,7 @@ directoryButton.addEventListener('click',() => {
 });
 document.addEventListener('keydown',e => {if(e.key === 'Escape' && !directory.hidden){directory.hidden=true;directoryButton.setAttribute('aria-expanded','false');directoryButton.focus();}});
 document.querySelector('.room-reset').addEventListener('click',() => {
-  if(!ready)return;resetInput();player.set(room.spawn.x,room.spawn.y || 0,room.spawn.z);yaw=room.cameraYaw ?? Math.atan2(room.cameraPosition.x-room.cameraTarget.x,room.cameraPosition.z-room.cameraTarget.z);pitch=room.cameraPitch ?? .32;detective.group.rotation.y=yaw+Math.PI;
+  if(!ready)return;resetInput();player.set(room.spawn.x,room.spawn.y || 0,room.spawn.z);yaw=room.cameraYaw ?? Math.atan2(room.cameraPosition.x-room.cameraTarget.x,room.cameraPosition.z-room.cameraTarget.z);pitch=clampRoomCameraPitch(room.cameraPitch);detective.group.rotation.y=yaw+Math.PI;room.invalidateReflections?.();
 });
 interact.addEventListener('click',activateNearest);touchRead.addEventListener('click',activateNearest);
 function stickMove(e) {

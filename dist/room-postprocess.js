@@ -16,6 +16,31 @@ import {
 } from './vendor/three.module.js';
 import { FullScreenQuad } from './vendor/three-addons/postprocessing/Pass.js';
 
+function supportedTargetSamples(renderer, type) {
+  // MAX_SAMPLES alone is not sufficient: color and depth attachments must
+  // advertise the same sample count for this framebuffer's actual formats.
+  // These formats match the bundled Three renderer for this target: RGBA
+  // linear half-float/byte color, no depth texture, and no stencil buffer.
+  try {
+    const gl = renderer.getContext?.();
+    if (gl?.isContextLost?.()) return null;
+    if (typeof gl?.getInternalformatParameter !== 'function') return [];
+    const colorFormat = type === HalfFloatType ? gl.RGBA16F : gl.RGBA8;
+    if (colorFormat === undefined || gl.DEPTH_COMPONENT24 === undefined) return [];
+    const color = gl.getInternalformatParameter(gl.RENDERBUFFER, colorFormat, gl.SAMPLES);
+    const depth = gl.getInternalformatParameter(gl.RENDERBUFFER, gl.DEPTH_COMPONENT24, gl.SAMPLES);
+    if (!color || !depth) return [];
+    const limit = Math.min(4, Math.max(0, Number(renderer.capabilities.maxSamples) || 0));
+    const depthCounts = new Set(depth);
+    return [...new Set(color)].filter(count => Number.isInteger(count) && count > 0
+      && count <= limit && depthCounts.has(count)).sort((a, b) => b - a);
+  } catch {
+    // No speculative count: an unsupported RGBA16F multisample target can
+    // produce an incomplete framebuffer instead of a graceful fallback.
+    return [];
+  }
+}
+
 // Original dm65_main1.postprocess -> lut/zhujiemian.bmp.
 // The lookup below ports shader/posteffects/color_grading.hlsl's 16^3
 // UnwrappedTexture3DSample. No exposure, tint, vignette or filmic curve is added.
@@ -41,14 +66,16 @@ export async function createOriginalLobbyPostprocess(renderer, {
   lut.needsUpdate = true;
 
   const size = renderer.getDrawingBufferSize(new Vector2());
+  const sceneType = renderer.extensions.has('EXT_color_buffer_float') ? HalfFloatType : UnsignedByteType;
+  let sampleOptions = supportedTargetSamples(renderer, sceneType) || [];
   const target = new WebGLRenderTarget(size.x, size.y, {
     // Half float preserves the dark room's gradients before display encoding.
-    type: renderer.extensions.has('EXT_color_buffer_float') ? HalfFloatType : UnsignedByteType,
+    type: sceneType,
     minFilter: LinearFilter,
     magFilter: LinearFilter,
     depthBuffer: true,
     stencilBuffer: false,
-    samples: Math.min(4, renderer.capabilities.maxSamples),
+    samples: sampleOptions[0] || 0,
     colorSpace: LinearSRGBColorSpace,
   });
   target.texture.name = 'OriginalLobby.LinearScene';
@@ -101,6 +128,34 @@ export async function createOriginalLobbyPostprocess(renderer, {
   const quad = new FullScreenQuad(material);
   let disposed = false;
 
+  function applySamples(samples) {
+    // Changes are requested between frames. Do not invalidate a framebuffer
+    // while a caller is compiling or rendering into it.
+    if (disposed || samples === target.samples || renderer.getRenderTarget() === target) return false;
+    // Three releases the multisampled framebuffer, color/depth renderbuffers
+    // and GPU texture on this event, then recreates them on the next render.
+    // Keep the JS target/texture, dimensions and shader uniform identity intact.
+    target.dispose();
+    target.samples = samples;
+    return true;
+  }
+
+  function setSamples(samples) {
+    if (disposed || !sampleOptions.includes(samples) || renderer.getContext?.()?.isContextLost?.()) return false;
+    return applySamples(samples);
+  }
+
+  function refreshSampleSupport() {
+    if (disposed) return false;
+    const supported = supportedTargetSamples(renderer, target.texture.type);
+    if (supported === null) return false;
+    sampleOptions = supported;
+    // Keep the selected supported level across preparation. Only a hardware
+    // capability change may fall back to zero; it is never a dynamic option.
+    return sampleOptions.includes(target.samples) ? false : applySamples(sampleOptions[0] || 0);
+  }
+  renderer.domElement?.addEventListener('webglcontextrestored', refreshSampleSupport);
+
   function resize() {
     if (disposed) return;
     renderer.getDrawingBufferSize(size);
@@ -131,6 +186,7 @@ export async function createOriginalLobbyPostprocess(renderer, {
 
   async function warmup(scene,camera,{compile,yieldTask = () => Promise.resolve(),signal} = {}) {
     if (disposed || signal?.aborted) return {scene:{status:'skipped'},quad:{status:'skipped'}};
+    refreshSampleSupport();
     if (typeof compile !== 'function') return {scene:{status:'unavailable'},quad:{status:'unavailable'}};
     resize();
     function atTarget(destination,start) {
@@ -169,11 +225,17 @@ export async function createOriginalLobbyPostprocess(renderer, {
   function dispose() {
     if (disposed) return;
     disposed = true;
+    renderer.domElement?.removeEventListener('webglcontextrestored', refreshSampleSupport);
     target.dispose();
     lut.dispose();
     material.dispose();
     quad.dispose();
   }
 
-  return { render, resize, dispose, warmup, getWarmupTextures: () => disposed ? [] : [lut] };
+  return {
+    render, resize, dispose, warmup, refreshSampleSupport, setSamples,
+    getSamples: () => target.samples,
+    getSampleOptions: () => disposed ? [] : [...sampleOptions],
+    getWarmupTextures: () => disposed ? [] : [lut],
+  };
 }

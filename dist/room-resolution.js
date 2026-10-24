@@ -14,7 +14,7 @@ export function createRoomResolution(maximum = 2) {
       return ratio;
     },
     reset,
-    sample(milliseconds) {
+    sample(milliseconds, {allowDecrease = true} = {}) {
       if (!Number.isFinite(milliseconds) || milliseconds < 4 || milliseconds > 250) { reset(); return null; }
       samples.push(milliseconds); elapsed += milliseconds;
       if (elapsed < 2000 || samples.length < 30) return null;
@@ -22,7 +22,7 @@ export function createRoomResolution(maximum = 2) {
       const p75 = ordered[Math.floor(ordered.length * .75)];
       const p90 = ordered[Math.floor(ordered.length * .9)];
       let next = ratio;
-      if (p75 > 22) { next = Math.max(minimum(), ratio - .2); stable = 0; }
+      if (p75 > 22) { if (allowDecrease) next = Math.max(minimum(), ratio - .2); stable = 0; }
       else if (p90 < 18) { stable += elapsed; if (stable >= 10000) { next = Math.min(maximumRatio, ratio + .1); stable = 0; } }
       else stable = 0;
       samples = []; elapsed = 0;

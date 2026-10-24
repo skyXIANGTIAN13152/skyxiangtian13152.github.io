@@ -3,6 +3,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { Reflector } from 'three/addons/objects/Reflector.js';
 import { createOriginalSceneLighting, configureOriginalLightmap } from './original-scene-lighting.js?v=20261023-13';
 import { computeRoomBounds } from './room-bounds.js';
+import { createReflectionScheduler } from './room-reflections.js?v=20261024-32';
 
 // Browser adapter for original dm65_main data. No replacement geometry is made.
 const UNIT = 0.1;
@@ -299,6 +300,7 @@ export async function createRoom(options = {}) {
   }
   const spawn = { x: 6.05, y: floorHeight(6.05, -2.4) || 0, z: -2.4 };
   const hotspots = createRoomHotspots();
+  const reflections = createReflectionScheduler(mirrors);
   return {
     group, collisionGroup, collisionMeshes, blockers: collisionMeshes,
     colliders: [], bounds, spawn, hotspots, floorHeight,
@@ -311,6 +313,9 @@ export async function createRoom(options = {}) {
         limitation: 'Original NXBI size and color are verified; its sprite-facing/blending enum is adapted with a normal transparent wall quad.' } : null,
       candleState: options.litCandles === false ? 'Original unlit alpha state' : 'Original flame meshes activated for lit lobby' },
     update() {},
-    dispose() { for (const m of meshMaterials) m.dispose(); if (museMark) { museMark.geometry.dispose(); museMark.material.map.dispose(); } for (const mirror of mirrors) { mirror.dispose(); mirror.geometry.dispose(); } for (const o of collisionMeshes) { o.geometry.dispose(); o.material.dispose(); } },
+    prepareReflections: reflections.prepare,
+    invalidateReflections: reflections.invalidate,
+    get reflectionStats() { return reflections.stats; },
+    dispose() { reflections.dispose(); for (const m of meshMaterials) m.dispose(); if (museMark) { museMark.geometry.dispose(); museMark.material.map.dispose(); } for (const mirror of mirrors) { mirror.dispose(); mirror.geometry.dispose(); } for (const o of collisionMeshes) { o.geometry.dispose(); o.material.dispose(); } },
   };
 }
