@@ -4,18 +4,15 @@ import { Reflector } from 'three/addons/objects/Reflector.js';
 import { createOriginalSceneLighting, configureOriginalLightmap } from './original-scene-lighting.js?v=20261023-13';
 import { computeRoomBounds } from './room-bounds.js';
 import { createReflectionScheduler } from './room-reflections.js?v=20261024-32';
+import { isOriginalFloorSurface } from './room-floor-support.js?v=20261024-34';
+
+export { isOriginalFloorSurface };
 
 // Browser adapter for original dm65_main data. No replacement geometry is made.
 const UNIT = 0.1;
 const v3 = a => new THREE.Vector3(...a);
 const values = (p, key, fallback) => (p[key]?.Value || fallback).split(',').map(Number);
 const seasonalProps = /\/(?:h55_manor_halloween01|h55_coa5_word0[12]|h55_p5wardrobe_p5mail01|h55_main_haibao01|h55_main_envelope01)\.gim$/;
-
-export function isOriginalFloorSurface(path, hidden = false) {
-  // The main floor has a cutout under the coat-rack carpet. In this lobby the
-  // original cellar door is closed and fills it at the same walking height.
-  return !hidden && /\/dm65_main_(?:ground001|cellardoor001)\.gim$/.test(path);
-}
 
 export function createRoomHotspots() {
   return [
@@ -268,7 +265,7 @@ export async function createRoom(options = {}) {
     while (instance && !instance.userData.originalInstance) instance = instance.parent;
     if (!instance) return;
     const path = instance.userData.originalInstance.resource.replaceAll('\\', '/').toLowerCase();
-    if (isOriginalFloorSurface(path, instance.userData.hiddenFlag)) floorMeshes.push(o);
+    if (isOriginalFloorSurface(path, instance.userData.hiddenFlag, o.material.userData.originalPath)) floorMeshes.push(o);
     if (!exactCollision.test(path) && !(solidGeometry.test(path) && !instance.userData.hiddenFlag)) return;
     const geometry = o.geometry.clone().applyMatrix4(o.matrixWorld);
     computeRoomBounds(geometry);
