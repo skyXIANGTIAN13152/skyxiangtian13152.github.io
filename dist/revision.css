@@ -34,3 +34,9 @@
 .game-stage .games-section .game-gallery-host{position:absolute;left:0;top:176px;width:1108px;height:440px}
 .game-stage .games-section .detail-bottom{top:634px;left:0;right:0}
 .hotspot-games{left:56%;top:78%}
+
+/* The recommendation ledger belongs to the same fixed archive stage. */
+.game-stage .recommendations-section{background:linear-gradient(90deg,#0b141bef,#0d191fed),url('assets/original/room.jpg') center/cover;isolation:isolate}
+.game-stage .recommendations-section .recommendation-gallery-host{position:absolute;left:0;top:176px;width:1108px;height:440px}
+.game-stage .recommendations-section .detail-bottom{top:634px;left:0;right:0}
+.hotspot-recommendations{left:76%;top:57%}

@@ -1,9 +1,10 @@
+import { renderRecommendationGallery } from './recommendation-gallery.js?v=20261024-25';
 import { renderPetGallery } from './pet-gallery.js?v=20261023-15';
-import { renderGameGallery } from './game-gallery.js?v=20261023-20';
-import { validateContent, SECTION_KEYS } from './content-model.js?v=20261023-20';
+import { renderGameGallery } from './game-gallery.js?v=20261024-25';
+import { validateContent, SECTION_KEYS } from './content-model.js?v=20261024-25';
 import { renderStudyTree } from './study-tree.js?v=20261023-15';
 import { renderProjectShowcase } from './project-showcase.js?v=20261023-15';
-import { getLanguage, localizeContent, refreshLanguageUI } from './language.js?v=20261023-20';
+import { getLanguage, localizeContent, refreshLanguageUI } from './language.js?v=20261024-25';
 
 const HOSTED_ORIGIN = 'https://sky-tian-manor-portfolio.perky-berry-1262.chatgpt.site';
 const apiOrigin = location.hostname.endsWith('.github.io') ? HOSTED_ORIGIN : location.origin;
@@ -110,7 +111,7 @@ function sectionLabels(content) {
     });
   }
   setText('.dossier-writing h4', content.sections.about.title);
-  for (const key of ['study', 'interests', 'games']) $(`#${key} .detail-bottom`).setAttribute('aria-label', bilingual(`${content.sections[key].title}页面导航`,`${content.sections[key].title} navigation`));
+  for (const key of ['study', 'interests', 'games', 'recommendations']) $(`#${key} .detail-bottom`).setAttribute('aria-label', bilingual(`${content.sections[key].title}页面导航`,`${content.sections[key].title} navigation`));
   $('#people-content').setAttribute('aria-label',content.sections.people.title);
 }
 
@@ -174,6 +175,8 @@ function render(input) {
   window.SkyContent.data = content;
   names(content); sectionLabels(content); projects(content); study(content); interests(content); people(content); renderPetGallery($('#pet-gallery'), content.pets || [], {mediaURL});
   renderGameGallery($('#game-gallery'), content.games || [], {mediaURL});
+  renderRecommendationGallery($('#recommendation-gallery'), content.recommendations || []);
+  $('#recommendation-gallery').setAttribute('aria-label',content.sections.recommendations.title);
   document.documentElement.classList.add('content-managed');
   window.dispatchEvent(new CustomEvent('sky:contentchange', { detail: { content, preview: Boolean(previewId) } }));
   refreshLanguageUI();

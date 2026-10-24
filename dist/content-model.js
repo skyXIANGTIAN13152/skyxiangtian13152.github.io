@@ -2,7 +2,7 @@ import { DEFAULT_GAMES } from './game-defaults.js?v=20261023-20';
 
 /** Shared by the owner editor, server and public reader. All prose is plain text. */
 export const CONTENT_SCHEMA_VERSION = 2;
-export const SECTION_KEYS = Object.freeze(['about', 'work', 'study', 'interests', 'people', 'pets', 'games']);
+export const SECTION_KEYS = Object.freeze(['about', 'work', 'study', 'interests', 'people', 'pets', 'games', 'recommendations']);
 export const COURSE_STATUSES = Object.freeze(['completed', 'current', 'planned']);
 export const PROJECT_DEMOS = Object.freeze(['', 'syncwallpaper', 'usage-monitor', 'cse-helper', 'wuji-ime', 'perch', 'bibi-keyboard', 'manor']);
 export const ENGLISH_FIELDS = Object.freeze({
@@ -15,6 +15,7 @@ export const ENGLISH_FIELDS = Object.freeze({
   people: { name: ['人物姓名', 160], role: ['人物身份', 160], body: ['人物介绍', 30000] },
   pets: { name: ['宠物名字', 160], description: ['宠物介绍', 12000] },
   games: { title: ['游戏名称', 160], body: ['游戏介绍', 30000], favoriteCharacter: ['喜欢的角色', 160] },
+  recommendations: { title: ['项目名称', 160], summary: ['项目简介', 2400] },
 });
 
 function record(value, label) {
@@ -67,6 +68,24 @@ function url(value, label, media = false) {
   if (!['http:', 'https:'].includes(parsed.protocol) || parsed.username || parsed.password || !parsed.hostname) throw new Error(`${label}只接受 http 或 https 地址。`);
   return parsed.href;
 }
+
+/** Only repository roots are accepted; this helper is also used by the reader. */
+export function normalizeGitHubRepository(value) {
+  const clean = text(value, 'GitHub 仓库链接', 2048, true);
+  const message = '请填写 GitHub 仓库首页链接，例如 https://github.com/owner/repository。';
+  if (!/^https:\/\/(?:www\.)?github\.com\//i.test(clean) || /[\s\\]/.test(clean)) throw new Error(message);
+  let parsed;
+  try { parsed = new URL(clean); } catch { throw new Error(message); }
+  if (parsed.protocol !== 'https:' || !['github.com', 'www.github.com'].includes(parsed.hostname) || parsed.username || parsed.password || parsed.port || parsed.search || parsed.hash) throw new Error(message);
+  // Reject encoded paths and path normalization such as /owner/../owner/repo.
+  const path = clean.slice(clean.indexOf('/', clean.indexOf('://') + 3));
+  const match = /^\/([A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?)\/([A-Za-z0-9_.-]{1,100})\/?$/.exec(path);
+  if (!match) throw new Error(message);
+  const owner = match[1], repository = match[2].replace(/\.git$/i, '');
+  const reserved = new Set(['about', 'account', 'apps', 'collections', 'contact', 'dashboard', 'enterprise', 'events', 'explore', 'features', 'gist', 'issues', 'join', 'login', 'logout', 'marketplace', 'new', 'notifications', 'orgs', 'organizations', 'pulls', 'readme', 'search', 'security', 'sessions', 'settings', 'site', 'sponsors', 'topics', 'trending', 'users']);
+  if (!repository || repository === '.' || repository === '..' || reserved.has(owner.toLowerCase())) throw new Error(message);
+  return `https://github.com/${owner}/${repository}`;
+}
 function entries(value, label, build, max = 60) {
   if (!Array.isArray(value) || value.length > max) throw new Error(`${label}最多可保存 ${max} 项。`);
   const ids = new Set();
@@ -100,7 +119,7 @@ export function validateContent(input) {
     ? 'assets/profile/sky-wechat.jpg' : profile.avatar === undefined ? '' : profile.avatar;
   const sectionSource = record(source.sections, '大厅入口');
   const sections = {};
-  const optionalSections = { people: { title: '名人墙', subtitle: '', visible: true }, pets: { title: '宠物小屋', subtitle: '我家的宠物与相处时光', visible: true }, games: { title: '游戏合集', subtitle: '我玩的游戏', titleEn: 'Games', subtitleEn: 'Games I play', visible: true } };
+  const optionalSections = { people: { title: '名人墙', subtitle: '', visible: true }, pets: { title: '宠物小屋', subtitle: '我家的宠物与相处时光', visible: true }, games: { title: '游戏合集', subtitle: '我玩的游戏', titleEn: 'Games', subtitleEn: 'Games I play', visible: true }, recommendations: { title: '项目珍藏', subtitle: '我推荐的 GitHub 项目', titleEn: 'GitHub picks', subtitleEn: 'GitHub projects I recommend', visible: true } };
   for (const key of SECTION_KEYS) {
     const section = record(sectionSource[key] === undefined ? optionalSections[key] : sectionSource[key], '大厅入口');
     sections[key] = { title: text(section.title, '入口名称', 40, true), subtitle: text(section.subtitle, '入口说明', 160), visible: flag(section.visible, '入口可见状态'), ...englishFields(section, 'sections') };
@@ -147,6 +166,11 @@ export function validateContent(input) {
       favoriteCharacter: text(game.favoriteCharacter === undefined ? '' : game.favoriteCharacter, '喜欢的角色', 160),
       image: url(game.image === undefined ? '' : game.image, '游戏配图', true), url: url(game.url === undefined ? '' : game.url, '游戏链接'),
       visible: flag(game.visible, '游戏可见状态'), ...englishFields(game, 'games'),
+    })),
+    recommendations: entries(source.recommendations === undefined ? [] : source.recommendations, '项目珍藏', item => ({
+      id: id(item.id, '推荐项目'), title: text(item.title, '项目名称', 160, true),
+      summary: text(item.summary === undefined ? '' : item.summary, '项目简介', 2400), url: normalizeGitHubRepository(item.url),
+      visible: flag(item.visible, '推荐项目可见状态'), ...englishFields(item, 'recommendations'),
     })),
     settings: { musicVolume: settings.musicVolume, musicEnabled: flag(settings.musicEnabled, '默认声音设置') },
   };

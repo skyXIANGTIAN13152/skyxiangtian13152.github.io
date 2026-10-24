@@ -1,4 +1,4 @@
-import {getLanguage} from './language.js?v=20261023-20';
+import {getLanguage} from './language.js?v=20261024-25';
 
 const collections = new WeakMap();
 const PAGE_SIZE = 4;

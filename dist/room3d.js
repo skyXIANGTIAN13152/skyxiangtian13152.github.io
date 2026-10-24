@@ -197,7 +197,7 @@ function makeContactShadow() {
 }
 async function initialize() {
   try {
-    const [{createRoom},{createDetective}] = await Promise.all([import('./room-environment.js?v=20261023-20'),import('./room-detective.js?v=20261023-19')]);
+    const [{createRoom},{createDetective}] = await Promise.all([import('./room-environment.js?v=20261024-25'),import('./room-detective.js?v=20261023-19')]);
     scene = new THREE.Scene(); scene.background = new THREE.Color('#11181d');
     scene.fog = new THREE.FogExp2('#10151b',.007);
     camera = new THREE.PerspectiveCamera(45,1280/720,.05,80);

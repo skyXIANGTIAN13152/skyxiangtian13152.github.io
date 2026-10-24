@@ -18,6 +18,8 @@ export function isOriginalFloorSurface(path, hidden = false) {
 
 export function createRoomHotspots() {
   return [
+    // Original north-wall book stacks; the approach stays on the open floor.
+    { id: 'recommendations', label: '项目珍藏', position: v3([3.78, 1.65, 9.1]), approach: v3([3.78, 0, 7.75]) },
     // The original piano occupies x=1.78–2.59, z=3.73–5.80. Keep the
     // approach on its open room side, separate from the archive wall labels.
     { id: 'games', label: '游戏合集', position: v3([2.6, 1.9, 4.7]), approach: v3([3.8, 0, 4.7]) },
