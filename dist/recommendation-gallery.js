@@ -3,7 +3,6 @@ import {normalizeGitHubRepository} from './content-model.js?v=20261024-27';
 import {renderRecommendationDemo} from './recommendation-demos.js?v=20261024-27';
 
 const collections = new WeakMap();
-const PAGE_SIZE = 5;
 const PLATFORMS = new Set(['windows','macos','linux','web']);
 let sequence = 0;
 const wording = (zh,en) => getLanguage() === 'en' ? en : zh;
@@ -55,6 +54,7 @@ export function recommendationGalleryEntries(recommendations,base,mediaURL) {
 export function renderRecommendationGallery(host,recommendations = [],{mediaURL = value => value} = {}) {
   if (!host) return () => {};
   const previous = collections.get(host)?.selected;
+  const previousScroll = host.querySelector('.recommendation-index-list')?.scrollTop || 0;
   collections.get(host)?.dispose();
   const doc = host.ownerDocument,view = doc.defaultView;
   const lifecycle = new (view?.AbortController || AbortController)();
@@ -109,8 +109,7 @@ export function renderRecommendationGallery(host,recommendations = [],{mediaURL 
   const tabs = node('div','recommendation-index-list');
   tabs.setAttribute('role','tablist');tabs.setAttribute('aria-orientation','vertical');
   tabs.setAttribute('aria-label',wording('选择推荐项目','Choose a recommended project'));
-  const indexPaging = node('div','recommendation-index-paging');
-  index.append(heading,tabs,indexPaging);
+  index.append(heading,tabs);
   const spread = node('section','recommendation-record');
   spread.id = `${id}-panel`;spread.setAttribute('role','tabpanel');
   const exhibit = node('div','recommendation-exhibit');
@@ -127,10 +126,7 @@ export function renderRecommendationGallery(host,recommendations = [],{mediaURL 
   spread.append(exhibit,writing,footer);collection.append(index,spread);host.append(collection);
 
   function renderIndex() {
-    tabs.replaceChildren();indexPaging.replaceChildren();
-    const page = Math.floor(selected / PAGE_SIZE);
-    entries.slice(page * PAGE_SIZE,(page + 1) * PAGE_SIZE).forEach((entry,offset) => {
-      const position = page * PAGE_SIZE + offset;
+    entries.forEach((entry,position) => {
       const tab = button('recommendation-index-item','','select',entry.title);
       tab.id = `${id}-tab-${position}`;tab.dataset.recommendation = String(position);
       tab.dataset.languageContent = 'true';tab.setAttribute('role','tab');
@@ -138,13 +134,18 @@ export function renderRecommendationGallery(host,recommendations = [],{mediaURL 
       tab.tabIndex = position === selected ? 0 : -1;
       tab.append(node('span','recommendation-index-title',entry.title,true));tabs.append(tab);
     });
-    indexPaging.hidden = entries.length <= PAGE_SIZE;
-    if (indexPaging.hidden) return;
-    const previousPage = button('recommendation-page-arrow','‹','index-previous',wording('上一页项目目录','Previous index page'));
-    const nextPage = button('recommendation-page-arrow','›','index-next',wording('下一页项目目录','Next index page'));
-    previousPage.disabled = page === 0;nextPage.disabled = (page + 1) * PAGE_SIZE >= entries.length;
-    const pageNumber = node('span','recommendation-page-number',`${page + 1} / ${Math.ceil(entries.length / PAGE_SIZE)}`);
-    pageNumber.setAttribute('aria-live','polite');indexPaging.append(previousPage,pageNumber,nextPage);
+    tabs.scrollTop = previousScroll;
+  }
+  function updateIndex() {
+    [...tabs.children].forEach((tab,position) => {
+      tab.setAttribute('aria-selected',String(position === selected));
+      tab.tabIndex = position === selected ? 0 : -1;
+    });
+    const tab = tabs.children[selected];
+    // Scroll only the index, in unscaled stage coordinates.
+    const top = tab.offsetTop, bottom = top + tab.offsetHeight;
+    if (top < tabs.scrollTop) tabs.scrollTop = top;
+    else if (bottom > tabs.scrollTop + tabs.clientHeight) tabs.scrollTop = bottom - tabs.clientHeight;
   }
   function availableModes() {
     const entry = entries[selected];
@@ -237,7 +238,7 @@ export function renderRecommendationGallery(host,recommendations = [],{mediaURL 
   }
   function select(position,focusTarget = 'tab') {
     closeModal(false);selected = Math.max(0,Math.min(position,entries.length - 1));record.selected = entries[selected].id;
-    imageIndex = 0;mode = 'image';renderIndex();renderRecord();
+    imageIndex = 0;mode = 'image';updateIndex();renderRecord();
     const target = focusTarget === 'tab' ? tabs.querySelector('[aria-selected="true"]')
       : host.querySelector(`[data-recommendation-action="${focusTarget}"]:not(:disabled)`);
     (target || tabs.querySelector('[aria-selected="true"]'))?.focus({preventScroll:true});
@@ -279,7 +280,6 @@ export function renderRecommendationGallery(host,recommendations = [],{mediaURL 
     const action = target.dataset.recommendationAction;
     if (action === 'select') select(Number(target.dataset.recommendation));
     else if (action === 'previous' || action === 'next') select(selected + (action === 'next' ? 1 : -1),action);
-    else if (action === 'index-previous' || action === 'index-next') select((Math.floor(selected / PAGE_SIZE) + (action === 'index-next' ? 1 : -1)) * PAGE_SIZE,action);
     else if (action === 'mode') { mode = target.dataset.mode;renderVisual();modes.querySelector('[aria-selected="true"]')?.focus({preventScroll:true}); }
     else if (action === 'image-previous' || action === 'image-next') changeImage(action === 'image-next' ? 1 : -1,action);
     else if (action === 'enlarge') openModal();
