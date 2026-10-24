@@ -289,9 +289,13 @@ export async function createRoom(options = {}) {
   for (const mesh of floorMeshes) floorBox.union(new THREE.Box3().setFromObject(mesh));
   const bounds = { minX: floorBox.min.x, maxX: floorBox.max.x, minZ: floorBox.min.z, maxZ: floorBox.max.z };
   const ray = new THREE.Raycaster();
+  const floorRayOrigin = new THREE.Vector3(), floorRayDirection = new THREE.Vector3(0, -1, 0);
+  const floorHits = [];
   function floorHeight(x, z) {
-    ray.set(new THREE.Vector3(x, 3, z), new THREE.Vector3(0, -1, 0));
-    return ray.intersectObjects(floorMeshes, false)[0]?.point.y ?? null;
+    ray.set(floorRayOrigin.set(x, 3, z), floorRayDirection);
+    floorHits.length = 0;
+    ray.intersectObjects(floorMeshes, false, floorHits);
+    return floorHits[0]?.point.y ?? null;
   }
   const spawn = { x: 6.05, y: floorHeight(6.05, -2.4) || 0, z: -2.4 };
   const hotspots = createRoomHotspots();

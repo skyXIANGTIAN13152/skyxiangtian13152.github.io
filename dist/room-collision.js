@@ -36,6 +36,7 @@ export function originalRoomMovement(meshes, bounds, floorY = 0, groundAt) {
   });
   const move = (position,dx,dz,radius=.24) => {
     let x=position.x,z=position.z;
+    let groundY;
     const steps=Math.max(1,Math.ceil(Math.hypot(dx,dz)/Math.min(.07,radius*.25)));
     for(let step=0;step<steps;step++) {
       const previousX=x,previousZ=z;
@@ -74,10 +75,19 @@ export function originalRoomMovement(meshes, bounds, floorY = 0, groundAt) {
       // Never accept an unresolved contact or a correction that exits the room.
       // A horizontal surface cannot be escaped by raising this flat-floor player.
       if(x<bounds.minX+radius || x>bounds.maxX-radius ||
-         z<bounds.minZ+radius || z>bounds.maxZ-radius || penetrates() ||
-         (groundAt && groundAt(x,z) == null)) {x=previousX;z=previousZ;}
+         z<bounds.minZ+radius || z>bounds.maxZ-radius || penetrates()) {
+        x=previousX;z=previousZ;
+      } else if(groundAt) {
+        const candidateGround=groundAt(x,z);
+        if(candidateGround==null) {x=previousX;z=previousZ;}
+        else groundY=candidateGround;
+      }
     }
-    return {x,z};
+    // The last accepted substep already queried this exact final point. Keep
+    // its height through rejected later substeps; never return their surface.
+    // If every substep was rejected, query the original point once, just as
+    // the former caller did after movement. No cross-frame cache is needed.
+    return groundAt ? {x,z,groundY:groundY ?? groundAt(x,z) ?? null} : {x,z};
   };
   // Camera clearance and label visibility use these same original triangles.
   // Shift the origin to the near plane: an earlier surface must not hide a

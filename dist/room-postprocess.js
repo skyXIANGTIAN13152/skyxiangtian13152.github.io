@@ -11,6 +11,7 @@ import {
   TextureLoader,
   UnsignedByteType,
   Vector2,
+  Vector4,
   WebGLRenderTarget,
 } from './vendor/three.module.js';
 import { FullScreenQuad } from './vendor/three-addons/postprocessing/Pass.js';
@@ -128,6 +129,43 @@ export async function createOriginalLobbyPostprocess(renderer, {
     }
   }
 
+  async function warmup(scene,camera,{compile,yieldTask = () => Promise.resolve(),signal} = {}) {
+    if (disposed || signal?.aborted) return {scene:{status:'skipped'},quad:{status:'skipped'}};
+    if (typeof compile !== 'function') return {scene:{status:'unavailable'},quad:{status:'unavailable'}};
+    resize();
+    function atTarget(destination,start) {
+      const previousTarget = renderer.getRenderTarget();
+      const previousFace = renderer.getActiveCubeFace();
+      const previousLevel = renderer.getActiveMipmapLevel();
+      const previousViewport = renderer.getViewport(new Vector4());
+      const previousScissor = renderer.getScissor(new Vector4());
+      const previousScissorTest = renderer.getScissorTest();
+      try {
+        renderer.setRenderTarget(destination);
+        // start must begin compilation synchronously. Restore all framebuffer
+        // state before awaiting GPU work, so input/other rendering can continue.
+        return start();
+      } finally {
+        renderer.setRenderTarget(previousTarget,previousFace,previousLevel);
+        renderer.setViewport(previousViewport);renderer.setScissor(previousScissor);
+        renderer.setScissorTest(previousScissorTest);
+      }
+    }
+    // The room uses linear output into this exact target. Compiling it for the
+    // screen would create an unused sRGB program variant instead.
+    const sceneResult = await atTarget(target,() => compile(scene,camera));
+    await yieldTask();
+    if (disposed || signal?.aborted) return {scene:sceneResult,quad:{status:'skipped'}};
+    const quadResult = await atTarget(null,() => {
+      let pending;
+      // FullScreenQuad owns its camera. This adapter compiles its real mesh and
+      // camera without drawing or reading private FullScreenQuad properties.
+      quad.render({render(mesh,quadCamera) { pending = compile(mesh,quadCamera); }});
+      return pending;
+    });
+    return {scene:sceneResult,quad:quadResult};
+  }
+
   function dispose() {
     if (disposed) return;
     disposed = true;
@@ -137,5 +175,5 @@ export async function createOriginalLobbyPostprocess(renderer, {
     quad.dispose();
   }
 
-  return { render, resize, dispose };
+  return { render, resize, dispose, warmup, getWarmupTextures: () => disposed ? [] : [lut] };
 }

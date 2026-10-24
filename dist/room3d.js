@@ -1,7 +1,9 @@
 import * as THREE from './vendor/three.module.js';
 import {moveCircle, cameraRelativeInput} from './room-movement.js';
-import {originalRoomMovement} from './room-collision.js?v=20261023-13';
-import {createOriginalLobbyPostprocess} from './room-postprocess.js';
+import {originalRoomMovement} from './room-collision.js?v=20261024-31';
+import {createOriginalLobbyPostprocess} from './room-postprocess.js?v=20261024-31';
+import {createRoomLabelState} from './room-label-state.js?v=20261024-31';
+import {warmRoomResources} from './room-warmup.js?v=20261024-31';
 import {createRoomResolution} from './room-resolution.js';
 import {createRoomPointerLook} from './room-pointer-look.js?v=20261023-21';
 
@@ -17,6 +19,10 @@ const touchRead = document.querySelector('.room-touch-read');
 const directoryButton = document.querySelector('.room-directory-toggle');
 const directory = document.querySelector('.room-directory-list');
 const anchors = [...document.querySelectorAll('.lobby-hotspot')];
+const anchorStates = new Map(anchors.map(anchor => [anchor.dataset.prop, createRoomLabelState(anchor, anchor.dataset.prop)]));
+const interactionText = interact.querySelector('span');
+const touchReadText = touchRead.querySelector('span');
+const touchReadName = touchRead.querySelector('small');
 const keys = new Set();
 let scene, camera, renderer, postprocess, room, detective, shadow;
 let active = false, ready = false, frame = 0, last = 0, elapsed = 0;
@@ -24,6 +30,8 @@ let pointerId = null, stickInput = {x:0,z:0}, pointerLook = null, nearest = null
 let yaw = 0, pitch = .42, lastInteraction = '';
 let pausedForTransition = false, contextLost = false;
 let footstepsMoving = false;
+let warmupReport = null;
+let assetsReady = false, contextGeneration = 0, warmupController = null;
 const player = new THREE.Vector3();
 const focus = new THREE.Vector3();
 const desiredCamera = new THREE.Vector3();
@@ -59,7 +67,7 @@ function setActive(value) {
 }
 function stop() { cancelAnimationFrame(frame); frame = 0; last = 0; resolution.reset(); stopFootsteps(); }
 function start() { if (!frame) { last = 0; frame = requestAnimationFrame(render); } }
-function activateNearest() { if (canMove() && nearest) anchors.find(a => a.dataset.prop === nearest.id)?.click(); }
+function activateNearest() { if (canMove() && nearest) anchorStates.get(nearest.id)?.anchor.click(); }
 function layoutRenderer() {
   if (!renderer) return;
   // The cover keeps the room hidden during preload; the stage retains its size.
@@ -73,9 +81,10 @@ function updateLabels() {
   let nearestDistance = 2.15;
   camera.getWorldPosition(cameraPosition);
   for (const hotspot of room.hotspots) {
-    const a = anchors.find(a => a.dataset.prop === hotspot.id);
+    const state = anchorStates.get(hotspot.id);
+    const a = state?.anchor;
     if (!a || a.hidden) continue;
-    hotspot.label = a.querySelector('.hotspot-title')?.textContent || hotspot.label;
+    hotspot.label = state.label;
     const distance = Math.hypot(player.x - hotspot.approach.x, player.z - hotspot.approach.z);
     if (distance < nearestDistance) {nearest = hotspot; nearestDistance = distance;}
     projected.copy(hotspot.position).project(camera);
@@ -96,12 +105,7 @@ function updateLabels() {
     }
     const near = distance < 2.15;
     // Move the composited label without laying out its text every frame.
-    a.style.transform = `translate3d(${x.toFixed(2)}px,${y.toFixed(2)}px,0) translate(-50%,-50%)`;
-    a.classList.toggle('is-occluded',!visible || occluded);
-    a.classList.toggle('is-distant',!near);
-    a.classList.toggle('is-near',near);
-    a.tabIndex = visible && !occluded && near ? 0 : -1;
-    a.setAttribute('aria-hidden',String(!visible || occluded || !near));
+    state.update(x,y,visible,occluded,near);
   }
   const id = nearest ? `${nearest.id}:${nearest.label}` : '';
   if (id !== lastInteraction) {
@@ -109,13 +113,13 @@ function updateLabels() {
     interact.hidden = !nearest;
     touchRead.disabled = !nearest;
     if (nearest) {
-      interact.querySelector('span').textContent = `阅读${nearest.label}`;
-      touchRead.querySelector('span').textContent = '阅读';
-      touchRead.querySelector('small').textContent = nearest.label;
+      interactionText.textContent = `阅读${nearest.label}`;
+      touchReadText.textContent = '阅读';
+      touchReadName.textContent = nearest.label;
       interact.setAttribute('aria-label',`按 E 阅读${nearest.label}`);
     } else {
-      touchRead.querySelector('span').textContent = '靠近';
-      touchRead.querySelector('small').textContent = '房间物件';
+      touchReadText.textContent = '靠近';
+      touchReadName.textContent = '房间物件';
     }
   }
 }
@@ -142,7 +146,8 @@ function render(now) {
   const dx = input.x * dt * 1.1, dz = input.z * dt * 1.1;
   if (dx || dz) {
     const next = room.move ? room.move(player,dx,dz,.24) : moveCircle(player,dx,dz,room.colliders,room.bounds,.24);
-    player.set(next.x,room.floorHeight?.(next.x,next.z) ?? room.spawn.y ?? 0,next.z);
+    const groundY = 'groundY' in next ? next.groundY : room.floorHeight?.(next.x,next.z);
+    player.set(next.x,groundY ?? room.spawn.y ?? 0,next.z);
   }
   // Collision constrains world position; held movement input keeps the original
   // walk cycle and footstep cadence, even while pushing against a wall.
@@ -197,7 +202,7 @@ function makeContactShadow() {
 }
 async function initialize() {
   try {
-    const [{createRoom},{createDetective}] = await Promise.all([import('./room-environment.js?v=20261024-27'),import('./room-detective.js?v=20261023-19')]);
+    const [{createRoom},{createDetective}] = await Promise.all([import('./room-environment.js?v=20261024-31'),import('./room-detective.js?v=20261023-19')]);
     scene = new THREE.Scene(); scene.background = new THREE.Color('#11181d');
     scene.fog = new THREE.FogExp2('#10151b',.007);
     camera = new THREE.PerspectiveCamera(45,1280/720,.05,80);
@@ -210,10 +215,28 @@ async function initialize() {
     canvas.setAttribute('aria-label','旧侦探大厅，WASD 或方向键行走，拖动观察房间，靠近物件按 E 阅读');
     canvas.setAttribute('role','img');
     mount.prepend(canvas);
-    room = await createRoom(); scene.add(room.group);
+    bindCanvas(canvas);
+    // Listen before GPU uploads begin, including losses during initial warmup.
+    canvas.addEventListener('webglcontextlost',event => {
+      event.preventDefault();contextLost = true;ready = false;contextGeneration++;
+      warmupController?.abort();stop();resetInput();lobby.classList.remove('room-ready');
+      loading.textContent = '画面已暂停，正在恢复大厅…';restoreFallback();
+    });
+    canvas.addEventListener('webglcontextrestored',() => {
+      contextLost = false;
+      if (assetsReady) window.SkyRoom.whenReady = prepareDisplay();
+    });
+    layoutRenderer();
+    // Independent downloads/decode can overlap while the cover is visible.
+    [room,detective,postprocess] = await Promise.all([
+      createRoom(),
+      createDetective({ onFootstep: () => window.SkyAudio?.playFootstep?.() }),
+      createOriginalLobbyPostprocess(renderer),
+    ]);
+    scene.add(room.group);
     room.bounds = {minX:-6.5,maxX:6.5,minZ:-5.2,maxZ:5.2,...room.bounds};
     if (room.collisionMeshes?.length) room.move = originalRoomMovement(room.collisionMeshes,room.bounds,room.spawn.y || 0,room.floorHeight);
-    detective = await createDetective({ onFootstep: () => window.SkyAudio?.playFootstep?.() }); scene.add(detective.group);
+    scene.add(detective.group);
     player.set(room.spawn.x,room.spawn.y || 0,room.spawn.z);
     yaw = room.cameraYaw ?? Math.atan2(room.cameraPosition.x-room.cameraTarget.x,room.cameraPosition.z-room.cameraTarget.z);
     pitch = room.cameraPitch ?? .32;
@@ -224,26 +247,44 @@ async function initialize() {
     shadow = makeContactShadow();scene.add(shadow);
     blockers = room.blockers || [];
     layoutRenderer();
-    postprocess = await createOriginalLobbyPostprocess(renderer);
+    postprocess.resize();
     camera.position.set(
       THREE.MathUtils.clamp(player.x + Math.sin(yaw) * 5.8,room.bounds.minX + .42,room.bounds.maxX - .42),
       player.y + 1.35 + Math.sin(pitch) * 5.8,
       THREE.MathUtils.clamp(player.z + Math.cos(yaw) * 5.8,room.bounds.minZ + .42,room.bounds.maxZ - .42)
     );camera.lookAt(player.x,player.y + 1.35,player.z - .15);
-    detective.update(0,0);postprocess.render(scene,camera);
-    ready = true;lobby.classList.add('room-ready');
-    bindCanvas(canvas);setActive(stage.dataset.scene === 'lobby');
-    canvas.addEventListener('webglcontextlost',event => {event.preventDefault();contextLost = true;stop();resetInput();lobby.classList.remove('room-ready');loading.textContent = '画面已暂停，正在恢复大厅…';restoreFallback();});
-    canvas.addEventListener('webglcontextrestored',() => {contextLost = false;lobby.classList.add('room-ready');updateTouchVisibility();if(active)start();});
+    detective.update(0,0);
+    assetsReady = true;
+    await prepareDisplay();
   } catch(error) {
     console.error('[SkyRoom]',error);
     loading.textContent = '此浏览器暂不支持三维大厅，可直接点击入口阅读。';
     restoreFallback();
   }
 }
+async function prepareDisplay() {
+  if (contextLost) return;
+  const generation = contextGeneration;
+  const controller = new AbortController();
+  warmupController?.abort();warmupController = controller;
+  try {
+    const report = await warmRoomResources(renderer,scene,camera,{postprocess,signal:controller.signal});
+    if (controller.signal.aborted || contextLost || generation !== contextGeneration || renderer.getContext().isContextLost()) return;
+    warmupReport = report;
+    postprocess.render(scene,camera);
+    ready = true;lobby.classList.add('room-ready');
+    setActive(stage.dataset.scene === 'lobby');
+  } catch(error) {
+    console.warn('[SkyRoom] Could not prepare the 3D canvas; keeping archive entrances available.',error);
+    ready = false;lobby.classList.remove('room-ready');restoreFallback();
+  } finally {
+    if (warmupController === controller) warmupController = null;
+  }
+}
 function restoreFallback() {
   touch.hidden = true;
   anchors.forEach(a => {a.classList.remove('is-occluded','is-distant','is-near');a.removeAttribute('style');a.removeAttribute('aria-hidden');a.removeAttribute('tabindex');});
+  anchorStates.forEach(state => state.invalidate());
 }
 function bindCanvas(canvas) {
   pointerLook = createRoomPointerLook(canvas,{
