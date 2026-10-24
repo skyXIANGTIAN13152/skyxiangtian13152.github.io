@@ -1,10 +1,11 @@
-import { renderRecommendationGallery } from './recommendation-gallery.js?v=20261024-26';
+import { renderLifeJourney } from './life-journey.js?v=20261024-27';
+import { renderRecommendationGallery } from './recommendation-gallery.js?v=20261024-27';
 import { renderPetGallery } from './pet-gallery.js?v=20261023-15';
-import { renderGameGallery } from './game-gallery.js?v=20261024-26';
-import { validateContent, SECTION_KEYS } from './content-model.js?v=20261024-26';
+import { renderGameGallery } from './game-gallery.js?v=20261024-27';
+import { validateContent, SECTION_KEYS } from './content-model.js?v=20261024-27';
 import { renderStudyTree } from './study-tree.js?v=20261023-15';
 import { renderProjectShowcase } from './project-showcase.js?v=20261023-15';
-import { getLanguage, localizeContent, refreshLanguageUI } from './language.js?v=20261024-26';
+import { getLanguage, localizeContent, refreshLanguageUI } from './language.js?v=20261024-27';
 
 const HOSTED_ORIGIN = 'https://sky-tian-manor-portfolio.perky-berry-1262.chatgpt.site';
 const apiOrigin = location.hostname.endsWith('.github.io') ? HOSTED_ORIGIN : location.origin;
@@ -111,7 +112,7 @@ function sectionLabels(content) {
     });
   }
   setText('.dossier-writing h4', content.sections.about.title);
-  for (const key of ['study', 'interests', 'games', 'recommendations']) $(`#${key} .detail-bottom`).setAttribute('aria-label', bilingual(`${content.sections[key].title}页面导航`,`${content.sections[key].title} navigation`));
+  for (const key of ['study', 'interests', 'games', 'recommendations', 'journey']) $(`#${key} .detail-bottom`).setAttribute('aria-label', bilingual(`${content.sections[key].title}页面导航`,`${content.sections[key].title} navigation`));
   $('#people-content').setAttribute('aria-label',content.sections.people.title);
 }
 
@@ -177,6 +178,8 @@ function render(input) {
   renderGameGallery($('#game-gallery'), content.games || [], {mediaURL});
   renderRecommendationGallery($('#recommendation-gallery'), content.recommendations || [], {mediaURL});
   $('#recommendation-gallery').setAttribute('aria-label',content.sections.recommendations.title);
+  renderLifeJourney($('#life-journey'), content.journey || [], {mediaURL});
+  $('#life-journey').setAttribute('aria-label',content.sections.journey.title);
   document.documentElement.classList.add('content-managed');
   window.dispatchEvent(new CustomEvent('sky:contentchange', { detail: { content, preview: Boolean(previewId) } }));
   refreshLanguageUI();

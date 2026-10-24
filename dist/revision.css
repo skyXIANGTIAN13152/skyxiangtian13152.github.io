@@ -40,3 +40,9 @@
 .game-stage .recommendations-section .recommendation-gallery-host{position:absolute;left:0;top:176px;width:1108px;height:440px}
 .game-stage .recommendations-section .detail-bottom{top:634px;left:0;right:0}
 .hotspot-recommendations{left:76%;top:57%}
+.game-stage .journey-section{background:linear-gradient(90deg,#0b141bed,#0d191fe8),url('assets/original/room.jpg') center/cover;isolation:isolate}
+.game-stage .journey-section .life-journey-host{position:absolute;left:0;top:176px;width:1108px;height:440px}
+.game-stage .journey-section .detail-bottom{top:634px;left:0;right:0}
+.hotspot-journey{left:36%;top:38%}
+.game-stage .desktop-nav{gap:14px;margin-left:0}
+.game-stage .desktop-nav a{font-size:15px;white-space:nowrap}

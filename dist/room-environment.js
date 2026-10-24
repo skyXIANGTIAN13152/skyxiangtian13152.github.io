@@ -18,6 +18,9 @@ export function isOriginalFloorSurface(path, hidden = false) {
 
 export function createRoomHotspots() {
   return [
+    // Original standing mirror dm65_main_baimo_012_12 on the east wall:
+    // x=7.84–8.37, z=4.73–5.81. Keep the label and approach on its room side.
+    { id: 'journey', label: '人生足迹', position: v3([7.75, 1.95, 5.25]), approach: v3([6.55, 0, 5.25]) },
     // Original north-wall book stacks; the approach stays on the open floor.
     { id: 'recommendations', label: '项目珍藏', position: v3([3.78, 1.65, 9.1]), approach: v3([3.78, 0, 7.75]) },
     // The original piano occupies x=1.78–2.59, z=3.73–5.80. Keep the

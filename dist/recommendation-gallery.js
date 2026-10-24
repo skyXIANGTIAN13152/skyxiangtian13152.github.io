@@ -1,6 +1,6 @@
-import {getLanguage} from './language.js?v=20261024-26';
-import {normalizeGitHubRepository} from './content-model.js?v=20261024-26';
-import {renderRecommendationDemo} from './recommendation-demos.js?v=20261024-26';
+import {getLanguage} from './language.js?v=20261024-27';
+import {normalizeGitHubRepository} from './content-model.js?v=20261024-27';
+import {renderRecommendationDemo} from './recommendation-demos.js?v=20261024-27';
 
 const collections = new WeakMap();
 const PAGE_SIZE = 5;

@@ -2,7 +2,7 @@ import { DEFAULT_GAMES } from './game-defaults.js?v=20261023-20';
 
 /** Shared by the owner editor, server and public reader. All prose is plain text. */
 export const CONTENT_SCHEMA_VERSION = 2;
-export const SECTION_KEYS = Object.freeze(['about', 'work', 'study', 'interests', 'people', 'pets', 'games', 'recommendations']);
+export const SECTION_KEYS = Object.freeze(['about', 'work', 'study', 'interests', 'people', 'pets', 'games', 'recommendations', 'journey']);
 export const COURSE_STATUSES = Object.freeze(['completed', 'current', 'planned']);
 export const PROJECT_DEMOS = Object.freeze(['', 'syncwallpaper', 'usage-monitor', 'cse-helper', 'wuji-ime', 'perch', 'bibi-keyboard', 'manor']);
 export const RECOMMENDATION_DEMOS = Object.freeze(['', 'office-tool-plus', '7-zip', 'sharex', 'super-productivity', 'hypomux', 'lx-music', 'mineradio-local', 'mineradio-original', 'thunderbird', 'libretv', 'winhance', 'bulk-crap-uninstaller', 'crystaldiskinfo', 'crystaldiskmark']);
@@ -18,6 +18,7 @@ export const ENGLISH_FIELDS = Object.freeze({
   pets: { name: ['宠物名字', 160], description: ['宠物介绍', 12000] },
   games: { title: ['游戏名称', 160], body: ['游戏介绍', 30000], favoriteCharacter: ['喜欢的角色', 160] },
   recommendations: { title: ['项目名称', 160], summary: ['项目简介', 2400], usage: ['使用示例', 5000] },
+  journey: { period: ['时间或阶段', 100], title: ['经历标题', 160], location: ['地点', 160], body: ['经历正文', 12000] },
 });
 
 function record(value, label) {
@@ -126,7 +127,7 @@ export function validateContent(input) {
     ? 'assets/profile/sky-wechat.jpg' : profile.avatar === undefined ? '' : profile.avatar;
   const sectionSource = record(source.sections, '大厅入口');
   const sections = {};
-  const optionalSections = { people: { title: '名人墙', subtitle: '', visible: true }, pets: { title: '宠物小屋', subtitle: '我家的宠物与相处时光', visible: true }, games: { title: '游戏合集', subtitle: '我玩的游戏', titleEn: 'Games', subtitleEn: 'Games I play', visible: true }, recommendations: { title: '项目珍藏', subtitle: '我推荐的 GitHub 项目', titleEn: 'GitHub picks', subtitleEn: 'GitHub projects I recommend', visible: true } };
+  const optionalSections = { people: { title: '名人墙', subtitle: '', visible: true }, pets: { title: '宠物小屋', subtitle: '我家的宠物与相处时光', visible: true }, games: { title: '游戏合集', subtitle: '我玩的游戏', titleEn: 'Games', subtitleEn: 'Games I play', visible: true }, recommendations: { title: '项目珍藏', subtitle: '我推荐的 GitHub 项目', titleEn: 'GitHub picks', subtitleEn: 'GitHub projects I recommend', visible: true }, journey: { title: '人生足迹', subtitle: '沿途的经历与故事', titleEn: 'Life journey', subtitleEn: 'The moments along the way', visible: true } };
   for (const key of SECTION_KEYS) {
     const section = record(sectionSource[key] === undefined ? optionalSections[key] : sectionSource[key], '大厅入口');
     sections[key] = { title: text(section.title, '入口名称', 40, true), subtitle: text(section.subtitle, '入口说明', 160), visible: flag(section.visible, '入口可见状态'), ...englishFields(section, 'sections') };
@@ -191,6 +192,12 @@ export function validateContent(input) {
         visible: flag(item.visible, '推荐项目可见状态'), ...englishFields(item, 'recommendations'),
       };
     }),
+    journey: entries(source.journey === undefined ? [] : source.journey, '人生足迹', item => ({
+      id: id(item.id, '经历'), period: text(item.period === undefined ? '' : item.period, '时间或阶段', 100),
+      title: text(item.title, '经历标题', 160, true), location: text(item.location === undefined ? '' : item.location, '地点', 160),
+      body: text(item.body === undefined ? '' : item.body, '经历正文', 12000), image: url(item.image === undefined ? '' : item.image, '经历照片', true),
+      visible: flag(item.visible, '经历可见状态'), ...englishFields(item, 'journey'),
+    })),
     settings: { musicVolume: settings.musicVolume, musicEnabled: flag(settings.musicEnabled, '默认声音设置') },
   };
 }

@@ -21,8 +21,8 @@
 html[lang=en] .study-qualification{font-size:16px}
 html[lang=en] .study-qualification-label{font-size:14px}
 html[lang=en]{--art:CormorantArchive,Georgia,ArchiveSong,serif;--serif:CormorantArchive,Georgia,ArchiveSong,'Songti SC',SimSun,serif}
-html[lang=en] .game-stage .desktop-nav{gap:18px;margin-left:8px}
-html[lang=en] .game-stage .desktop-nav a{font-size:17px;letter-spacing:.015em;white-space:nowrap}
+html[lang=en] .game-stage .desktop-nav{gap:13px;margin-left:0}
+html[lang=en] .game-stage .desktop-nav a{font-size:16px;letter-spacing:.015em;white-space:nowrap}
 html[lang=en] .game-stage .header-tools{gap:11px;flex-shrink:0}
 html[lang=en] .game-stage .brand{font-size:31px;white-space:nowrap}
 html[lang=en] .game-stage .hotspot-title{font-size:34px;letter-spacing:.02em;line-height:1.05}

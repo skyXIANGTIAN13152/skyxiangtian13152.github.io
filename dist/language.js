@@ -10,6 +10,7 @@ const FIELDS = {
   study: ['university','major','description'], course: ['name','notes'],
   interest: ['title','body'], person: ['name','role','body'], pet: ['name','description'],
   game: ['title','body','favoriteCharacter'], recommendation: ['title','summary','usage'],
+  journey: ['period','title','location','body'],
 };
 export function localizeContent(raw, locale = language) {
   const result = structuredClone(raw);
@@ -28,6 +29,7 @@ export function localizeContent(raw, locale = language) {
   (result.pets || []).forEach(item=>project(item,FIELDS.pet));
   (result.games || []).forEach(item=>project(item,FIELDS.game));
   (result.recommendations || []).forEach(item=>project(item,FIELDS.recommendation));
+  (result.journey || []).forEach(item=>project(item,FIELDS.journey));
   return result;
 }
 
@@ -37,6 +39,7 @@ const WORDS = new Map(Object.entries({
   '关于我':'About me','作品集':'Projects','专业学习':'Studies','兴趣爱好':'Interests','名人墙':'People','宠物小屋':'Pet album',
   '游戏合集':'Games','我玩的游戏':'Games I play','游戏收藏册':'Game collection','游戏合集页面导航':'Game collection navigation','玩游戏':'Gaming',
   '项目珍藏':'GitHub picks','我推荐的 GitHub 项目':'GitHub projects I recommend','GitHub 项目推荐册':'GitHub recommendations','项目珍藏页面导航':'GitHub picks navigation',
+  '人生足迹':'Life journey','沿途的经历与故事':'The moments along the way','人生足迹页面导航':'Life journey navigation','人生足迹尚未公开':'No life stories have been published yet.','经历与故事，会在这里慢慢记录。':'Experiences and stories will be shared here over time.',
   '个人手记':'Personal journal','目录':'Directory','离开大厅':'Leave lobby','返回大厅':'Back to lobby','↶ 返回大厅':'↶ Back to lobby',
   '访客进入庄园':'Enter as a guest','庄园主登录':'Owner sign in','管理庄园':'Manage manor','庄园主管理':'Owner controls',
   '编辑此页':'Edit this page','管理册':'Editor','庄园主':'Owner','返回管理册':'Back to editor',
