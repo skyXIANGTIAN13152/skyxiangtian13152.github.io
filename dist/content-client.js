@@ -8,7 +8,11 @@ import { renderProjectShowcase } from './project-showcase.js?v=20261024-30';
 import { getLanguage, localizeContent, refreshLanguageUI } from './language.js?v=20261024-27';
 
 const HOSTED_ORIGIN = 'https://sky-tian-manor-portfolio.perky-berry-1262.chatgpt.site';
-const apiOrigin = location.hostname.endsWith('.github.io') ? HOSTED_ORIGIN : location.origin;
+const STATIC_ORIGINS = new Set([
+  'https://skyxiangtian13152.github.io',
+  'https://sky-tian-manor-aogvwszi.edgeone.dev',
+]);
+const apiOrigin = STATIC_ORIGINS.has(location.origin) ? HOSTED_ORIGIN : location.origin;
 const adminURL = `${apiOrigin}/admin/`;
 const previewId = new URLSearchParams(location.search).get('preview');
 const $ = selector => document.querySelector(selector);
