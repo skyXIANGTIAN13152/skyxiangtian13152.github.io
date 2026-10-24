@@ -191,6 +191,7 @@ function manor(host) {
 const demos = { syncwallpaper: syncWallpaper, 'usage-monitor': usageMonitor, 'cse-helper': cseHelper, 'wuji-ime': wujiKeyboard, perch, 'bibi-keyboard': voiceKeyboard, manor };
 
 export function renderProjectShowcase(host, projects, { mediaURL = value => value } = {}) {
+  const previousScroll = host.querySelector('.showcase-index')?.scrollTop || 0;
   const old = mounted.get(host); const previous = old?.selected; old?.dispose();
   const visible = projects.filter(project => project.visible); host.replaceChildren();
   if (!visible.length) { host.append(el('p', 'content-empty', '作品尚未公开。')); return; }
@@ -217,7 +218,12 @@ export function renderProjectShowcase(host, projects, { mediaURL = value => valu
       if (sources.length) { const gallery = el('div', 'showcase-gallery'); sources.forEach((src, i) => { gallery.append(image(mediaURL(src), `${project.title} · 图片 ${i + 1}`)); }); expanded.append(gallery); }
       details.append(expanded); copy.append(details);
     }
-    page.append(surface, copy); if (focus) tabs[position].focus({ preventScroll: true });
+    page.append(surface, copy);
+    if (focus) {
+      const tab = tabs[position];tab.focus({ preventScroll: true });
+      if (tab.offsetTop < index.scrollTop) index.scrollTop = tab.offsetTop;
+      else if (tab.offsetTop + tab.offsetHeight > index.scrollTop + index.clientHeight) index.scrollTop = tab.offsetTop + tab.offsetHeight - index.clientHeight;
+    }
   }
   visible.forEach((project, i) => {
     const tab = button('', () => show(i), 'showcase-tab'); tab.id = `${id}-tab-${i}`; tab.setAttribute('role', 'tab'); tab.setAttribute('aria-controls', page.id);
@@ -232,5 +238,5 @@ export function renderProjectShowcase(host, projects, { mediaURL = value => valu
   const pause = () => stopDemo();
   window.addEventListener('sky:scenechange', event => { if (event.detail?.scene !== 'work') pause(); }, { signal: controller.signal });
   document.addEventListener('visibilitychange', () => { if (document.hidden) pause(); }, { signal: controller.signal });
-  host.append(index, page); show(selectedIndex);
+  host.append(index, page); show(selectedIndex);index.scrollTop = previousScroll;
 }

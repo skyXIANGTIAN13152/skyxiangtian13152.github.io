@@ -16,10 +16,13 @@ export function petPhotoURL(value, base, mediaURL = value => value) {
 /** Render into a 1108 × 440 scene host. Repeated renders dispose prior listeners. */
 export function renderPetGallery(host, pets = [], { mediaURL = value => value } = {}) {
   if (!host) return () => {};
-  galleries.get(host)?.();
+  const previous = galleries.get(host);
+  const previousPet = previous?.selected;
+  const previousScroll = host.querySelector('.pet-index-list')?.scrollTop ?? previous?.scrollTop ?? 0;
+  previous?.dispose();
   const doc = host.ownerDocument;
   const win = doc.defaultView;
-  const lifecycle = new AbortController();
+  const lifecycle = new (win?.AbortController || AbortController)();
   const prefix = `pet-album-${++gallerySequence}`;
   const node = (tag, className, text) => {
     const element = doc.createElement(tag);
@@ -39,8 +42,9 @@ export function renderPetGallery(host, pets = [], { mediaURL = value => value } 
         .slice(0, 12).map(value => petPhotoURL(value, doc.baseURI, mediaURL)).filter(Boolean) }));
   host.classList.add('pet-gallery-host');
   host.replaceChildren();
-  let activePet = 0, activePhoto = 0, indexPage = 0, open = false, previousFocus;
-  let album, index, introduction, photoArea, modal, modalImage, modalCount, modalPrevious, modalNext, opener;
+  let activePet = Math.max(0, entries.findIndex(pet => pet.id === previousPet)), activePhoto = 0, open = false, previousFocus;
+  let album, index, indexList, introduction, photoArea, modal, modalImage, modalCount, modalPrevious, modalNext, opener;
+  const record = { selected: entries[activePet]?.id, scrollTop: previousScroll, dispose };
 
   function closeViewer(restoreFocus = true) {
     if (!open) return;
@@ -49,10 +53,11 @@ export function renderPetGallery(host, pets = [], { mediaURL = value => value } 
     if (restoreFocus) (previousFocus?.isConnected ? previousFocus : opener)?.focus({ preventScroll: true });
   }
   function dispose() {
+    if (indexList) record.scrollTop = indexList.scrollTop;
     closeViewer(false); lifecycle.abort();
-    if (galleries.get(host) === dispose) galleries.delete(host);
+    if (galleries.get(host) === record) galleries.delete(host);
   }
-  galleries.set(host, dispose);
+  galleries.set(host, record);
 
   if (!entries.length) {
     const empty = node('div', 'pet-album-empty');
@@ -92,24 +97,36 @@ export function renderPetGallery(host, pets = [], { mediaURL = value => value } 
     frame.append(image, fallback); return frame;
   }
   function renderIndex() {
-    index.replaceChildren(node('p', 'pet-index-heading', '相册目录'));
-    const list = node('div', 'pet-index-list');
-    entries.slice(indexPage * 4, indexPage * 4 + 4).forEach((pet, offset) => {
-      const position = indexPage * 4 + offset;
+    indexList = node('div', 'pet-index-list');
+    entries.forEach((pet, position) => {
       const item = button('pet-index-item', pet.name, 'pet', `打开${pet.name}的相册`);
       item.dataset.languageContent = 'true';
       item.dataset.pet = String(position); item.setAttribute('aria-pressed', String(position === activePet));
-      list.append(item);
+      item.tabIndex = position === activePet ? 0 : -1;
+      indexList.append(item);
     });
-    index.append(list);
-    if (entries.length > 4) {
-      const paging = node('div', 'pet-index-paging');
-      const previous = button('pet-arrow', '‹', 'index-previous', '上一页宠物');
-      const next = button('pet-arrow', '›', 'index-next', '下一页宠物');
-      previous.disabled = indexPage === 0; next.disabled = (indexPage + 1) * 4 >= entries.length;
-      paging.append(previous, node('span', '', `${indexPage + 1} / ${Math.ceil(entries.length / 4)}`), next);
-      index.append(paging);
-    }
+    index.replaceChildren(node('p', 'pet-index-heading', '相册目录'), indexList);
+    indexList.scrollTop = previousScroll;
+    record.scrollTop = indexList.scrollTop;
+    indexList.addEventListener('scroll', () => { record.scrollTop = indexList.scrollTop; }, { passive: true, signal: lifecycle.signal });
+  }
+  function updateIndex() {
+    [...indexList.children].forEach((item, position) => {
+      item.setAttribute('aria-pressed', String(position === activePet));
+      item.tabIndex = position === activePet ? 0 : -1;
+    });
+    const item = indexList.children[activePet];
+    // Only scroll this list, using its unscaled layout coordinates.
+    const top = item.offsetTop, bottom = top + item.offsetHeight;
+    if (top < indexList.scrollTop) indexList.scrollTop = top;
+    else if (bottom > indexList.scrollTop + indexList.clientHeight) indexList.scrollTop = bottom - indexList.clientHeight;
+    record.scrollTop = indexList.scrollTop;
+  }
+  function selectPet(position) {
+    activePet = Math.max(0, Math.min(position, entries.length - 1)); activePhoto = 0;
+    record.selected = entries[activePet].id;
+    updateIndex(); renderIntroduction(); renderPhotos();
+    indexList.children[activePet]?.focus({ preventScroll: true });
   }
   function renderIntroduction() {
     const pet = entries[activePet];
@@ -153,6 +170,10 @@ export function renderPetGallery(host, pets = [], { mediaURL = value => value } 
     controls.append(previous, thumbs, next);
     const caption = node('p', 'pet-photo-caption', `${activePhoto + 1} / ${pet.photos.length}`);
     caption.setAttribute('aria-live', 'polite'); photoArea.append(opener, controls, caption);
+    const selectedThumb = thumbs.querySelector('[aria-pressed="true"]');
+    if (selectedThumb && selectedThumb.offsetLeft + selectedThumb.offsetWidth > thumbs.clientWidth) {
+      thumbs.scrollLeft = selectedThumb.offsetLeft + selectedThumb.offsetWidth - thumbs.clientWidth;
+    }
   }
   function selectPhoto(position) {
     const pet = entries[activePet];
@@ -178,13 +199,15 @@ export function renderPetGallery(host, pets = [], { mediaURL = value => value } 
       selectPhoto(Number(target.dataset.photo));
       photoArea.querySelector('[aria-pressed="true"]')?.focus({ preventScroll: true });
     } else if (action === 'pet') {
-      activePet = Number(target.dataset.pet); activePhoto = 0;
-      renderIndex(); renderIntroduction(); renderPhotos();
-      index.querySelector('[aria-pressed="true"]')?.focus({ preventScroll: true });
-    } else if (action.startsWith('index-')) {
-      indexPage += action === 'index-next' ? 1 : -1; renderIndex();
-      index.querySelector('.pet-index-item')?.focus({ preventScroll: true });
+      selectPet(Number(target.dataset.pet));
     }
+  }, { signal: lifecycle.signal });
+  host.addEventListener('keydown', event => {
+    const item = event.target.closest?.('.pet-index-item');
+    if (open || !item || !indexList.contains(item) || event.altKey || event.ctrlKey || event.metaKey) return;
+    const destinations = { ArrowDown: activePet + 1, ArrowUp: activePet - 1, Home: 0, End: entries.length - 1 };
+    if (destinations[event.key] === undefined) return;
+    event.preventDefault(); event.stopPropagation(); selectPet(destinations[event.key]);
   }, { signal: lifecycle.signal });
   host.addEventListener('error', event => {
     if (event.target.tagName !== 'IMG') return;

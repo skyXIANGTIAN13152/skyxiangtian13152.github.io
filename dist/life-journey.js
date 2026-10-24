@@ -32,6 +32,7 @@ export function lifeJourneyEntries(values,base,mediaURL) {
 /** A timeline and a single archive leaf, sized to the horizontal manor scene. */
 export function renderLifeJourney(host,values = [],{mediaURL = value => value} = {}) {
   if (!host) return () => {};
+  const previousScroll = host.querySelector('.journey-timeline-list')?.scrollTop || 0;
   const previous = mounted.get(host)?.selected;
   mounted.get(host)?.dispose();
   const doc = host.ownerDocument,lifecycle = new (doc.defaultView?.AbortController || AbortController)();
@@ -141,5 +142,5 @@ export function renderLifeJourney(host,values = [],{mediaURL = value => value} =
     if (destinations[event.key] === undefined) return;
     event.preventDefault();event.stopPropagation();select(destinations[event.key]);
   },{signal:lifecycle.signal});
-  render();return dispose;
+  render();list.scrollTop = previousScroll;return dispose;
 }

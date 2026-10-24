@@ -1,10 +1,10 @@
-import { renderLifeJourney } from './life-journey.js?v=20261024-27';
+import { renderLifeJourney } from './life-journey.js?v=20261024-30';
 import { renderRecommendationGallery } from './recommendation-gallery.js?v=20261024-29';
-import { renderPetGallery } from './pet-gallery.js?v=20261023-15';
+import { renderPetGallery } from './pet-gallery.js?v=20261024-30';
 import { renderGameGallery } from './game-gallery.js?v=20261024-28';
 import { validateContent, SECTION_KEYS } from './content-model.js?v=20261024-27';
 import { renderStudyTree } from './study-tree.js?v=20261023-15';
-import { renderProjectShowcase } from './project-showcase.js?v=20261023-15';
+import { renderProjectShowcase } from './project-showcase.js?v=20261024-30';
 import { getLanguage, localizeContent, refreshLanguageUI } from './language.js?v=20261024-27';
 
 const HOSTED_ORIGIN = 'https://sky-tian-manor-portfolio.perky-berry-1262.chatgpt.site';
