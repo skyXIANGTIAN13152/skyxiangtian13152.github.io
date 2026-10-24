@@ -1,0 +1,6 @@
+{
+  "buildCommand": "npm run check",
+  "installCommand": "echo 'Static site: no dependencies to install'",
+  "outputDirectory": "dist",
+  "nodeVersion": "22.11.0"
+}
