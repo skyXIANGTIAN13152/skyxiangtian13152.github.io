@@ -1,0 +1,311 @@
+{
+  "description": "Verified interface images for recommended projects. No AI-generated application screenshots. Source images are resized only, without upscaling.",
+  "items": [
+    {
+      "id": "office-tool-plus",
+      "file": "assets/recommendations/office-tool-plus.webp",
+      "sourcePage": "https://otp.landian.vip/zh-cn/",
+      "originalUrl": "https://otp.landian.vip/assets/images/zh-cn/hero-deploy.webp",
+      "originalDimensions": [
+        1400,
+        1000
+      ],
+      "dimensions": [
+        1400,
+        1000
+      ],
+      "bytes": 68994,
+      "captureNote": "Official deployment-interface composition; transparent pixels flattened onto white for consistent presentation. Not independently generated.",
+      "repository": "https://github.com/YerongAI/Office-Tool",
+      "attribution": "YerongAI and project contributors",
+      "repositoryLicense": "MIT",
+      "licenseNote": "Repository licence is recorded for attribution; logos, third-party content and interface artwork may have separate rights. Screenshot displayed to identify and explain the recommended project.",
+      "retrievedAt": "2026-10-24",
+      "sha256": "e8365a76f05f66564365dcaa67f6aed9bc4edccdc94474371da596b9e1f42c08"
+    },
+    {
+      "id": "7-zip",
+      "file": "assets/recommendations/7-zip.webp",
+      "sourcePage": "https://www.7-zip.de/screenshots.html",
+      "originalUrl": "https://www.7-zip.de/bilder/fm.png",
+      "originalDimensions": [
+        735,
+        480
+      ],
+      "dimensions": [
+        735,
+        480
+      ],
+      "bytes": 88820,
+      "repository": "https://github.com/ip7z/7zip",
+      "attribution": "Igor Pavlov; screenshot from the German site linked by 7-zip.org",
+      "repositoryLicense": "GNU LGPL + BSD 3-clause + unRAR restrictions",
+      "licenseNote": "Repository licence is recorded for attribution; logos, third-party content and interface artwork may have separate rights. Screenshot displayed to identify and explain the recommended project.",
+      "retrievedAt": "2026-10-24",
+      "licenseSource": "https://www.7-zip.org/license.txt",
+      "sha256": "4ee2455f77ebe599699f3e60ceb05065831e953d3ea3e5492fee3348b4a63193"
+    },
+    {
+      "id": "sharex",
+      "file": "assets/recommendations/sharex.webp",
+      "sourcePage": "https://github.com/ShareX/ShareX",
+      "originalUrl": "https://getsharex.com/img/ShareX_Screenshot.png",
+      "originalDimensions": [
+        1132,
+        777
+      ],
+      "dimensions": [
+        1132,
+        777
+      ],
+      "bytes": 42192,
+      "repository": "https://github.com/ShareX/ShareX",
+      "attribution": "ShareX and project contributors",
+      "repositoryLicense": "GPL-3.0",
+      "licenseNote": "Repository licence is recorded for attribution; logos, third-party content and interface artwork may have separate rights. Screenshot displayed to identify and explain the recommended project.",
+      "retrievedAt": "2026-10-24",
+      "sha256": "ec8790e675335cd2a6ab93d468299ae1f3b5854162118e699d2206625eddb6a0"
+    },
+    {
+      "id": "super-productivity",
+      "file": "assets/recommendations/super-productivity.webp",
+      "sourcePage": "https://github.com/super-productivity/super-productivity",
+      "originalUrl": "https://raw.githubusercontent.com/super-productivity/super-productivity/master/docs/screens/reel.gif",
+      "originalDimensions": [
+        720,
+        720
+      ],
+      "dimensions": [
+        720,
+        720
+      ],
+      "bytes": 45590,
+      "captureNote": "Single still frame from the official README demonstration GIF, approximately 6 seconds in.",
+      "repository": "https://github.com/super-productivity/super-productivity",
+      "attribution": "super-productivity and project contributors",
+      "repositoryLicense": "MIT",
+      "licenseNote": "Repository licence is recorded for attribution; logos, third-party content and interface artwork may have separate rights. Screenshot displayed to identify and explain the recommended project.",
+      "retrievedAt": "2026-10-24",
+      "sha256": "87e80087053058403a0ff7fdcba4975b7deae22977d93949dd04bbc02141c74f"
+    },
+    {
+      "id": "hypomux",
+      "file": "assets/recommendations/hypomux.webp",
+      "sourcePage": "https://github.com/Hypostasis-Cat/HypoMux",
+      "originalUrl": "https://raw.githubusercontent.com/Hypostasis-Cat/HypoMux/main/assets/ui_idle_2.5.png",
+      "originalDimensions": [
+        1120,
+        800
+      ],
+      "dimensions": [
+        1120,
+        800
+      ],
+      "bytes": 31162,
+      "repository": "https://github.com/Hypostasis-Cat/HypoMux",
+      "attribution": "Hypostasis-Cat and project contributors",
+      "repositoryLicense": "AGPL-3.0",
+      "licenseNote": "Repository licence is recorded for attribution; logos, third-party content and interface artwork may have separate rights. Screenshot displayed to identify and explain the recommended project.",
+      "retrievedAt": "2026-10-24",
+      "sha256": "470d6f68d3902d0b37cf48f5dddceec82b6051fd503aa1efa541924ddb405271"
+    },
+    {
+      "id": "lx-music",
+      "file": "assets/recommendations/lx-music.webp",
+      "sourcePage": "https://github.com/lyswhut/lx-music-desktop",
+      "originalUrl": "https://raw.githubusercontent.com/lyswhut/lx-music-desktop/master/doc/images/app.png",
+      "originalDimensions": [
+        1114,
+        718
+      ],
+      "dimensions": [
+        1114,
+        718
+      ],
+      "bytes": 101690,
+      "repository": "https://github.com/lyswhut/lx-music-desktop",
+      "attribution": "lyswhut and project contributors",
+      "repositoryLicense": "Apache-2.0",
+      "licenseNote": "Repository licence is recorded for attribution; logos, third-party content and interface artwork may have separate rights. Screenshot displayed to identify and explain the recommended project.",
+      "retrievedAt": "2026-10-24",
+      "sha256": "f63244cea5fb4c9dede8c606d280df069dd82b56f0e8483d1cfbe586f3218a1c"
+    },
+    {
+      "id": "mineradio-local",
+      "file": "assets/recommendations/mineradio-local.webp",
+      "sourcePage": "https://github.com/oirge/Mineradio",
+      "originalUrl": "https://github.com/oirge/Mineradio",
+      "originalDimensions": [
+        1280,
+        720
+      ],
+      "dimensions": [
+        1280,
+        720
+      ],
+      "bytes": 49850,
+      "captureNote": "Captured from the project public/ frontend served locally with no Electron process, backend, account or personal music files. Empty music library and import controls.",
+      "captureDate": "2026-10-24",
+      "commit": "ba5dd1bef1920c02d5429ea67fc51b29cfda32c7",
+      "repository": "https://github.com/oirge/Mineradio",
+      "attribution": "XxHuberrr and contributors; local edition by oirge",
+      "repositoryLicense": "GPL-3.0",
+      "licenseNote": "Original Mineradio name, logo and visual design belong to XxHuberrr. Local edition retains upstream notices. Frontend screenshot created locally for project identification; no user files loaded.",
+      "retrievedAt": "2026-10-24",
+      "sha256": "f0f68d442d60af6a264f2edf9aedafc293537268a451c26ff518abe550765da5"
+    },
+    {
+      "id": "mineradio-original",
+      "file": "assets/recommendations/mineradio-original.webp",
+      "sourcePage": "https://github.com/XxHuberrr/Mineradio-paused",
+      "originalUrl": "https://github.com/XxHuberrr/Mineradio-paused",
+      "originalDimensions": [
+        1280,
+        720
+      ],
+      "dimensions": [
+        1280,
+        720
+      ],
+      "bytes": 88640,
+      "captureNote": "Captured from the original project public/ frontend served locally with no Electron process, backend, account or personal music files. Home dashboard after entering the original splash screen.",
+      "captureDate": "2026-10-24",
+      "repository": "https://github.com/XxHuberrr/Mineradio-paused",
+      "attribution": "XxHuberrr and contributors",
+      "repositoryLicense": "GPL-3.0",
+      "licenseNote": "Original Mineradio name, logo and visual design belong to XxHuberrr. Local edition retains upstream notices. Frontend screenshot created locally for project identification; no user files loaded.",
+      "retrievedAt": "2026-10-24",
+      "sha256": "09e768bd9f1f74024b4419eda7e82513c6aa57aca6eaeeda796c494da873c1c0",
+      "commit": "d43de565acabfdc1a9c9820a27e81a98ccbebcef"
+    },
+    {
+      "id": "thunderbird",
+      "file": "assets/recommendations/thunderbird.webp",
+      "sourcePage": "https://github.com/thunderbird/thunderbird-website/blob/master/media/img/thunderbird/new/screens/153-mail-screen.png",
+      "originalUrl": "https://raw.githubusercontent.com/thunderbird/thunderbird-website/master/media/img/thunderbird/new/screens/153-mail-screen.png",
+      "originalDimensions": [
+        2380,
+        1490
+      ],
+      "dimensions": [
+        1800,
+        1127
+      ],
+      "bytes": 178262,
+      "repository": "https://github.com/thunderbird/thunderbird-desktop",
+      "attribution": "Thunderbird Technologies Corporation and individual contributors",
+      "repositoryLicense": "Not identified by GitHub metadata",
+      "licenseNote": "Official Thunderbird website identifies its content as available under a Creative Commons licence; logos and trademarks retain their respective rights.",
+      "retrievedAt": "2026-10-24",
+      "licenseSource": "https://www.thunderbird.net/en-US/desktop/",
+      "sha256": "b6cb502984f5219a072bb0452cf735bce0c775bf6b6148af58a6d7d34251b0ed"
+    },
+    {
+      "id": "libretv",
+      "file": "assets/recommendations/libretv.webp",
+      "sourcePage": "https://tv.bagiinlink.eu.org/",
+      "originalUrl": "https://tv.bagiinlink.eu.org/",
+      "originalDimensions": [
+        1265,
+        712
+      ],
+      "dimensions": [
+        1265,
+        712
+      ],
+      "bytes": 112452,
+      "captureNote": "Captured from the live demonstration linked by the project README. Home page only; no video played.",
+      "captureDate": "2026-10-24",
+      "repository": "https://github.com/LibreSpark/LibreTV",
+      "attribution": "LibreSpark and project contributors",
+      "repositoryLicense": "AGPL-3.0",
+      "licenseNote": "Repository licence is recorded for attribution; logos, third-party content and interface artwork may have separate rights. Screenshot displayed to identify and explain the recommended project.",
+      "retrievedAt": "2026-10-24",
+      "sha256": "a717b83092508ae91d8fdc799d719f9adce84f6d3b2154f5f91bdc8b91e0faba"
+    },
+    {
+      "id": "winhance",
+      "file": "assets/recommendations/winhance.webp",
+      "sourcePage": "https://github.com/memstechtips/Winhance",
+      "originalUrl": "https://github.com/user-attachments/assets/6adedef9-6587-4f29-9bb2-d907965b7a03",
+      "originalDimensions": [
+        1920,
+        1080
+      ],
+      "dimensions": [
+        1800,
+        1013
+      ],
+      "bytes": 128834,
+      "repository": "https://github.com/memstechtips/Winhance",
+      "attribution": "Marco du Plessis / memstechtips",
+      "repositoryLicense": "PolyForm Shield 1.0.0",
+      "licenseNote": "Repository licence is recorded for attribution; logos, third-party content and interface artwork may have separate rights. Screenshot displayed to identify and explain the recommended project.",
+      "retrievedAt": "2026-10-24",
+      "sha256": "4614c0eb263c8dbb4a9bfa1b9b76f5d51b60534d090f73fc7dea25b40aab341d"
+    },
+    {
+      "id": "bulk-crap-uninstaller",
+      "file": "assets/recommendations/bulk-crap-uninstaller.webp",
+      "sourcePage": "https://github.com/BCUninstaller/Bulk-Crap-Uninstaller",
+      "originalUrl": "https://raw.githubusercontent.com/BCUninstaller/Bulk-Crap-Uninstaller/gh-pages/assets/1.png",
+      "originalDimensions": [
+        886,
+        573
+      ],
+      "dimensions": [
+        886,
+        573
+      ],
+      "bytes": 100520,
+      "repository": "https://github.com/BCUninstaller/Bulk-Crap-Uninstaller",
+      "attribution": "BCUninstaller and project contributors",
+      "repositoryLicense": "Apache-2.0",
+      "licenseNote": "Repository licence is recorded for attribution; logos, third-party content and interface artwork may have separate rights. Screenshot displayed to identify and explain the recommended project.",
+      "retrievedAt": "2026-10-24",
+      "sha256": "eb5c6b7e2dcde16e85888e94cbe7f17cae669c344722ab2cd477b4a47377876f"
+    },
+    {
+      "id": "crystaldiskinfo",
+      "file": "assets/recommendations/crystaldiskinfo.webp",
+      "sourcePage": "https://crystalmark.info/en/software/crystaldiskinfo/",
+      "originalUrl": "https://crystalmark.info/en/wp-content/uploads/sites/3/CrystalDiskInfo9Aoi-en.png",
+      "originalDimensions": [
+        1505,
+        828
+      ],
+      "dimensions": [
+        1505,
+        828
+      ],
+      "bytes": 195676,
+      "repository": "https://github.com/hiyohiyo/CrystalDiskInfo",
+      "attribution": "hiyohiyo / Crystal Dew World; Aoi edition artwork credited by the original project",
+      "repositoryLicense": "MIT",
+      "licenseNote": "Repository licence is recorded for attribution; logos, third-party content and interface artwork may have separate rights. Screenshot displayed to identify and explain the recommended project.",
+      "retrievedAt": "2026-10-24",
+      "sha256": "4ead1fd3cce12f836a34eb330a59bc64234dcc10b73ddf7f77227fd34a707853"
+    },
+    {
+      "id": "crystaldiskmark",
+      "file": "assets/recommendations/crystaldiskmark.webp",
+      "sourcePage": "https://crystalmark.info/en/software/crystaldiskmark/",
+      "originalUrl": "https://crystalmark.info/en/wp-content/uploads/sites/3/CDM9Default-en-1.png",
+      "originalDimensions": [
+        724,
+        519
+      ],
+      "dimensions": [
+        724,
+        519
+      ],
+      "bytes": 60394,
+      "repository": "https://github.com/hiyohiyo/CrystalDiskMark",
+      "attribution": "hiyohiyo and project contributors",
+      "repositoryLicense": "Not identified by GitHub metadata",
+      "licenseNote": "Repository licence is recorded for attribution; logos, third-party content and interface artwork may have separate rights. Screenshot displayed to identify and explain the recommended project.",
+      "retrievedAt": "2026-10-24",
+      "sha256": "95b2515f912e0b46d115f6e03e39618145b40760966e1a510d739e997531374d"
+    }
+  ]
+}

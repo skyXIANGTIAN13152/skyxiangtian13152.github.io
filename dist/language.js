@@ -9,7 +9,7 @@ const FIELDS = {
   section: ['title','subtitle'], project: ['title','category','summary','body'],
   study: ['university','major','description'], course: ['name','notes'],
   interest: ['title','body'], person: ['name','role','body'], pet: ['name','description'],
-  game: ['title','body','favoriteCharacter'], recommendation: ['title','summary'],
+  game: ['title','body','favoriteCharacter'], recommendation: ['title','summary','usage'],
 };
 export function localizeContent(raw, locale = language) {
   const result = structuredClone(raw);

@@ -1,10 +1,10 @@
-import { renderRecommendationGallery } from './recommendation-gallery.js?v=20261024-25';
+import { renderRecommendationGallery } from './recommendation-gallery.js?v=20261024-26';
 import { renderPetGallery } from './pet-gallery.js?v=20261023-15';
-import { renderGameGallery } from './game-gallery.js?v=20261024-25';
-import { validateContent, SECTION_KEYS } from './content-model.js?v=20261024-25';
+import { renderGameGallery } from './game-gallery.js?v=20261024-26';
+import { validateContent, SECTION_KEYS } from './content-model.js?v=20261024-26';
 import { renderStudyTree } from './study-tree.js?v=20261023-15';
 import { renderProjectShowcase } from './project-showcase.js?v=20261023-15';
-import { getLanguage, localizeContent, refreshLanguageUI } from './language.js?v=20261024-25';
+import { getLanguage, localizeContent, refreshLanguageUI } from './language.js?v=20261024-26';
 
 const HOSTED_ORIGIN = 'https://sky-tian-manor-portfolio.perky-berry-1262.chatgpt.site';
 const apiOrigin = location.hostname.endsWith('.github.io') ? HOSTED_ORIGIN : location.origin;
@@ -175,7 +175,7 @@ function render(input) {
   window.SkyContent.data = content;
   names(content); sectionLabels(content); projects(content); study(content); interests(content); people(content); renderPetGallery($('#pet-gallery'), content.pets || [], {mediaURL});
   renderGameGallery($('#game-gallery'), content.games || [], {mediaURL});
-  renderRecommendationGallery($('#recommendation-gallery'), content.recommendations || []);
+  renderRecommendationGallery($('#recommendation-gallery'), content.recommendations || [], {mediaURL});
   $('#recommendation-gallery').setAttribute('aria-label',content.sections.recommendations.title);
   document.documentElement.classList.add('content-managed');
   window.dispatchEvent(new CustomEvent('sky:contentchange', { detail: { content, preview: Boolean(previewId) } }));

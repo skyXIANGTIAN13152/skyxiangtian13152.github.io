@@ -5,6 +5,8 @@ export const CONTENT_SCHEMA_VERSION = 2;
 export const SECTION_KEYS = Object.freeze(['about', 'work', 'study', 'interests', 'people', 'pets', 'games', 'recommendations']);
 export const COURSE_STATUSES = Object.freeze(['completed', 'current', 'planned']);
 export const PROJECT_DEMOS = Object.freeze(['', 'syncwallpaper', 'usage-monitor', 'cse-helper', 'wuji-ime', 'perch', 'bibi-keyboard', 'manor']);
+export const RECOMMENDATION_DEMOS = Object.freeze(['', 'office-tool-plus', '7-zip', 'sharex', 'super-productivity', 'hypomux', 'lx-music', 'mineradio-local', 'mineradio-original', 'thunderbird', 'libretv', 'winhance', 'bulk-crap-uninstaller', 'crystaldiskinfo', 'crystaldiskmark']);
+export const RECOMMENDATION_PLATFORMS = Object.freeze(['windows', 'macos', 'linux', 'web']);
 export const ENGLISH_FIELDS = Object.freeze({
   profile: { name: ['姓名', 80], tagline: ['一句话介绍', 300], bio: ['关于我', 12000], nationality: ['国籍', 160], birthplace: ['出生城市', 160], education: ['学历与专业', 500], credential: ['资格与证照', 500], footer: ['页脚文字', 180] },
   sections: { title: ['入口名称', 40], subtitle: ['入口说明', 160] },
@@ -15,7 +17,7 @@ export const ENGLISH_FIELDS = Object.freeze({
   people: { name: ['人物姓名', 160], role: ['人物身份', 160], body: ['人物介绍', 30000] },
   pets: { name: ['宠物名字', 160], description: ['宠物介绍', 12000] },
   games: { title: ['游戏名称', 160], body: ['游戏介绍', 30000], favoriteCharacter: ['喜欢的角色', 160] },
-  recommendations: { title: ['项目名称', 160], summary: ['项目简介', 2400] },
+  recommendations: { title: ['项目名称', 160], summary: ['项目简介', 2400], usage: ['使用示例', 5000] },
 });
 
 function record(value, label) {
@@ -67,6 +69,11 @@ function url(value, label, media = false) {
   try { parsed = new URL(clean); } catch { throw new Error(`${label}需要完整的 http 或 https 地址。`); }
   if (!['http:', 'https:'].includes(parsed.protocol) || parsed.username || parsed.password || !parsed.hostname) throw new Error(`${label}只接受 http 或 https 地址。`);
   return parsed.href;
+}
+function httpsSource(value, label) {
+  const clean = url(value === undefined ? '' : value, label);
+  if (clean && new URL(clean).protocol !== 'https:') throw new Error(`${label}只接受完整的 HTTPS 地址。`);
+  return clean;
 }
 
 /** Only repository roots are accepted; this helper is also used by the reader. */
@@ -167,11 +174,23 @@ export function validateContent(input) {
       image: url(game.image === undefined ? '' : game.image, '游戏配图', true), url: url(game.url === undefined ? '' : game.url, '游戏链接'),
       visible: flag(game.visible, '游戏可见状态'), ...englishFields(game, 'games'),
     })),
-    recommendations: entries(source.recommendations === undefined ? [] : source.recommendations, '项目珍藏', item => ({
-      id: id(item.id, '推荐项目'), title: text(item.title, '项目名称', 160, true),
-      summary: text(item.summary === undefined ? '' : item.summary, '项目简介', 2400), url: normalizeGitHubRepository(item.url),
-      visible: flag(item.visible, '推荐项目可见状态'), ...englishFields(item, 'recommendations'),
-    })),
+    recommendations: entries(source.recommendations === undefined ? [] : source.recommendations, '项目珍藏', item => {
+      const images = item.images === undefined ? [] : item.images;
+      if (!Array.isArray(images) || images.length > 8) throw new Error('每个推荐项目最多添加 8 张图片。');
+      const platforms = item.platforms === undefined ? [] : item.platforms;
+      if (!Array.isArray(platforms) || platforms.length > 4 || platforms.some(value => !RECOMMENDATION_PLATFORMS.includes(value))) throw new Error('适用系统只能选择 Windows、macOS、Linux 或网页，最多 4 项。');
+      return {
+        id: id(item.id, '推荐项目'), title: text(item.title, '项目名称', 160, true),
+        summary: text(item.summary === undefined ? '' : item.summary, '项目简介', 2400), url: normalizeGitHubRepository(item.url),
+        cover: url(item.cover === undefined ? '' : item.cover, '推荐项目封面', true),
+        images: images.map(image => url(image, '推荐项目图片', true)).filter(Boolean),
+        imageSource: httpsSource(item.imageSource, '图片出处'),
+        usage: text(item.usage === undefined ? '' : item.usage, '使用示例', 5000),
+        demo: option(item.demo, '推荐项目交互示例', RECOMMENDATION_DEMOS, ''),
+        platforms: [...new Set(platforms)],
+        visible: flag(item.visible, '推荐项目可见状态'), ...englishFields(item, 'recommendations'),
+      };
+    }),
     settings: { musicVolume: settings.musicVolume, musicEnabled: flag(settings.musicEnabled, '默认声音设置') },
   };
 }
