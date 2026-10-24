@@ -7,15 +7,13 @@
 .game-collection{display:grid;grid-template-columns:174px minmax(0,1fr);gap:26px;height:100%;min-width:0}
 .game-shelf{display:flex;flex-direction:column;min-width:0;min-height:0;padding:22px 16px 14px 0;border-right:1px solid #a2916d42}
 .game-shelf-heading{margin:0 0 24px;color:#b8ab8b;font-size:13px;line-height:1.6}
-.game-shelf-list{display:grid;gap:12px;min-height:0}
-.game-shelf-item{position:relative;display:flex;align-items:center;gap:13px;min-height:61px;width:100%;padding:10px 9px 10px 0;background:transparent;border:0;border-bottom:1px solid #a2916d27;text-align:left;transition:background .2s,color .2s}
+.game-shelf-list{position:relative;display:flex;flex-direction:column;gap:12px;flex:1;min-height:0;min-width:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;touch-action:pan-y;scrollbar-width:thin;scrollbar-color:#a2916d80 transparent;scrollbar-gutter:stable;padding:3px 6px 3px 3px}
+.game-shelf-item{position:relative;display:flex;align-items:center;gap:13px;flex:none;min-height:61px;width:100%;padding:10px 9px 10px 0;background:transparent;border:0;border-bottom:1px solid #a2916d27;text-align:left;transition:background .2s,color .2s}
 .game-shelf-item:hover{color:#eee3c6;background:#b9a1780d}
 .game-shelf-item[aria-selected=true]{color:#f0dfb9;background:linear-gradient(90deg,#ab916523,transparent)}
 .game-shelf-spine{flex:0 0 5px;align-self:stretch;border:1px solid #85745466;background:#46423555;box-shadow:2px 0 0 #0004}
 .game-shelf-item[aria-selected=true] .game-shelf-spine{border-color:#b39c6d;background:#927c4b;box-shadow:2px 0 0 #d7c49326}
 .game-shelf-title{font-size:15px;line-height:1.6;min-width:0;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow-wrap:anywhere}
-.game-shelf-paging{display:flex;justify-content:space-between;align-items:center;gap:7px;margin-top:auto;padding-top:14px}
-.game-index-number{color:#a29478;font-family:var(--display,Georgia,serif);font-size:15px}
 .game-page-arrow{display:grid;place-items:center;width:32px;height:34px;padding:0;border:0;background:transparent;font-family:Georgia,serif!important;font-size:27px!important;line-height:1;flex-shrink:0}
 .game-record{display:grid;grid-template-columns:44% minmax(0,1fr);height:100%;min-width:0;min-height:0;padding:8px;background:#262e2d;border:1px solid #8c7d5d67;box-shadow:2px 3px 0 #675f493d,4px 5px 0 #1f2423,0 16px 28px #0005;isolation:isolate}
 .game-cover-plate{position:relative;min-width:0;min-height:0;display:grid;place-items:center;padding:17px 16px 17px 13px;background:linear-gradient(90deg,#141c1f,#233036 85%,#172024);border:1px solid #7d795438;box-shadow:inset -7px 0 13px #0004;overflow:hidden}
@@ -68,16 +66,13 @@
   .game-record-paging{gap:3px}
 }
 @container (max-width:580px){
-  .game-collection{grid-template-columns:minmax(0,1fr);grid-template-rows:61px minmax(0,1fr);gap:13px}
-  .game-shelf{flex-direction:row;align-items:stretch;gap:9px;padding:0;border:0;min-width:0}
+  .game-collection{grid-template-columns:minmax(0,1fr);grid-template-rows:116px minmax(0,1fr);gap:13px}
+  .game-shelf{padding:0;border:0;border-bottom:1px solid #a2916d42;min-width:0}
   .game-shelf-heading{display:none}
-  .game-shelf-list{display:flex;gap:7px;flex:1;min-width:0}
-  .game-shelf-item{flex:1;min-width:0;min-height:0;gap:6px;padding:5px 5px 6px 0}
+  .game-shelf-list{gap:4px}
+  .game-shelf-item{min-height:44px;gap:9px;padding:7px 8px 7px 0}
   .game-shelf-title{font-size:12px;line-height:1.6}
   .game-shelf-spine{flex-basis:3px}
-  .game-shelf-paging{margin:0;padding:0;gap:0;flex:none}
-  .game-index-number{font-size:12px}
-  .game-shelf-paging .game-page-arrow{width:21px}
   .game-record{grid-template-columns:36% minmax(0,1fr)}
   .game-journal-page{padding:20px 14px 11px 17px}
   .game-cover-plate{padding:9px}

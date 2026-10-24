@@ -1,7 +1,6 @@
 import {getLanguage} from './language.js?v=20261024-27';
 
 const collections = new WeakMap();
-const PAGE_SIZE = 4;
 let sequence = 0;
 const wording = (zh,en) => getLanguage() === 'en' ? en : zh;
 const textValue = value => typeof value === 'string' ? value : '';
@@ -34,6 +33,7 @@ export function gameGalleryEntries(games,base,mediaURL) {
 export function renderGameGallery(host,games = [],{mediaURL = value => value} = {}) {
   if (!host) return () => {};
   const previous = collections.get(host)?.selected;
+  const previousScroll = host.querySelector('.game-shelf-list')?.scrollTop || 0;
   collections.get(host)?.dispose();
   const doc = host.ownerDocument;
   const lifecycle = new (doc.defaultView?.AbortController || AbortController)();
@@ -73,16 +73,12 @@ export function renderGameGallery(host,games = [],{mediaURL = value => value} = 
   const heading = node('p','game-shelf-heading',wording('游戏收藏','Game collection'));
   const tabs = node('div','game-shelf-list');tabs.setAttribute('role','tablist');
   tabs.setAttribute('aria-label',wording('选择游戏','Choose a game'));tabs.setAttribute('aria-orientation','vertical');
-  const shelfPaging = node('div','game-shelf-paging');
-  shelf.append(heading,tabs,shelfPaging);
+  shelf.append(heading,tabs);
   const spread = node('section','game-record');spread.id = `${id}-panel`;spread.setAttribute('role','tabpanel');
   collection.append(shelf,spread);host.append(collection);
 
   function renderIndex() {
-    tabs.replaceChildren();shelfPaging.replaceChildren();
-    const page = Math.floor(selected / PAGE_SIZE);
-    entries.slice(page * PAGE_SIZE,(page + 1) * PAGE_SIZE).forEach((game,offset) => {
-      const position = page * PAGE_SIZE + offset;
+    entries.forEach((game,position) => {
       const tab = button('game-shelf-item','','select',game.title);
       tab.id = `${id}-tab-${position}`;tab.dataset.game = String(position);tab.dataset.languageContent = 'true';
       tab.setAttribute('role','tab');tab.setAttribute('aria-controls',spread.id);
@@ -90,13 +86,18 @@ export function renderGameGallery(host,games = [],{mediaURL = value => value} = 
       const spine = node('span','game-shelf-spine');spine.setAttribute('aria-hidden','true');
       tab.append(spine,node('span','game-shelf-title',game.title,true));tabs.append(tab);
     });
-    shelfPaging.hidden = entries.length <= PAGE_SIZE;
-    if (shelfPaging.hidden) return;
-    const previous = button('game-page-arrow','‹','index-previous',wording('上一页游戏','Previous index page'));
-    const next = button('game-page-arrow','›','index-next',wording('下一页游戏','Next index page'));
-    previous.disabled = page === 0;next.disabled = (page + 1) * PAGE_SIZE >= entries.length;
-    const pageNumber = node('span','game-index-number',`${page + 1} / ${Math.ceil(entries.length / PAGE_SIZE)}`);
-    pageNumber.setAttribute('aria-live','polite');shelfPaging.append(previous,pageNumber,next);
+    tabs.scrollTop = previousScroll;
+  }
+  function updateIndex() {
+    [...tabs.children].forEach((tab,position) => {
+      tab.setAttribute('aria-selected',String(position === selected));
+      tab.tabIndex = position === selected ? 0 : -1;
+    });
+    const tab = tabs.children[selected];
+    // Scroll only the index, in unscaled stage coordinates.
+    const top = tab.offsetTop, bottom = top + tab.offsetHeight;
+    if (top < tabs.scrollTop) tabs.scrollTop = top;
+    else if (bottom > tabs.scrollTop + tabs.clientHeight) tabs.scrollTop = bottom - tabs.clientHeight;
   }
   function renderRecord() {
     const game = entries[selected];
@@ -143,7 +144,7 @@ export function renderGameGallery(host,games = [],{mediaURL = value => value} = 
   }
   function select(position,focusTarget = 'tab') {
     selected = Math.max(0,Math.min(position,entries.length - 1));record.selected = entries[selected].id;
-    renderIndex();renderRecord();
+    updateIndex();renderRecord();
     const target = focusTarget === 'tab' ? tabs.querySelector('[aria-selected="true"]')
       : host.querySelector(`[data-game-action="${focusTarget}"]:not(:disabled)`);
     (target || tabs.querySelector('[aria-selected="true"]'))?.focus({preventScroll:true});
@@ -154,10 +155,6 @@ export function renderGameGallery(host,games = [],{mediaURL = value => value} = 
     const action = target.dataset.gameAction;
     if (action === 'select') select(Number(target.dataset.game));
     else if (action === 'previous' || action === 'next') select(selected + (action === 'next' ? 1 : -1),action);
-    else if (action === 'index-previous' || action === 'index-next') {
-      const nextPage = Math.floor(selected / PAGE_SIZE) + (action === 'index-next' ? 1 : -1);
-      select(nextPage * PAGE_SIZE,action);
-    }
   },{signal:lifecycle.signal});
   host.addEventListener('keydown',event => {
     const tab = event.target.closest?.('[role="tab"]');
