@@ -12,7 +12,11 @@ These assets depict Detective Orpheus — **别样魅力 / Villain Charm** and A
 
 The original geometry, UVs, skin weights, skeleton hierarchy and bind poses are preserved. The male head and coat diffuse textures are natively 512×512; inner clothing and lantern textures are 256×256. Both female diffuse textures are natively 512×512. Original compressed pixels were decoded without resizing, repainting or AI upscaling. These are the source textures' actual resolutions, not a claim of 2K/4K textures. Portraits are renders of these same original models.
 
-The GLBs use the website's diffuse-material lighting adapter. They do not reproduce every feature of the proprietary game shader. Only the male model has its original lantern socket; no lantern is added to Alice.
+The GLBs now retain the original mesh tangents, normal detail and material masks. The original NeoX shader uses normal RG as XY slopes with Z=1; normal B is a separate effect mask. These slopes are deterministically encoded as normalized glTF XYZ normals, at the original dimensions. Original mask channels R=metallic, G=AO, B=roughness are reordered to glTF ORM=(G,B,R). Original tangent direction and the handedness encoded by tangent length are preserved; no tangents are regenerated and no mesh is subdivided. `material-report.json` records original source paths, decoded MD5s, sizes and the unchanged baseline buffer hashes.
+
+The original 256×256 `shader/env/dm65_main_env01_d` environment is coordinate-converted by pixel permutation only. Its linear colour interpretation and the original material's specular gain are retained. This is a Three.js PBR adaptation, not a complete reproduction of NeoX's toon, anisotropic hair and scene-lighting shaders. Only the male model has its original lantern socket; no lantern is added to Alice.
+
+The October 25 quality review did not locate a **verified** higher-polygon original model or 1K/2K/4K replacement texture for these costumes. Current geometry and texture resolutions are unchanged. Public resource-index probes are not proof that no other original resource exists. The improvement restores previously omitted material data rather than claiming artificially enlarged textures as original HD.
 
 Original model data came from the public NetEase resource CDN, resolved through the official game resource index and checked against its decoded content MD5:
 

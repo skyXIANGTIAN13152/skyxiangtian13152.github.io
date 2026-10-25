@@ -2,6 +2,43 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { createDetectiveLocomotion } from './detective-locomotion.js?v=20261025-35';
 
+async function configureOriginalMaterials(model) {
+  const materials = new Set();
+  model.traverse(object => {
+    if (!object.isMesh) return;
+    for (const material of Array.isArray(object.material) ? object.material : [object.material]) {
+      if (material?.userData.originalMaterial && material.normalMap) materials.add(material);
+    }
+  });
+  if (!materials.size) return;
+  // This is the original 256px character environment, not an extra room pass.
+  // Its pixels are only permuted to convert NeoX's lat-long coordinates.
+  let environment = null;
+  try {
+    environment = await new THREE.TextureLoader().loadAsync(new URL('./assets/visitors/original-environment.png', import.meta.url).href);
+    environment.mapping = THREE.EquirectangularReflectionMapping;
+    environment.colorSpace = THREE.LinearSRGBColorSpace;
+    environment.flipY = false;
+  } catch (error) {
+    console.warn('[Sky visitor] Original reflection texture unavailable.', error);
+  }
+  for (const material of materials) {
+    const gain = Math.max(0, Math.min(2, Number(material.userData.originalSpecularGain) || 0));
+    material.envMap = environment;
+    material.envMapIntensity = gain;
+    // Original specular gains keep normal/roughness detail from becoming glossy
+    // plastic. This adapts the material to Three's BRDF, not the full NeoX shader.
+    material.onBeforeCompile = shader => {
+      shader.uniforms.originalSpecularGain = { value: gain };
+      shader.fragmentShader = 'uniform float originalSpecularGain;\n' + shader.fragmentShader;
+      shader.fragmentShader = shader.fragmentShader.replace('#include <lights_fragment_end>',
+        '#include <lights_fragment_end>\nreflectedLight.directSpecular *= originalSpecularGain;');
+    };
+    material.customProgramCacheKey = () => 'original-visitor-material-v1';
+    material.needsUpdate = true;
+  }
+}
+
 function disposeModel(root) {
   const geometries = new Set(), materials = new Set(), textures = new Set(), skeletons = new Set(), bitmaps = new Set();
   root.traverse(object => {
@@ -43,6 +80,7 @@ export async function createVisitorAvatar({ definition, onFootstep = () => {} })
   });
   let lantern = null, lanternLight = null, fireTexture = null;
   try {
+    await configureOriginalMaterials(gltf.scene);
     if (definition.lantern) {
       const socket = definition.lantern;
       const bone = gltf.scene.getObjectByName(socket.bone);

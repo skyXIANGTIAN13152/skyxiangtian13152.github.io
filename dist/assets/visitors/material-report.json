@@ -1,0 +1,204 @@
+[
+  {
+    "gender": "male",
+    "file": "avatar.glb",
+    "beforeBytes": 1365788,
+    "afterBytes": 2472268,
+    "sourceMesh": "chr/player/detective/separate_dir/detective_melanism/detective_melanism.mesh",
+    "vertices": 6625,
+    "mirroredTangents": 1469,
+    "preservedBufferBytes": 1173284,
+    "preservedBufferSha256": "d48c641672d997b73ed0cb7639e1c31f0f4257cc9ce2992dd70ed45c1c774d98",
+    "sha256": "7e9b9a37f4b4107e025ccb2f1900c57f29199f6828740fbd0bfde147eeae46c6",
+    "materials": [
+      {
+        "slot": 0,
+        "source": "chr/player/detective/separate_dir/detective_melanism/detective_melanism_material_25_upgraded.mtl",
+        "normal": "chr/player/detective/separate_dir/detective_melanism/dm65_detective_head_02_nor.astc",
+        "normalMD5": "be032d6b00cfccbe3f3d244dc3c805d2",
+        "normalDimensions": [
+          512,
+          512
+        ],
+        "mask": "chr/player/detective/separate_dir/detective_melanism/dm65_detective_head_02_mask.astc",
+        "maskMD5": "0074a5ad10b27969176a1eff49ceea79",
+        "maskDimensions": [
+          512,
+          512
+        ]
+      },
+      {
+        "slot": 1,
+        "source": "chr/player/detective/separate_dir/detective_melanism/detective_melanism_15-default_upgraded.mtl",
+        "normal": "chr/player/detective/dm65_detective_overcoat_01_normal.astc",
+        "normalMD5": "9f5b5c9af80bc1d4914630f0775d95fb",
+        "normalDimensions": [
+          512,
+          512
+        ],
+        "mask": "chr/player/detective/dm65_detective_overcoat_01_mask.astc",
+        "maskMD5": "5c73f2c8df1ba0952901638c02a68de8",
+        "maskDimensions": [
+          512,
+          512
+        ]
+      },
+      {
+        "slot": 2,
+        "source": "chr/player/detective/separate_dir/detective_melanism/detective_melanism_15-defaultw_upgraded.mtl",
+        "normal": "chr/player/detective/dm65_detective_overcoat_normal.astc",
+        "normalMD5": "a95921de2f00ba12ddfe7473e46fc39f",
+        "normalDimensions": [
+          256,
+          256
+        ],
+        "mask": "chr/player/detective/dm65_detective_overcoat_mask.astc",
+        "maskMD5": "c28dc2709683e0ce37be670ebece6fd4",
+        "maskDimensions": [
+          256,
+          256
+        ]
+      },
+      {
+        "slot": 3,
+        "source": "chr/player/detective/separate_dir/detective_melanism/detective_melanism_standard_20_upgraded.mtl",
+        "normal": "chr/player/detective/normal.astc",
+        "normalMD5": "c2e187a548a28f4184eaca1e6704c28c",
+        "normalDimensions": [
+          256,
+          256
+        ],
+        "mask": "chr/player/detective/mask.astc",
+        "maskMD5": "9eb63fbd6fc161c98dceb58b3aaf3676",
+        "maskDimensions": [
+          256,
+          256
+        ]
+      },
+      {
+        "slot": 4,
+        "source": "chr/player/detective/separate_dir/detective_melanism/detective_melanism_standard_19_upgraded.mtl",
+        "normal": "chr/player/detective/normal.astc",
+        "normalMD5": "c2e187a548a28f4184eaca1e6704c28c",
+        "normalDimensions": [
+          256,
+          256
+        ],
+        "mask": "chr/player/detective/mask.astc",
+        "maskMD5": "9eb63fbd6fc161c98dceb58b3aaf3676",
+        "maskDimensions": [
+          256,
+          256
+        ]
+      }
+    ]
+  },
+  {
+    "gender": "female",
+    "file": "avatar.glb",
+    "beforeBytes": 1971200,
+    "afterBytes": 3223080,
+    "sourceMesh": "chr/guanjia/guanjia_deluosi/separate_dir/deluosi_baipao/deluosi_baipao_hat.mesh",
+    "vertices": 7050,
+    "mirroredTangents": 1211,
+    "preservedBufferBytes": 1532640,
+    "preservedBufferSha256": "37d2ff01104342e1a7e88ec4f4674221719999c9ae263688696f0453f744b221",
+    "sha256": "92ac401e753004426645cbde3f1f11dabf1a8ee4b9c5e5ee2549ed766fe1857a",
+    "materials": [
+      {
+        "slot": 0,
+        "source": "chr/guanjia/guanjia_deluosi/separate_dir/deluosi_baipao/deluosi_baipao_hat_deluosi_baipao_head_upgraded.mtl",
+        "normal": "chr/guanjia/guanjia_deluosi/guanjia_deluosi_head_nor1.astc",
+        "normalMD5": "983d8c432ded3bbdec0cfd89ec4316c8",
+        "normalDimensions": [
+          512,
+          512
+        ],
+        "mask": "chr/guanjia/guanjia_deluosi/guanjia_deluosi_head_mask.astc",
+        "maskMD5": "929888a8cae54d38c9bcea1eb0c929c4",
+        "maskDimensions": [
+          512,
+          512
+        ]
+      },
+      {
+        "slot": 1,
+        "source": "chr/guanjia/guanjia_deluosi/separate_dir/deluosi_baipao/deluosi_baipao_hat_deluosi_baipao_body_upgraded.mtl",
+        "normal": "chr/guanjia/guanjia_deluosi/separate_dir/deluosi_baipao/deluosi_baipao_body_nor.astc",
+        "normalMD5": "0d784cdc51c4cde208efb0cc2205948f",
+        "normalDimensions": [
+          512,
+          512
+        ],
+        "mask": "chr/guanjia/guanjia_deluosi/separate_dir/deluosi_baipao/deluosi_baipao_body_mask.astc",
+        "maskMD5": "a3837908b03223f4807b896d88075b6c",
+        "maskDimensions": [
+          512,
+          512
+        ]
+      }
+    ]
+  },
+  {
+    "gender": "female",
+    "file": "avatar-hoodless.glb",
+    "beforeBytes": 2354148,
+    "afterBytes": 3964004,
+    "sourceMesh": "chr/guanjia/guanjia_deluosi/separate_dir/deluosi_baipao/deluosi_baipao.mesh",
+    "vertices": 8305,
+    "mirroredTangents": 1347,
+    "preservedBufferBytes": 1914956,
+    "preservedBufferSha256": "dc2336f9bc1003eba6c0acc4d82e20380bf76a213af101500b131cc4189b3a95",
+    "sha256": "4622e47329e3cc40301ea4a0ae19c62b37bfd8fce6b6eed6f949836dc83c5901",
+    "materials": [
+      {
+        "slot": 0,
+        "source": "chr/guanjia/guanjia_deluosi/separate_dir/deluosi_baipao/deluosi_baipao_deluosi_baipao_head_upgraded.mtl",
+        "normal": "chr/guanjia/guanjia_deluosi/guanjia_deluosi_head_nor1.astc",
+        "normalMD5": "983d8c432ded3bbdec0cfd89ec4316c8",
+        "normalDimensions": [
+          512,
+          512
+        ],
+        "mask": "chr/guanjia/guanjia_deluosi/guanjia_deluosi_head_mask.astc",
+        "maskMD5": "929888a8cae54d38c9bcea1eb0c929c4",
+        "maskDimensions": [
+          512,
+          512
+        ]
+      },
+      {
+        "slot": 1,
+        "source": "chr/guanjia/guanjia_deluosi/separate_dir/deluosi_baipao/deluosi_baipao_deluosi_baipao_head01_upgraded.mtl",
+        "normal": "chr/guanjia/guanjia_deluosi/guanjia_deluosi_head_nor.astc",
+        "normalMD5": "5ec719b06e27aeb02eadc98d98a74f30",
+        "normalDimensions": [
+          512,
+          512
+        ],
+        "mask": "chr/guanjia/guanjia_deluosi/guanjia_deluosi_head_mask.astc",
+        "maskMD5": "929888a8cae54d38c9bcea1eb0c929c4",
+        "maskDimensions": [
+          512,
+          512
+        ]
+      },
+      {
+        "slot": 2,
+        "source": "chr/guanjia/guanjia_deluosi/separate_dir/deluosi_baipao/deluosi_baipao_deluosi_baipao_body_upgraded.mtl",
+        "normal": "chr/guanjia/guanjia_deluosi/separate_dir/deluosi_baipao/deluosi_baipao_body_nor.astc",
+        "normalMD5": "0d784cdc51c4cde208efb0cc2205948f",
+        "normalDimensions": [
+          512,
+          512
+        ],
+        "mask": "chr/guanjia/guanjia_deluosi/separate_dir/deluosi_baipao/deluosi_baipao_body_mask.astc",
+        "maskMD5": "a3837908b03223f4807b896d88075b6c",
+        "maskDimensions": [
+          512,
+          512
+        ]
+      }
+    ]
+  }
+]

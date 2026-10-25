@@ -11,6 +11,7 @@
   var frameRate = 60 * 0.666700005531311;
   var firstFrame = 48;
   var lastFrame = 220;
+  var maxCanvasPixels = 8 * 1024 * 1024;
   function textureName(prefix, number) { return prefix + String(number).padStart(4, '0'); }
   function preload() {
     if (assetPromise) return assetPromise;
@@ -153,9 +154,17 @@
       if (event.key === 'Tab') { event.preventDefault(); event.stopImmediatePropagation(); skipButton.focus(); }
     };
     state.resize = function () {
-      state.pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
-      state.canvas.width = Math.round(window.innerWidth * state.pixelRatio);
-      state.canvas.height = Math.round(window.innerHeight * state.pixelRatio);
+      var width = Math.max(1, window.innerWidth);
+      var height = Math.max(1, window.innerHeight);
+      state.pixelRatio = Math.min(window.devicePixelRatio || 1, 3, Math.sqrt(maxCanvasPixels / (width * height)));
+      state.canvas.width = Math.max(1, Math.floor(width * state.pixelRatio));
+      state.canvas.height = Math.max(1, Math.floor(height * state.pixelRatio));
+      // Resizing clears the context state. Restore quality after both dimensions
+      // change, without altering the original textures, layout or animation clock.
+      if (state.context) {
+        state.context.imageSmoothingEnabled = true;
+        state.context.imageSmoothingQuality = 'high';
+      }
       if (state.images && state.context) render(state, firstFrame + state.elapsed * frameRate / 1000);
     };
     // A background tab pauses the original timeline; returning never skips the entrance.
