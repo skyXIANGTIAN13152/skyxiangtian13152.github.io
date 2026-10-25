@@ -28,15 +28,17 @@
   <link rel="stylesheet" href="recommendation-demos.css?v=20261024-26">
   <link rel="stylesheet" href="life-journey.css?v=20261024-27">
   <link rel="stylesheet" href="language.css?v=20261024-27">
+  <link rel="stylesheet" href="visitor-choice.css?v=20261025-36">
   <link rel="modulepreload" href="assets/diary-original/diary-transition.js?v=20261023-18">
   <script type="importmap">{"imports":{"three":"./vendor/three.module.js","three/addons/":"./vendor/three-addons/"}}</script>
-  <script type="module" src="room3d.js?v=20261024-34"></script>
+  <script type="module" src="room3d.js?v=20261025-35"></script>
   <script src="vendor/gsap.min.js?v=20261023-18" defer></script>
-  <script src="sound-effects.js?v=20261023-18" defer></script>
-  <script src="loader.js?v=20261023-18" defer></script>
-  <script src="app.js?v=20261024-27" defer></script>
+  <script src="sound-effects.js?v=20261025-35" defer></script>
+  <script src="loader.js?v=20261025-35" defer></script>
+  <script src="visitor-choice.js?v=20261025-36" defer></script>
+  <script src="app.js?v=20261025-35" defer></script>
   <script src="toys.js?v=20261023-22" defer></script>
-  <script type="module" src="content-client.js?v=20261024-33"></script>
+  <script type="module" src="content-client.js?v=20261025-35"></script>
 </head>
 <body>
   <div class="game-stage" data-scene="home">
@@ -83,9 +85,10 @@
         <h1 id="lobby-title" class="visually-hidden" tabindex="-1">Sky 天的个人大厅</h1>
         <div class="room-directory"><button class="room-directory-toggle" type="button" aria-expanded="false" aria-controls="room-directory-list"><svg aria-hidden="true"><use href="#profile-icon"/></svg>个人档案目录</button><nav class="room-directory-list" id="room-directory-list" aria-label="直接阅读个人页面" hidden><a href="#about">关于我</a><a href="#journey">人生足迹</a><a href="#work">作品集</a><a href="#study">专业学习</a><a href="#interests">兴趣爱好</a><a href="#games">游戏合集</a><a href="#recommendations">项目珍藏</a><a href="#people">名人墙</a><a href="#pets">宠物小屋</a></nav></div>
         <div class="room-help"><div class="room-help-keys" aria-hidden="true"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></div><div><span>行走，靠近物件后按 E 阅读</span><span class="room-help-secondary">拖动观察房间 · Q / R 转动视角</span></div></div>
-        <p class="room-loading" role="status">正在点亮侦探的油灯…</p>
+        <p class="room-loading" role="status">正在准备大厅…</p>
         <button class="room-interact" type="button" hidden><kbd>E</kbd><span>阅读档案</span></button>
         <button class="room-reset" type="button">回到入口</button>
+        <div class="visitor-lobby-tools" data-language-content><button class="visitor-form-button" type="button" title="摘下兜帽" aria-label="摘下兜帽" hidden>兜帽</button><p class="visitor-form-status" role="status" aria-live="polite" hidden></p></div>
         <nav class="lobby-entrances" aria-label="大厅中的个人网页入口">
           <a class="lobby-hotspot hotspot-about" href="#about" data-prop="about" data-camera="28% 33%"><svg class="laurel left" aria-hidden="true"><use href="#laurel"/></svg><span class="hotspot-title">关于我</span><span class="hotspot-subtitle">Sky 天 · 个人档案</span><svg class="laurel right" aria-hidden="true"><use href="#laurel"/></svg><span class="hotspot-glint" aria-hidden="true"></span></a>
           <a class="lobby-hotspot hotspot-work" href="#work" data-prop="work" data-camera="86% 44%"><svg class="laurel left" aria-hidden="true"><use href="#laurel"/></svg><span class="hotspot-title">作品集</span><span class="hotspot-subtitle">SyncWallpaper</span><svg class="laurel right" aria-hidden="true"><use href="#laurel"/></svg><span class="hotspot-glint" aria-hidden="true"></span></a>
@@ -199,9 +202,27 @@
   <div class="glider-flight" aria-hidden="true"></div>
   <footer class="site-footer container"><div class="scene-progress" aria-label="场景导航"><a href="#lobby" aria-label="大厅" class="current"><span></span></a><i></i><a href="#about" aria-label="关于我"><span></span></a><i></i><a href="#journey" aria-label="人生足迹"><span></span></a><i></i><a href="#work" aria-label="作品集"><span></span></a><i></i><a href="#study" aria-label="专业学习"><span></span></a><i></i><a href="#interests" aria-label="兴趣爱好"><span></span></a><i></i><a href="#games" aria-label="游戏合集"><span></span></a><i></i><a href="#recommendations" aria-label="项目珍藏"><span></span></a><i></i><a href="#people" aria-label="名人墙"><span></span></a><i></i><a href="#pets" aria-label="宠物小屋"><span></span></a></div><p class="scene-caption">启迪于 UNSW Builder Space Club</p><div class="footer-actions"><a class="back-top" href="#lobby"><span aria-hidden="true">↶</span>返回大厅</a></div></footer>
   </div>
+  <dialog class="visitor-choice" id="visitor-choice" aria-labelledby="visitor-choice-title" data-language-content>
+    <header class="visitor-choice-header"><h2 id="visitor-choice-title">选择访客</h2></header>
+    <div class="visitor-options" role="radiogroup" aria-label="访客形象">
+      <button class="visitor-option" type="button" role="radio" aria-checked="false" data-visitor="male" tabindex="0">
+        <span class="visitor-portrait"><img src="assets/visitors/male/portrait.webp" alt="男性访客 · 别样魅力" loading="lazy"></span>
+        <span class="visitor-kind">男性访客</span><span class="visitor-skin">别样魅力</span><span class="visitor-selected-label" aria-hidden="true"></span>
+      </button>
+      <button class="visitor-option" type="button" role="radio" aria-checked="false" data-visitor="female" tabindex="-1">
+        <span class="visitor-portrait"><img src="assets/visitors/female/portrait.webp" alt="女性访客 · 未至之人" loading="lazy"></span>
+        <span class="visitor-kind">女性访客</span><span class="visitor-skin">未至之人</span><span class="visitor-selected-label" aria-hidden="true"></span>
+      </button>
+    </div>
+    <footer class="visitor-choice-footer">
+      <button class="visitor-confirm" type="button" disabled>进入大厅</button>
+      <button class="visitor-cancel" type="button">返回封面</button>
+      <p class="visitor-status" role="status" aria-live="polite" hidden></p>
+    </footer>
+  </dialog>
   <audio id="lobby-music" src="assets/audio/identity-v-login.mp3" preload="none" loop hidden></audio>
   <p class="orientation-note">横屏浏览，进入完整庄园</p>
   <div class="notification" role="status" aria-live="polite"></div>
-  <div class="room-touch-controls" hidden><div class="room-joystick" role="group" aria-label="移动摇杆，拖动控制侦探"><span class="room-joystick-knob"></span></div><button class="room-touch-read" type="button" disabled><span>靠近</span><small>房间物件</small></button><a class="room-touch-exit" href="#home">离开大厅</a><span class="room-touch-look">左侧摇杆行走 · 拖动画面观察房间</span></div>
+  <div class="room-touch-controls" hidden><div class="room-joystick" role="group" aria-label="移动摇杆，拖动控制访客"><span class="room-joystick-knob"></span></div><button class="room-touch-read" type="button" disabled><span>靠近</span><small>房间物件</small></button><a class="room-touch-exit" href="#home">离开大厅</a><span class="room-touch-look">左侧摇杆行走 · 拖动画面观察房间</span></div>
 </body>
 </html>

@@ -84,9 +84,11 @@
   const transitionTo = async (id, updateHistory = true) => {
     if (!Object.hasOwn(titles, id)) id = 'home';
     if (!visibleScene(id)) id = 'lobby';
+    if (id === 'lobby' && currentScene !== 'home' && !window.SkyRoom?.visitor) id = 'home';
     if (transitioning) {
       if (updateHistory) return;
       navigationVersion += 1;
+      window.SkyVisitorChoice?.cancel();
       window.SkyIntro?.skip();
       window.SkyDiary?.cancel();
       window.SkyAudio?.stopAll('navigation');
@@ -103,13 +105,23 @@
     transitioning = true;
     const reading = !['home', 'lobby'].includes(id);
     const wasReading = !['home', 'lobby'].includes(fromScene);
-    window.SkyAudio?.stopAll('intro');
-    window.SkyAudio?.stopAll('navigation');
-    const pageSound = readingOrder.indexOf(id) < readingOrder.indexOf(fromScene) ? 'pageBack' : 'pageTurn';
-    window.SkyAudio?.play(fromScene === 'lobby' && reading ? 'diaryOpen' : id === 'lobby' && wasReading ? 'diaryClose' : wasReading && reading ? pageSound : 'click', { group: 'navigation' });
-    window.dispatchEvent(new CustomEvent('sky:transitionstart'));
     closeMenu();
     try {
+      if (id === 'lobby' && (fromScene === 'home' || !window.SkyRoom?.visitor)) {
+        const selected = await window.SkyVisitorChoice?.request();
+        if (version !== navigationVersion) return;
+        if (!selected) {
+          if (!updateHistory) {
+            try { history.replaceState({ scene:fromScene }, '', `#${fromScene}`); } catch (_) {}
+          }
+          return;
+        }
+      }
+      window.SkyAudio?.stopAll('intro');
+      window.SkyAudio?.stopAll('navigation');
+      const pageSound = readingOrder.indexOf(id) < readingOrder.indexOf(fromScene) ? 'pageBack' : 'pageTurn';
+      window.SkyAudio?.play(fromScene === 'lobby' && reading ? 'diaryOpen' : id === 'lobby' && wasReading ? 'diaryClose' : wasReading && reading ? pageSound : 'click', { group:'navigation' });
+      window.dispatchEvent(new CustomEvent('sky:transitionstart'));
       if (fromScene === 'lobby' && reading) {
         diaryInProgress = true;
         stage.inert = true;
@@ -124,9 +136,9 @@
       } else if (id === 'lobby' && fromScene === 'home' && window.SkyIntro) {
         await SkyIntro.play({
           caption: '',
-          ready: roomReady,
-          onCovered: () => showScene(id),
-          onReveal: () => revealLobby()
+          ready: window.SkyRoom?.whenReady || roomReady,
+          onCovered: () => { if (version === navigationVersion) showScene(id); },
+          onReveal: () => { if (version === navigationVersion) revealLobby(); }
         });
       } else {
         showScene(id);
@@ -201,7 +213,7 @@
   document.addEventListener('fullscreenchange', updateFullscreen);
   document.addEventListener('webkitfullscreenchange', updateFullscreen);
   document.addEventListener('keydown', event => {
-    if (event.key !== 'Escape' || !fullscreenElement()) return;
+    if (event.key !== 'Escape' || !fullscreenElement() || window.SkyVisitorChoice?.open) return;
     event.preventDefault();
     event.stopImmediatePropagation();
     const exit = document.exitFullscreen || document.webkitExitFullscreen;
@@ -232,6 +244,9 @@
   let soundUserChanged = false;
   let audioAttempt = 0;
   let audioPending = false;
+  let introMusicPaused = false;
+  let introMusicVersion = 0;
+  let selectedMusicScene = currentScene;
   const soundButton = $('.sound-button');
   const updateSound = () => {
     soundButton.setAttribute('aria-pressed', String(audioOn));
@@ -240,7 +255,7 @@
     $('.sound-label').textContent = audioOn ? '声音开' : '声音关';
   };
   const startMusic = async (silent = false) => {
-    if (!audioOn || document.hidden || audioPending || !lobbyMusic.paused) return;
+    if (introMusicPaused || !audioOn || document.hidden || audioPending || !lobbyMusic.paused) return;
     audioPending = true;
     const attempt = ++audioAttempt;
     soundButton.setAttribute('aria-busy', 'true');
@@ -268,6 +283,8 @@
     soundButton.setAttribute('aria-busy', 'false');
   };
   const switchSceneMusic = (scene) => {
+    selectedMusicScene = scene;
+    if (introMusicPaused) return;
     const track = scene === 'home' ? 'login' : 'apartment';
     const source = `assets/audio/identity-v-${track}.mp3`;
     if (lobbyMusic.getAttribute('src') !== source) {
@@ -281,6 +298,22 @@
     if (audioOn && !document.hidden) startMusic(true);
   };
   window.addEventListener('sky:scenechange', event => switchSceneMusic(event.detail.scene));
+  document.addEventListener('sky:intro-start', () => {
+    introMusicPaused = true;
+    introMusicVersion += 1;
+    pauseMusic();
+  });
+  document.addEventListener('sky:intro-complete', () => {
+    if (!introMusicPaused) return;
+    const version = introMusicVersion;
+    // skip() also completes synchronously during cancelled navigation. Let its
+    // destination settle before selecting music; an older entry cannot unlock a new one.
+    Promise.resolve().then(() => {
+      if (version !== introMusicVersion) return;
+      introMusicPaused = false;
+      switchSceneMusic(selectedMusicScene);
+    });
+  });
   soundButton.addEventListener('click', () => {
     soundUserChanged = true;
     audioOn = !audioOn;

@@ -169,6 +169,7 @@
     skipButton.focus({ preventScroll: true });
     document.body.style.overflow = 'hidden';
     document.documentElement.classList.add('sky-intro-active');
+    document.dispatchEvent(new CustomEvent('sky:intro-start'));
     document.addEventListener('keydown', state.keydown, true);
     document.addEventListener('visibilitychange', state.visibility);
     window.addEventListener('resize', state.resize, { passive: true });

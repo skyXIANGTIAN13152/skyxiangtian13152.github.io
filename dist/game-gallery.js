@@ -1,4 +1,4 @@
-import {getLanguage} from './language.js?v=20261024-27';
+import {getLanguage} from './language.js?v=20261025-35';
 
 const collections = new WeakMap();
 let sequence = 0;

@@ -13,8 +13,8 @@
   };
   // Original Wwise event gains, applied during playback without modifying the PCM.
   const decibels = { click: -3, shatter: -5, diaryOpen: -6, diaryClose: -5, pageTurn: -6, pageBack: -6, loadingStart: -3 };
-  // Exact default branch of the original detective footstep event. Ten equally
-  // weighted samples, original -17 dB gain, and one-sample repeat avoidance.
+  // Original detective fallback: ten equal samples at -17 dB. Alice's two
+  // appearances share their own event: five equal samples at -13 dB.
   const footstepKeys = Array.from({ length: 10 }, (_, index) => {
     const number = String(index + 1).padStart(2, '0');
     const key = `footstep${number}`;
@@ -22,7 +22,15 @@
     decibels[key] = -17;
     return key;
   });
-  let previousFootstep = -1;
+  const femaleFootstepRoot = new URL('../../visitors/female/footsteps/', root);
+  const femaleFootstepKeys = Array.from({ length: 5 }, (_, index) => {
+    const number = String(index + 1).padStart(2, '0');
+    const key = `femaleFootstep${number}`;
+    files[key] = new URL(`sourceDefault-${number}.wav`, femaleFootstepRoot).href;
+    decibels[key] = -13;
+    return key;
+  });
+  const previousFootstep = { male: -1, female: -1 };
   const bytes = new Map(), buffers = new Map(), decoding = new Map();
   const voices = new Set(), lastPlayed = new Map();
   let context, master, unlocking = null, enabled = true, generation = 0;
@@ -137,13 +145,15 @@
     else prepare([key]).then(afterUnlock, () => voice.stop());
     return voice;
   }
-  function playFootstep() {
+  function playFootstep(visitorId = 'male') {
     if (!enabled || document.hidden) return null;
-    const choices = footstepKeys.map((_, index) => index).filter(index => index !== previousFootstep);
-    previousFootstep = choices[Math.floor(Math.random() * choices.length)];
+    const profile = visitorId === 'female' ? 'female' : 'male';
+    const keys = profile === 'female' ? femaleFootstepKeys : footstepKeys;
+    const choices = keys.map((_, index) => index).filter(index => index !== previousFootstep[profile]);
+    previousFootstep[profile] = choices[Math.floor(Math.random() * choices.length)];
     // Original Audio3D notifiers disallow overlap. Also cancels undecoded voices.
     stopAll('footsteps');
-    return play(footstepKeys[previousFootstep], { group: 'footsteps', maxDelay: 80 });
+    return play(keys[previousFootstep[profile]], { group: 'footsteps', maxDelay: 80 });
   }
   // A hidden tab suspends active samples with the animation; muted voices are discarded.
   document.addEventListener('visibilitychange', () => {

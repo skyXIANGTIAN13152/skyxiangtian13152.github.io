@@ -7,11 +7,11 @@ export const DETECTIVE_FOOTSTEP_TIMES = Object.freeze([
 ]);
 
 /** Return original events crossed by one forward animation update, including a wrap. */
-export function crossedFootsteps(previous, current, duration) {
+export function crossedFootsteps(previous, current, duration, eventTimes = DETECTIVE_FOOTSTEP_TIMES) {
   if (![previous, current, duration].every(Number.isFinite) || duration <= 0 || previous === current) return [];
-  if (current >= previous) return DETECTIVE_FOOTSTEP_TIMES.filter(time => time > previous && time <= current);
+  if (current >= previous) return eventTimes.filter(time => time > previous && time <= current);
   return [
-    ...DETECTIVE_FOOTSTEP_TIMES.filter(time => time > previous && time < duration),
-    ...DETECTIVE_FOOTSTEP_TIMES.filter(time => time <= current),
+    ...eventTimes.filter(time => time > previous && time < duration),
+    ...eventTimes.filter(time => time <= current),
   ];
 }

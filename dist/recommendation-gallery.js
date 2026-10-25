@@ -1,4 +1,4 @@
-import {getLanguage} from './language.js?v=20261024-27';
+import {getLanguage} from './language.js?v=20261025-35';
 import {normalizeGitHubRepository} from './content-model.js?v=20261024-27';
 import {renderRecommendationDemo} from './recommendation-demos.js?v=20261024-27';
 

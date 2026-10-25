@@ -1,9 +1,10 @@
-import { crossedFootsteps } from './detective-footsteps.js';
+import { crossedFootsteps } from './detective-footsteps.js?v=20261025-35';
 
 /** Blend the two original clips without resetting a pose during an interrupted fade. */
 export function createDetectiveLocomotion(mixer, idleClip, walkClip, {
   nominalWalkSpeed = 1.1,
   onFootstep = () => {},
+  footstepTimes,
 } = {}) {
   const idle = mixer.clipAction(idleClip).play();
   const walk = mixer.clipAction(walkClip).play();
@@ -32,7 +33,7 @@ export function createDetectiveLocomotion(mixer, idleClip, walkClip, {
     const previousWalkTime = walk.time;
     mixer.update(dt);
     if (moving && footstepsAllowed && dt > 0) {
-      for (const eventTime of crossedFootsteps(previousWalkTime, walk.time, walkClip.duration)) {
+      for (const eventTime of crossedFootsteps(previousWalkTime, walk.time, walkClip.duration, footstepTimes)) {
         onFootstep({ eventTime, phase: walk.time });
       }
     }

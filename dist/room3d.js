@@ -8,6 +8,8 @@ import {createRoomResolution} from './room-resolution.js?v=20261024-32';
 import {createMobileRoomQuality,isTouchOnlyRoomDevice} from './room-mobile-quality.js?v=20261024-32';
 import {ROOM_CAMERA_PITCH,clampRoomCameraPitch} from './room-camera-limits.js?v=20261024-32';
 import {createRoomPointerLook} from './room-pointer-look.js?v=20261023-21';
+import {visitorDefinition} from './visitor-avatars.js?v=20261025-35';
+import {createVisitorAvatar} from './room-visitor.js?v=20261025-35';
 
 const stage = document.querySelector('.game-stage');
 const lobby = document.querySelector('#lobby');
@@ -34,6 +36,8 @@ let pausedForTransition = false, contextLost = false;
 let footstepsMoving = false;
 let warmupReport = null;
 let assetsReady = false, contextGeneration = 0, warmupController = null;
+let visitorChoiceOpen = false, visitorSwitching = false, visitorVersion = 0;
+let visitorSelection = null, environmentReady, visitorQueue = Promise.resolve(), visitorController = null;
 const player = new THREE.Vector3();
 const focus = new THREE.Vector3();
 const desiredCamera = new THREE.Vector3();
@@ -48,7 +52,7 @@ const MOBILE_QUALITY_EXPERIMENT = true;
 const mobileQuality = createMobileRoomQuality(MOBILE_QUALITY_EXPERIMENT && isTouchOnlyRoomDevice());
 let blockers = [];
 const intro = () => document.documentElement.classList.contains('sky-intro-active');
-const canMove = () => active && ready && !contextLost && !pausedForTransition && !intro() && !document.hidden && directory.hidden;
+const canMove = () => active && ready && !!detective && !visitorChoiceOpen && !visitorSwitching && !contextLost && !pausedForTransition && !intro() && !document.hidden && directory.hidden;
 
 function resetInput() {
   if (pointerLook) pointerLook.release(); else clearMovementInput();
@@ -59,7 +63,7 @@ function clearMovementInput() {
   stopFootsteps();
 }
 function stopFootsteps() { footstepsMoving = false; window.SkyAudio?.stopAll('footsteps'); }
-function updateTouchVisibility() { touch.hidden = !(active && ready && !intro() && !pausedForTransition); }
+function updateTouchVisibility() { touch.hidden = !(active && ready && !visitorChoiceOpen && !visitorSwitching && !intro() && !pausedForTransition); }
 function setActive(value) {
   active = value;
   pausedForTransition = false;
@@ -140,7 +144,7 @@ function updateLabels() {
 }
 function render(now) {
   frame = 0;
-  if (!active || !ready || document.hidden || contextLost) return;
+  if (!active || !ready || !detective || document.hidden || contextLost) return;
   const sampling = last && !pausedForTransition && !intro();
   const tierChanged = sampling ? mobileQuality.sample(now - last) : null;
   if (tierChanged !== null) { applyMobileQuality();resolution.reset(); }
@@ -206,7 +210,7 @@ function render(now) {
   camera.lookAt(focus);
   // The detective owns the light at the original flame socket. A second
   // co-located light doubled the under-lighting across the nose and eye sockets.
-  detective.lanternLight.intensity = .3 + Math.sin(elapsed * 8.1) * .008 + Math.sin(elapsed * 12.3) * .004;
+  if (detective.lanternLight) detective.lanternLight.intensity = .3 + Math.sin(elapsed * 8.1) * .008 + Math.sin(elapsed * 12.3) * .004;
   room.prepareReflections?.(camera,now,mobileQuality.tier,{enabled:mobileQuality.enabled});
   postprocess.render(scene,camera);
   updateLabels();
@@ -222,7 +226,7 @@ function makeContactShadow() {
 }
 async function initialize() {
   try {
-    const [{createRoom},{createDetective}] = await Promise.all([import('./room-environment.js?v=20261024-34'),import('./room-detective.js?v=20261023-19')]);
+    const {createRoom} = await import('./room-environment.js?v=20261024-34');
     scene = new THREE.Scene(); scene.background = new THREE.Color('#11181d');
     scene.fog = new THREE.FogExp2('#10151b',.007);
     camera = new THREE.PerspectiveCamera(45,1280/720,.05,80);
@@ -232,7 +236,7 @@ async function initialize() {
     renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFShadowMap;
   const canvas = renderer.domElement; canvas.className = 'room-canvas';
     canvas.tabIndex = 0;
-    canvas.setAttribute('aria-label','旧侦探大厅，WASD 或方向键行走，拖动观察房间，靠近物件按 E 阅读');
+    canvas.setAttribute('aria-label','庄园大厅，WASD 或方向键行走，拖动观察房间，靠近物件按 E 阅读');
     canvas.setAttribute('role','img');
     mount.prepend(canvas);
     bindCanvas(canvas);
@@ -244,23 +248,20 @@ async function initialize() {
     });
     canvas.addEventListener('webglcontextrestored',() => {
       contextLost = false;
-      if (assetsReady) window.SkyRoom.whenReady = prepareDisplay();
+      if (assetsReady && detective) window.SkyRoom.whenReady = prepareDisplay();
     });
     layoutRenderer();
     // Independent downloads/decode can overlap while the cover is visible.
-    [room,detective,postprocess] = await Promise.all([
+    [room,postprocess] = await Promise.all([
       createRoom(),
-      createDetective({ onFootstep: () => window.SkyAudio?.playFootstep?.() }),
       createOriginalLobbyPostprocess(renderer),
     ]);
     scene.add(room.group);
     room.bounds = {minX:-6.5,maxX:6.5,minZ:-5.2,maxZ:5.2,...room.bounds};
     if (room.collisionMeshes?.length) room.move = originalRoomMovement(room.collisionMeshes,room.bounds,room.spawn.y || 0,room.floorHeight);
-    scene.add(detective.group);
     player.set(room.spawn.x,room.spawn.y || 0,room.spawn.z);
     yaw = room.cameraYaw ?? Math.atan2(room.cameraPosition.x-room.cameraTarget.x,room.cameraPosition.z-room.cameraTarget.z);
     pitch = clampRoomCameraPitch(room.cameraPitch);
-    detective.group.position.copy(player); detective.group.rotation.y = yaw + Math.PI;
     scene.add(new THREE.HemisphereLight('#abb6c8','#323027',1.05));
     const moon = new THREE.DirectionalLight('#c1d4ee',.7); moon.position.set(-5,7,3); scene.add(moon);
     const fill = new THREE.DirectionalLight('#d9bda0',.38); fill.position.set(4,3,-2); scene.add(fill);
@@ -273,32 +274,37 @@ async function initialize() {
       player.y + 1.35 + Math.sin(pitch) * 5.8,
       THREE.MathUtils.clamp(player.z + Math.cos(yaw) * 5.8,room.bounds.minZ + .42,room.bounds.maxZ - .42)
     );camera.lookAt(player.x,player.y + 1.35,player.z - .15);
-    detective.update(0,0);
     assetsReady = true;
-    await prepareDisplay();
+    // Prepare the room while the cover is visible. Only the chosen visitor is
+    // downloaded; the former default detective is no longer loaded or displayed.
+    await warmRoomResources(renderer,scene,camera,{postprocess});
+    return true;
   } catch(error) {
     console.error('[SkyRoom]',error);
     loading.textContent = '此浏览器暂不支持三维大厅，可直接点击入口阅读。';
     restoreFallback();
+    return false;
   }
 }
 async function prepareDisplay() {
-  if (contextLost) return;
+  if (contextLost || !detective) return false;
   const generation = contextGeneration;
   const controller = new AbortController();
   warmupController?.abort();warmupController = controller;
   try {
     postprocess.refreshSampleSupport();applyMobileQuality();room.invalidateReflections?.();
     const report = await warmRoomResources(renderer,scene,camera,{postprocess,signal:controller.signal});
-    if (controller.signal.aborted || contextLost || generation !== contextGeneration || renderer.getContext().isContextLost()) return;
+    if (controller.signal.aborted || contextLost || generation !== contextGeneration || renderer.getContext().isContextLost()) return false;
     warmupReport = report;
     room.prepareReflections?.(camera,performance.now(),mobileQuality.tier,{enabled:mobileQuality.enabled});
     postprocess.render(scene,camera);
     ready = true;lobby.classList.add('room-ready');
     setActive(stage.dataset.scene === 'lobby');
+    return true;
   } catch(error) {
     console.warn('[SkyRoom] Could not prepare the 3D canvas; keeping archive entrances available.',error);
     ready = false;lobby.classList.remove('room-ready');restoreFallback();
+    return false;
   } finally {
     if (warmupController === controller) warmupController = null;
   }
@@ -307,6 +313,99 @@ function restoreFallback() {
   touch.hidden = true;
   anchors.forEach(a => {a.classList.remove('is-occluded','is-distant','is-near');a.removeAttribute('style');a.removeAttribute('aria-hidden');a.removeAttribute('tabindex');});
   anchorStates.forEach(state => state.invalidate());
+}
+function cancelledVisitor() { return new DOMException('Visitor selection was cancelled.','AbortError'); }
+function waitForVisitorTask(task, signal, discard) {
+  // GLTFLoader may finish its network request after cancellation. Release this
+  // transaction immediately, but still observe the late result and dispose it.
+  return new Promise((resolve, reject) => {
+    let settled = false;
+    const abort = () => {
+      if (settled) return;
+      settled = true;signal.removeEventListener('abort',abort);
+      reject(cancelledVisitor());
+    };
+    signal.addEventListener('abort',abort,{once:true});
+    Promise.resolve(task).then(value => {
+      if (settled) {
+        try { discard?.(value); } catch (error) { console.warn('[SkyRoom] Could not release a cancelled visitor.',error); }
+        return;
+      }
+      settled = true;signal.removeEventListener('abort',abort);resolve(value);
+    },error => {
+      if (settled) return;
+      settled = true;signal.removeEventListener('abort',abort);reject(error);
+    });
+    if (signal.aborted) abort();
+  });
+}
+function cancelVisitorSelection() {
+  visitorVersion++;
+  visitorController?.abort();
+  if (visitorSwitching) warmupController?.abort();
+  resetInput();
+}
+function selectVisitor(id, form) {
+  const definition = visitorDefinition(id,form);
+  if (stage.dataset.scene !== 'home' && visitorSelection?.id !== definition.id) {
+    return Promise.reject(new Error('请先离开大厅，再选择访客。'));
+  }
+  const version = ++visitorVersion;
+  visitorController?.abort();
+  if (visitorSwitching) warmupController?.abort();
+  const controller = new AbortController();
+  visitorController = controller;
+  const request = visitorQueue.catch(() => {}).then(async () => {
+    if (version !== visitorVersion) throw cancelledVisitor();
+    if (!await waitForVisitorTask(environmentReady,controller.signal)) throw new Error('大厅尚未准备好，请刷新页面后重试。');
+    if (version !== visitorVersion) throw cancelledVisitor();
+    if (contextLost) throw new Error('正在恢复大厅画面，请稍后再试。');
+    if (visitorSelection?.id === definition.id && visitorSelection?.form === definition.form && ready) return {...visitorSelection};
+    visitorSwitching = true;resetInput();updateTouchVisibility();
+    const previous = detective, previousReady = ready;
+    let candidate = null;
+    try {
+      candidate = await waitForVisitorTask(
+        createVisitorAvatar({definition,onFootstep:() => window.SkyAudio?.playFootstep?.(definition.id)}),
+        controller.signal,late => late.dispose()
+      );
+      if (version !== visitorVersion) throw cancelledVisitor();
+      ready = false;stop();
+      candidate.group.position.copy(player);
+      candidate.group.rotation.y = previous?.group.rotation.y ?? yaw + Math.PI;
+      candidate.update(elapsed,0);
+      if (previous) previous.group.visible = false;
+      detective = candidate;scene.add(candidate.group);
+      if (!await prepareDisplay()) throw new Error('访客画面未能加载完成，请再试一次。');
+      if (version !== visitorVersion) throw cancelledVisitor();
+      visitorSelection = Object.freeze({id:definition.id,form:definition.form});
+      lobby.dataset.visitor = definition.id;lobby.dataset.visitorForm = definition.form;
+      previous?.dispose();
+      window.dispatchEvent(new CustomEvent('sky:visitorchange',{detail:{...visitorSelection}}));
+      return {...visitorSelection};
+    } catch (error) {
+      if (detective === candidate) detective = previous;
+      candidate?.dispose();
+      if (previous) previous.group.visible = true;
+      ready = !!previous && previousReady && !contextLost;
+      lobby.classList.toggle('room-ready',ready);
+      room?.invalidateReflections?.();
+      if (ready) { postprocess.render(scene,camera);setActive(stage.dataset.scene === 'lobby'); }
+      throw error;
+    } finally {
+      visitorSwitching = false;resetInput();updateTouchVisibility();
+    }
+  }).finally(() => { if (visitorController === controller) visitorController = null; });
+  visitorQueue = request;
+  window.SkyRoom.whenReady = request;
+  // The selection dialog owns the visible retry state. Keep an interrupted
+  // preparation from creating an unhandled rejection while a later choice waits.
+  request.catch(() => {});
+  return request;
+}
+function setVisitorForm(form) {
+  if (visitorSelection?.id !== 'female') return Promise.reject(new Error('此访客没有可切换的兜帽。'));
+  return selectVisitor('female',form);
 }
 function bindCanvas(canvas) {
   pointerLook = createRoomPointerLook(canvas,{
@@ -336,6 +435,9 @@ window.addEventListener('resize',() => {
 document.addEventListener('visibilitychange',() => {resetInput();if(document.hidden)stop();else if(active && ready)start();});
 window.addEventListener('sky:scenechange',e => setActive(e.detail.scene === 'lobby'));
 window.addEventListener('sky:transitionstart',() => {pausedForTransition=true;resetInput();updateTouchVisibility();});
+window.addEventListener('sky:visitorchoicechange',event => {
+  visitorChoiceOpen = !!event.detail?.open;resetInput();updateTouchVisibility();
+});
 document.addEventListener('sky:intro-complete',() => {pausedForTransition=false;updateTouchVisibility();});
 new MutationObserver(updateTouchVisibility).observe(document.documentElement,{attributes:true,attributeFilter:['class']});
 directoryButton.addEventListener('click',() => {
@@ -358,6 +460,8 @@ stick.addEventListener('pointerdown',e => {if(!canMove() || pointerId!==null)ret
 stick.addEventListener('pointermove',e => {if(pointerId===e.pointerId && canMove())stickMove(e);});
 function stickEnd(e){if(pointerId===e.pointerId){pointerId=null;stickInput={x:0,z:0};knob.style.transform='';}}
 stick.addEventListener('pointerup',stickEnd);stick.addEventListener('pointercancel',stickEnd);stick.addEventListener('lostpointercapture',stickEnd);
-window.SkyRoom = {get ready(){return ready;},setActive,resetInput,whenReady:null};
+window.SkyRoom = {get ready(){return ready;},get visitor(){return visitorSelection ? {...visitorSelection} : null;},
+  setActive,resetInput,selectVisitor,setVisitorForm,cancelVisitorSelection,whenReady:null};
 // Prepare while the cover is visible; entry should never land on an empty canvas.
-window.SkyRoom.whenReady = initialize();
+environmentReady = initialize();
+window.SkyRoom.whenReady = environmentReady;
