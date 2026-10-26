@@ -2,15 +2,15 @@ const femaleSteps = Object.freeze([0.1,0.6998,1.3003,1.9,2.4998,3.1003,3.7,4.299
 const common = { idleClip: 'hall_idle_2', walkClip: 'hall_walk_2', scale: [-0.1,0.1,0.1] };
 export const VISITOR_AVATARS = Object.freeze({
   male: Object.freeze({ ...common, id:'male', form:'default',
-    url:new URL('./assets/visitors/male/avatar.glb?v=20261025-37',import.meta.url).href,
+    url:new URL('./assets/visitors/male/avatar.glb?v=20261026-38',import.meta.url).href,
     lantern:{bone:'bone003',position:[0.532,-0.0321,0.0264],glassMaterial:'Original material slot 4'},
   }),
   female: Object.freeze({ ...common, id:'female', form:'hooded',
-    url:new URL('./assets/visitors/female/avatar.glb?v=20261025-37',import.meta.url).href,
+    url:new URL('./assets/visitors/female/avatar.glb?v=20261026-38',import.meta.url).href,
     footstepTimes:femaleSteps,
   }),
   femaleHoodless: Object.freeze({ ...common, id:'female', form:'hoodless',
-    url:new URL('./assets/visitors/female/avatar-hoodless.glb?v=20261025-37',import.meta.url).href,
+    url:new URL('./assets/visitors/female/avatar-hoodless.glb?v=20261026-38',import.meta.url).href,
     footstepTimes:femaleSteps,
   }),
 });

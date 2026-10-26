@@ -8,7 +8,7 @@ import {createRoomResolution} from './room-resolution.js?v=20261024-32';
 import {createMobileRoomQuality,isTouchOnlyRoomDevice} from './room-mobile-quality.js?v=20261024-32';
 import {ROOM_CAMERA_PITCH,clampRoomCameraPitch} from './room-camera-limits.js?v=20261024-32';
 import {createRoomPointerLook} from './room-pointer-look.js?v=20261023-21';
-import {visitorDefinition} from './visitor-avatars.js?v=20261025-37';
+import {visitorDefinition} from './visitor-avatars.js?v=20261026-38';
 import {createVisitorAvatar} from './room-visitor.js?v=20261025-37';
 
 const stage = document.querySelector('.game-stage');
