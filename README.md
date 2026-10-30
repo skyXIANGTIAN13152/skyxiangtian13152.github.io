@@ -11,5 +11,5 @@ An interactive personal website inspired by the manor in *Identity V*. Explore a
 - **管理说明 / Owner guide:** [OWNER-EDITOR.md](OWNER-EDITOR.md)
 - **素材与许可 / Asset credits and notices:** [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)
 
-> 本项目使用《第五人格》及其他第三方素材；相关权利归各自权利人所有。请查阅素材说明，仓库不自动授予第三方素材的再使用权。  
+> 本项目使用《第五人格》及其他第三方素材；相关权利归各自权利人所有。请查阅素材说明，仓库不自动授予第三方素材的再使用权。
 > This project includes assets from *Identity V* and other third parties. Rights remain with their respective owners; see the notices before reusing any assets.
